@@ -14,6 +14,8 @@ import pathlib, re, shutil
 root = pathlib.Path(__file__).resolve().parent.parent
 src = root / "src"
 dist = root / "dist"
+# the live site address (used in page meta/Open Graph, robots.txt and the sitemap); change it if you move to your own domain
+SITE = "https://flameboutique34.netlify.app"
 
 def script(match):
     js = (src / f"{match.group(1)}.js").read_text(encoding="utf-8").replace("</script", "<\\/script")
@@ -38,6 +40,7 @@ for page in ("index.html", "track.html", "policy.html", "admin.html", "404.html"
     note = "<!-- Generated from src/" + page + " by tools/build.py. Edit src/, then rebuild. -->"
     html = html.replace("<!doctype html>", "<!doctype html>\n" + note, 1)
     html = html.replace("__FILM_FRAMES__", str(film_frames)).replace("__FILM_PFRAMES__", str(film_pframes))
+    html = html.replace("__SITE__", SITE)
     (dist / page).write_text(html, encoding="utf-8")
     print("built", page, len(html) // 1024, "KB")
 
@@ -84,16 +87,14 @@ CSP = "; ".join([
   Cache-Control: no-cache
 
 /assets/intro*
-  Cache-Control: public, max-age=604800
+  Cache-Control: public, max-age=2592000
 
 /assets/film/*
-  Cache-Control: public, max-age=604800
+  Cache-Control: public, max-age=2592000
 
 /assets/vendor/*
-  Cache-Control: public, max-age=604800
+  Cache-Control: public, max-age=2592000
 """, encoding="utf-8")
-# the live site address, used for robots.txt and the sitemap (change it here if you move to your own domain)
-SITE = "https://flameboutique34.netlify.app"
 (dist / "robots.txt").write_text(
     "User-agent: *\nDisallow: /admin.html\nDisallow: /track.html\n"
     f"Sitemap: {SITE}/sitemap.xml\n", encoding="utf-8")
