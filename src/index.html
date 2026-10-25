@@ -1600,7 +1600,7 @@ function showMap(){
       S.decoding[i] = 1; decodes++;
       createImageBitmap(S.blobs[i]).then(bm=>{
         if (Math.abs(i - center) > FAR){ bm.close(); return; }
-        S.pics[i] = bm; S.ready[i] = 1; drawn = "";
+        S.pics[i] = bm; S.ready[i] = 1; drawn = ""; needDraw = true;
       }, ()=>{}).finally(()=>{ S.decoding[i] = 0; decodes--; });
     }
   }
@@ -1608,7 +1608,7 @@ function showMap(){
   // is not held "loading" by the film on a slow connection
   let gateOpen = document.readyState === "complete";
   if (!gateOpen) addEventListener("load", ()=>{ gateOpen = true; pump(); }, {once:true});
-  let active = null, shown = 0, drawn = "", sized = "";
+  let active = null, shown = 0, drawn = "", sized = "", needDraw = true, lastIdx = -1;
   function pump(){
     if (!started) return;
     const S = active = set(wanted());
@@ -1621,7 +1621,7 @@ function showMap(){
         im.onerror = ()=>{ S.busy--; pump(); };
         im.src = url;
       };
-      const got = ()=>{ S.busy--; S.loaded[i] = 1; S.count++; if (S === active){ cv.dataset.loaded = String(S.count); if (i === 0) cv.dataset.ready = "1"; } drawn = ""; pump(); };
+      const got = ()=>{ S.busy--; S.loaded[i] = 1; S.count++; if (S === active){ cv.dataset.loaded = String(S.count); if (i === 0) cv.dataset.ready = "1"; } drawn = ""; needDraw = true; pump(); };
       if (BITMAP){
         fetch(url).then(r=>r.ok ? r.blob() : Promise.reject(r.status)).then(async bl=>{
           S.blobs[i] = bl;
@@ -1641,7 +1641,7 @@ function showMap(){
   probe.onerror = ()=>{ ext = "jpg"; started = true; pump(); };
   probe.src = "data:image/webp;base64,UklGRiIAAABXRUJQVlA4IBYAAAAwAQCdASoBAAEADsD+JaQAA3AAAAAA";
   // the phone is turned: switch to the set that fits, keep showing the other one until it arrives
-  addEventListener("resize", ()=>{ if (started && active && wanted() !== active.name) pump(); });
+  addEventListener("resize", ()=>{ needDraw = true; lastIdx = -1; if (started && active && wanted() !== active.name) pump(); });
 
   function fit(){
     // 1.5 pixels per screen point at most: the pictures themselves are 720 px wide on phones, so more adds no detail,
@@ -1687,12 +1687,17 @@ function showMap(){
   (function tick(){
     const r = box.getBoundingClientRect();
     if (r.bottom > 0 && r.top < innerHeight){   // only while the film is on screen
-      fit();
       // the frame is locked straight to the scroll position — no easing, so it never lags behind the finger
       const target = shown = progress();
-      if (active) keep(active, Math.round(target * (active.n - 1)));
-      const hit = pick(shown);
-      if (hit && hit[0].name + hit[1] + hit[0].ready[hit[1]] !== drawn) draw(hit[0], hit[1]);
+      const idx = active ? Math.round(target * (active.n - 1)) : 0;
+      // nothing to do while the frame is unchanged (e.g. a slow scroll between two frames): keeps the loop idle and the scroll smooth
+      if (idx !== lastIdx || needDraw){
+        lastIdx = idx; needDraw = false;
+        fit();
+        if (active) keep(active, idx);
+        const hit = pick(shown);
+        if (hit && hit[0].name + hit[1] + hit[0].ready[hit[1]] !== drawn) draw(hit[0], hit[1]);
+      }
     }
     requestAnimationFrame(tick);
   })();
