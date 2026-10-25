@@ -1550,15 +1550,18 @@ function showMap(){
   document.body.prepend(bar);
   const social = document.querySelector("body > .social-bar");
   if (social){ social.classList.add("under-film"); box.after(social); }
-  const progress = ()=>{ const r = box.getBoundingClientRect(), run = box.offsetHeight - innerHeight; return run > 0 ? Math.min(1, Math.max(0, -r.top / run)) : (r.top < 0 ? 1 : 0); };
-  const filmEnd = ()=>box.offsetTop + box.offsetHeight - innerHeight;
+  let vpH = innerHeight;
+  const measureVp = ()=>{ const pn = box.querySelector(".film-pin"); vpH = (pn && pn.clientHeight) || innerHeight; };
+  measureVp();
+  const progress = ()=>{ const r = box.getBoundingClientRect(), run = box.offsetHeight - vpH; return run > 0 ? Math.min(1, Math.max(0, -r.top / run)) : (r.top < 0 ? 1 : 0); };
+  const filmEnd = ()=>box.offsetTop + box.offsetHeight - vpH;
   // once the film has been watched to the end (or skipped), a return to the home page in the same visit
   // starts at the shop; scrolling up plays the film again
   const SEEN = "fb34-film-seen", seen = ()=>{ try { sessionStorage.setItem(SEEN, "1"); } catch {} };
   const bars = ()=>{ const shown = calm ? scrollY > 24 : progress() >= .985; bar.classList.toggle("show", shown); root.classList.toggle("at-film", !shown); if (shown && !calm) seen(); };
   let back = false; try { back = sessionStorage.getItem(SEEN) === "1"; } catch {}
   if (back && !location.hash && scrollY < 10){ scrollTo({top: filmEnd() + 2, behavior: "instant"}); }
-  addEventListener("scroll", bars, {passive:true}); addEventListener("resize", bars); bars();
+  addEventListener("scroll", bars, {passive:true}); addEventListener("resize", ()=>{ measureVp(); bars(); }); bars();
   box.addEventListener("click", e=>{ e.preventDefault(); seen(); scrollTo({top: filmEnd() + 2, behavior: calm ? "auto" : "smooth"}); });
   if (calm || !cv.getContext){ cv.remove(); return; }  // the first picture stays as a still
 

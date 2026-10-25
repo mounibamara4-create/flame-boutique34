@@ -92,11 +92,23 @@ CSP = "; ".join([
 /assets/vendor/*
   Cache-Control: public, max-age=604800
 """, encoding="utf-8")
-(dist / "robots.txt").write_text("User-agent: *\nDisallow: /admin.html\nDisallow: /track.html\n", encoding="utf-8")
+# the live site address, used for robots.txt and the sitemap (change it here if you move to your own domain)
+SITE = "https://flameboutique34.netlify.app"
+(dist / "robots.txt").write_text(
+    "User-agent: *\nDisallow: /admin.html\nDisallow: /track.html\n"
+    f"Sitemap: {SITE}/sitemap.xml\n", encoding="utf-8")
+# a simple sitemap of the public pages (admin and track stay out: they are noindex)
+_today = __import__("datetime").date.today().isoformat()
+(dist / "sitemap.xml").write_text(
+    '<?xml version="1.0" encoding="UTF-8"?>\n'
+    '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
+    f'  <url><loc>{SITE}/</loc><lastmod>{_today}</lastmod><changefreq>daily</changefreq><priority>1.0</priority></url>\n'
+    f'  <url><loc>{SITE}/policy.html</loc><lastmod>{_today}</lastmod><changefreq>monthly</changefreq><priority>0.5</priority></url>\n'
+    '</urlset>\n', encoding="utf-8")
 # site-ownership / verification files (e.g. Google Search Console) dropped at the site root, verbatim
 for extra in sorted((root / "verify").glob("*")) if (root / "verify").exists() else []:
     shutil.copy2(extra, dist / extra.name)
-print("wrote _headers, robots.txt; dist/ is ready")
+print("wrote _headers, robots.txt, sitemap.xml; dist/ is ready")
 
 # Supabase: everything in one file for the SQL Editor (schema, then wilayas and communes, then the checks)
 sb = root / "supabase"
