@@ -1,0 +1,111 @@
+"""Builds the site to publish into dist/.
+
+The pages in src/ load site.css and the shared scripts (locations.js, shared.js, api.js, ui.js);
+the built pages carry them inline, so each page works on its own. assets/config.js and the boutique
+film pictures (assets/film/, intro-poster.jpg) are copied as files; a page that cannot load config.js runs in demo mode.
+Netlify settings (_headers, robots.txt, 404 page) are written next to the pages.
+
+Run from the project folder:  python3 tools/build.py
+(after changing data/, run tools/gen_locations.py first)
+Netlify runs the same command (netlify.toml) and publishes dist/.
+"""
+import pathlib, re, shutil
+
+root = pathlib.Path(__file__).resolve().parent.parent
+src = root / "src"
+dist = root / "dist"
+
+def script(match):
+    js = (src / f"{match.group(1)}.js").read_text(encoding="utf-8").replace("</script", "<\\/script")
+    return f"<script>/* src/{match.group(1)}.js, inlined by tools/build.py */\n{js}</script>"
+
+def style(match):
+    css = (src / f"{match.group(1)}.css").read_text(encoding="utf-8")
+    return f"<style>/* src/{match.group(1)}.css, inlined by tools/build.py */\n{css}</style>"
+
+import json
+film = json.loads((root / "assets" / "film" / "film.json").read_text())  # written by tools/make_film.sh
+film_frames, film_pframes = film["frames"], film["pframes"]
+
+if dist.exists():
+    shutil.rmtree(dist)
+(dist / "assets").mkdir(parents=True)
+
+for page in ("index.html", "track.html", "policy.html", "admin.html", "404.html"):
+    html = (src / page).read_text(encoding="utf-8")
+    html = re.sub(r'<script src="(locations|shared|api|ui|pixels)\.js"></script>', script, html)
+    html = re.sub(r'<link rel="stylesheet" href="(site)\.css">', style, html)
+    note = "<!-- Generated from src/" + page + " by tools/build.py. Edit src/, then rebuild. -->"
+    html = html.replace("<!doctype html>", "<!doctype html>\n" + note, 1)
+    html = html.replace("__FILM_FRAMES__", str(film_frames)).replace("__FILM_PFRAMES__", str(film_pframes))
+    (dist / page).write_text(html, encoding="utf-8")
+    print("built", page, len(html) // 1024, "KB")
+
+# the home page film is a picture sequence made from the boutique video (assets/intro.mp4, kept as the source,
+# not published) by tools/make_film.sh
+for f in ("config.js", "intro-poster.jpg", "intro-poster-p.jpg"):
+    shutil.copy2(root / "assets" / f, dist / "assets" / f)
+shutil.copytree(root / "assets" / "vendor", dist / "assets" / "vendor")
+shutil.copytree(root / "assets" / "film", dist / "assets" / "film")
+
+# Inline scripts and styles are part of every page, hence 'unsafe-inline'. Outside sources: Supabase (data,
+# sign-in, photos) and Google Fonts. The Supabase script itself is served from assets/vendor/.
+CSP = "; ".join([
+    "default-src 'self'",
+    # ad pixels (only loaded when the owner enters a pixel ID): Meta and TikTok
+    "script-src 'self' 'unsafe-inline' https://connect.facebook.net https://analytics.tiktok.com",
+    "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+    "font-src 'self' https://fonts.gstatic.com",
+    "img-src 'self' data: blob: https://*.supabase.co https://www.facebook.com https://*.tiktok.com",
+    "media-src 'self'",
+    "connect-src 'self' https://*.supabase.co wss://*.supabase.co https://www.facebook.com https://connect.facebook.net https://*.tiktok.com https://*.tiktokw.us",
+    "frame-src https://www.google.com https://www.facebook.com",  # the shop map; Meta pixel's helper frame
+    "frame-ancestors 'none'",
+    "base-uri 'self'",
+    "form-action 'self'",
+    "object-src 'none'",
+])
+(dist / "_headers").write_text(f"""/*
+  Content-Security-Policy: {CSP}
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=()
+  X-Frame-Options: DENY
+
+/admin.html
+  X-Robots-Tag: noindex, nofollow
+  Cache-Control: no-store
+
+/track.html
+  X-Robots-Tag: noindex
+
+# the settings file must never be served stale
+/assets/config.js
+  Cache-Control: no-cache
+
+/assets/intro*
+  Cache-Control: public, max-age=604800
+
+/assets/film/*
+  Cache-Control: public, max-age=604800
+
+/assets/vendor/*
+  Cache-Control: public, max-age=604800
+""", encoding="utf-8")
+(dist / "robots.txt").write_text("User-agent: *\nDisallow: /admin.html\nDisallow: /track.html\n", encoding="utf-8")
+# site-ownership / verification files (e.g. Google Search Console) dropped at the site root, verbatim
+for extra in sorted((root / "verify").glob("*")) if (root / "verify").exists() else []:
+    shutil.copy2(extra, dist / extra.name)
+print("wrote _headers, robots.txt; dist/ is ready")
+
+# Supabase: everything in one file for the SQL Editor (schema, then wilayas and communes, then the checks)
+sb = root / "supabase"
+parts = [("schema.sql", "tables, rules and functions"), ("locations.sql", "69 wilayas and 1541 communes"), ("check.sql", "checks: every line should say OK")]
+all_sql = """-- Flame Boutique34: complete database setup for Supabase. Generated by tools/build.py; edit the parts, not this file.
+-- Supabase > SQL Editor > New query > paste this whole file > Run. Safe to run again: it deletes nothing.
+-- The result table at the end lists the checks. "owner account linked" says MISSING until you run owner.sql.
+"""
+for name, what in parts:
+    all_sql += f"\n-- ===================== {name}: {what} =====================\n" + (sb / name).read_text(encoding="utf-8")
+(sb / "setup.sql").write_text(all_sql, encoding="utf-8")
+print("wrote supabase/setup.sql", len(all_sql) // 1024, "KB")

@@ -1,0 +1,8 @@
+# Netlify settings for a site connected to a Git repository.
+# (For a drag-and-drop deploy, drop the dist/ folder instead: it already holds the built pages and _headers.)
+[build]
+  command = "python3 tools/build.py"
+  publish = "dist"
+
+[build.environment]
+  PYTHON_VERSION = "3.8"

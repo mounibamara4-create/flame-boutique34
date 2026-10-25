@@ -1,0 +1,1719 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#EADCC6">
+<style>:root{padding-block:env(safe-area-inset-top,0px) env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<script>(function(){try{var th=JSON.parse(localStorage.getItem("fb34-theme")),lg=JSON.parse(localStorage.getItem("fb34-lang")),r=document.documentElement;if(th==="dark"||th==="light")r.dataset.theme=th;if(lg==="fr"){r.lang="fr";r.dir="ltr"}}catch(e){}})()</script>
+<title>Flame Boutique34</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="Flame Boutique34، محل ألبسة نسائية محتشمة في برج بوعريريج. عبايات وقفاطين وفساتين سهرة، توصيل إلى 69 ولاية والدفع عند الاستلام.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500&family=Marcellus&family=Noto+Naskh+Arabic:wght@400;600&family=Reem+Kufi:wght@500;600&display=swap">
+<link rel="stylesheet" href="site.css">
+<style>
+/* ---------- film: the boutique video, moved forward by scrolling ----------
+   The section is several screens tall; its video stays pinned on screen while the visitor scrolls through it,
+   and the scroll position decides which moment of the video is shown. At its end the store follows. */
+.film{position:relative;display:block;height:520vh;background:#19130D;cursor:pointer}
+/* phones held upright: a longer scroll, so the upright video (200 pictures) passes slowly */
+@media (orientation:portrait){.film{height:800vh}}
+.film-pin{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden}
+.film-pin canvas,.film-pin img{position:absolute;inset:0;width:100%;height:100%;display:block}
+/* portrait screens: behind the whole picture, the same picture enlarged and blurred fills the screen (nothing on top of it) */
+.film-pin .film-bg{inset:-8%;width:116%;height:116%;filter:blur(24px) brightness(.6) saturate(1.1);transform:translateZ(0)}
+@media (orientation:landscape){.film-pin .film-bg{display:none}}
+/* the picture shown matches the screen (upright video on an upright phone): it fills the screen, no blurred copy */
+.film-pin.fill .film-bg{display:none}
+/* social links and the shop location, right under the film */
+.social-bar.under-film .wrap{justify-content:center!important;min-height:56px;padding-block:.4rem}
+.social-bar.under-film .soc{width:42px;height:42px}
+.social-bar.under-film .soc-map{width:auto;font-size:.9rem}
+.film-pin img{object-fit:cover;object-position:center}
+.film:focus-visible{outline:3px solid var(--ember);outline-offset:-3px}
+/* fewer movements wanted: one still screen instead of the scrolling film */
+html.calm .film{height:100vh;height:100svh}
+/* bars, cart and WhatsApp stay out of the way while the film fills the screen, and slide in on the first scroll */
+.topbar{position:fixed;inset:0 0 auto;z-index:30;transform:translateY(-105%);opacity:0;pointer-events:none;transition:transform .55s var(--ease),opacity .35s ease}
+.topbar.show,.topbar:focus-within{transform:none;opacity:1;pointer-events:auto}
+.topbar .site-header{position:static}
+.fab{transition:opacity .35s ease,transform .35s var(--ease)}
+html.at-film .fab{opacity:0;transform:scale(.7);pointer-events:none}
+@media (prefers-reduced-motion:reduce){.topbar{transition:none}}
+
+/* ---------- brand lines, shown in the store after the intro ---------- */
+.brand-lines{padding-block:clamp(2rem,6vw,3.6rem) clamp(.6rem,2vw,1rem);text-align:center}
+.brand-lines .wrap{display:grid;justify-items:center;gap:clamp(.7rem,2vw,1.1rem)}
+.brand-name{margin:0;font-family:"Marcellus",Georgia,serif;font-weight:400;font-size:clamp(1.25rem,5.2vw,3.1rem);letter-spacing:.24em;white-space:nowrap;line-height:1.15;color:var(--ink);direction:ltr;unicode-bidi:isolate;padding-inline-start:.24em}
+.brand-rule{width:min(140px,30vw);height:1px;background:linear-gradient(90deg,transparent,var(--ember),transparent);border:0;margin:0}
+.brand-quote{margin:0;font-family:"Noto Naskh Arabic","Amiri",serif;font-weight:600;font-size:clamp(1.3rem,3.6vw,2rem);line-height:2;color:var(--mulberry);direction:rtl;text-wrap:balance}
+.brand-note{margin:0;font-family:"Noto Naskh Arabic",serif;font-size:clamp(1rem,2.4vw,1.2rem);line-height:2;color:var(--muted);direction:rtl;text-wrap:balance}
+.brand-lines>.wrap>*{opacity:0}
+.brand-lines.reveal>.wrap>*{opacity:1;animation:lift .9s var(--ease) both}
+.brand-lines.reveal .brand-rule{animation-delay:.12s}.brand-lines.reveal .brand-quote{animation-delay:.24s}.brand-lines.reveal .brand-note{animation-delay:.38s}
+@media (prefers-reduced-motion:reduce){.brand-lines>.wrap>*{opacity:1}.brand-lines.reveal>.wrap>*{animation:none}}
+@media (max-width:520px){.brand-name{letter-spacing:.14em;padding-inline-start:.14em;font-size:clamp(1.15rem,6.4vw,1.7rem)}}
+
+/* ---------- the rack: pieces hanging side-on on a brass rail; one turns to face you, and comes forward on a tap ----------
+   Built like the shop's own racks: a lit wall niche (warm cove light on top, light falling on the wall, depth at its
+   edges), a round brass rail fixed to the wall, each piece on a hanger hooked over the rail, close together and each at
+   a slightly different angle, with its shadow on the wall. A piece that turns to face you sways a little. */
+.rack{padding-block:clamp(1.4rem,4vw,2.6rem) clamp(1rem,3vw,2rem);
+  --wall-a:#F1E6D4;--wall-b:#DECDB1;--glow:rgba(255,238,205,.75);--depth:rgba(70,45,20,.30);--cove:#F4D49A}
+:root[data-theme="dark"] .rack{--wall-a:#2A2016;--wall-b:#1B140D;--glow:rgba(255,214,150,.20);--depth:rgba(0,0,0,.55);--cove:#C99A55}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .rack{--wall-a:#2A2016;--wall-b:#1B140D;--glow:rgba(255,214,150,.20);--depth:rgba(0,0,0,.55);--cove:#C99A55}}
+.rack+.rack{padding-top:0}
+.rack .section-head{text-align:center;justify-items:center;margin-inline:auto}
+/* the wall niche: it stays still while the rail inside it slides */
+.rack-niche{position:relative;margin-inline:clamp(8px,3vw,40px);border-radius:16px;overflow:hidden;isolation:isolate;
+  background:radial-gradient(70% 85% at 50% -8%,var(--glow),transparent 72%),linear-gradient(180deg,var(--wall-a),var(--wall-b));
+  box-shadow:inset 0 30px 34px -26px var(--depth),inset 0 -26px 30px -24px var(--depth),inset 22px 0 30px -28px var(--depth),inset -22px 0 30px -28px var(--depth)}
+/* the light strip hidden in the niche's top, as in the shop */
+.rack-niche::before{content:"";position:absolute;inset:0 6% auto;height:3px;border-radius:0 0 3px 3px;z-index:3;pointer-events:none;
+  background:linear-gradient(90deg,transparent,var(--cove) 12%,#FFF4DA 50%,var(--cove) 88%,transparent);box-shadow:0 0 18px 4px var(--glow)}
+/* the floor of the niche: a light marble ledge */
+.rack-niche::after{content:"";position:absolute;inset:auto 0 0;height:18px;z-index:2;pointer-events:none;
+  background:linear-gradient(180deg,rgba(255,255,255,.55),rgba(255,255,255,0) 30%),linear-gradient(180deg,var(--wall-a),var(--wall-b));box-shadow:0 -8px 16px -10px var(--depth)}
+/* the two wall mounts holding the rail */
+.rack-mount{position:absolute;top:0;width:6px;height:52px;z-index:3;pointer-events:none;border-radius:0 0 3px 3px;
+  background:linear-gradient(90deg,#6E4E27,#E9CF98 45%,#8C6634);box-shadow:4px 6px 8px -4px var(--depth)}
+.rack-mount.l{left:calc(3% + 4px)}.rack-mount.r{right:calc(3% + 4px)}
+.rack-rail{overflow-x:auto;overflow-y:hidden;scrollbar-width:none;scroll-snap-type:x proximity;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain}
+.rack-rail::-webkit-scrollbar{display:none}
+.rack-track{position:relative;display:flex;justify-content:center;min-width:max-content;margin-inline:auto;padding:44px 10vw 2.8rem;perspective:1100px}
+/* the rail: a round brass rod, with its shadow on the wall below it */
+.rack-track::before{content:"";position:absolute;top:44px;inset-inline:3%;height:10px;border-radius:6px;z-index:2;
+  background:linear-gradient(180deg,#FFF1CF 0%,#E6C78C 18%,#B88C4E 50%,#8A6233 78%,#5E4220 100%);
+  box-shadow:0 16px 10px -9px var(--depth),0 1px 1px rgba(0,0,0,.25)}
+.hang{all:unset;box-sizing:border-box;position:relative;flex:none;width:var(--w,54px);height:clamp(320px,44vw,430px);cursor:pointer;scroll-snap-align:center;
+  transition:width .55s var(--ease)}
+/* .sw sways (pivoting on the hook), .turn turns the hanger and the piece together */
+/* only the piece as seen catches the pointer: the boxes around it keep the unturned width and would cover the neighbours */
+.hang .sw,.hang .turn,.hang .hook,.hang .bar{pointer-events:none}
+.hang .sw{position:absolute;top:-14px;left:50%;height:calc(100% + 6px);transform-origin:50% 14px;transform:translateX(-50%) translateY(var(--dy,0px))}
+.hang .turn{position:relative;display:flow-root;height:100%;transform-origin:50% 0;transform:rotateY(var(--turn,var(--tw,68deg)));
+  transition:transform .65s var(--ease)}
+.hang .hook{position:absolute;top:0;left:50%;width:22px;height:34px;transform:translateX(-50%);z-index:3;overflow:visible}
+/* the hanger's shoulders sit inside the piece, as on a real hanger: only what the neckline leaves open shows */
+.hang .bar{position:absolute;top:31px;left:19%;width:62%;height:11px;z-index:0;border-radius:50% 50% 0 0/100% 100% 0 0;
+  border-top:4px solid #B98E51;box-shadow:inset 0 2px 0 -1px #F2DDAE,0 -1px 0 #7A5528}
+.hang .g{position:relative;z-index:1;display:block;height:calc(100% - 36px);width:auto;max-width:none;margin-top:36px;
+  filter:brightness(.82) saturate(.95) drop-shadow(14px 16px 12px rgba(50,30,10,.30));transition:filter .45s ease}
+.hang:hover,.hang:focus-visible,.hang.face{--w:var(--wide,236px)}
+.hang:hover .turn,.hang:focus-visible .turn,.hang.face .turn{--turn:0deg}
+.hang:hover .g,.hang:focus-visible .g,.hang.face .g{filter:brightness(1.03) contrast(1.03) drop-shadow(16px 22px 16px rgba(50,30,10,.32))}
+.hang:hover .sw,.hang:focus-visible .sw,.hang.face .sw{animation:sway 2.2s cubic-bezier(.3,.6,.4,1) both}
+@keyframes sway{0%{rotate:0deg}18%{rotate:1.6deg}40%{rotate:-1.1deg}62%{rotate:.6deg}82%{rotate:-.25deg}100%{rotate:0deg}}
+.hang:focus-visible{outline:2px solid var(--ember);outline-offset:4px;border-radius:8px}
+.hang .cap{position:absolute;bottom:-1.9rem;left:50%;transform:translateX(-50%);white-space:nowrap;font-size:.85rem;color:var(--muted);opacity:0;transition:opacity .3s}
+.hang:hover .cap,.hang:focus-visible .cap,.hang.face .cap{opacity:1}
+.rack-hint{text-align:center;color:var(--muted);font-size:.88rem;margin-top:2rem}
+@media (prefers-reduced-motion:reduce){.hang,.hang .turn,.hang .g{transition:none}.hang .sw{animation:none!important}}
+/* the piece brought forward: everything behind blurs */
+.stage{width:min(820px,calc(100% - 24px));max-height:calc(100% - 24px);border:0;border-radius:20px;padding:0;background:transparent;overflow:visible}
+.stage::backdrop{background:color-mix(in oklab,var(--linen) 55%,transparent);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+.stage-in{position:relative;display:grid;grid-template-columns:1.15fr .85fr;gap:1rem 2rem;align-items:center;padding:clamp(1rem,3vw,2rem)}
+.stage-fig{position:relative;height:min(64vh,520px);display:grid;place-items:center}
+.stage-fig img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 22px 26px rgba(40,25,10,.3))}
+.stage-fig img.next{clip-path:inset(0 0 100% 0)}
+.stage-fig img.next.wipe{animation:wipe .75s var(--ease) forwards}
+@keyframes wipe{to{clip-path:inset(0 0 0 0)}}
+.stage-fig.arrive{animation:forward .6s var(--ease)}   /* once, when brought forward */
+.stage-fig.flip{animation:flip .55s var(--ease)}
+@keyframes flip{50%{transform:scaleX(.04)}}
+@keyframes forward{from{opacity:0;transform:translateY(18px) scale(.86)}}
+.stage-info{display:grid;gap:.9rem;align-content:center}
+.stage-info h3{font-size:var(--step-2)}
+.stage-info .price{font-size:var(--step-1);color:var(--mulberry)}
+/* colours as hang tags on strings */
+.tags{display:flex;flex-wrap:wrap;gap:.2rem .7rem;align-items:flex-start}
+.tag{all:unset;cursor:pointer;display:grid;justify-items:center;gap:0;transition:transform .3s var(--ease)}
+.tag::before{content:"";width:1px;height:18px;background:color-mix(in oklab,var(--ink) 45%,transparent)}
+.tag i{width:28px;height:44px;border-radius:4px 4px 6px 6px;background:var(--c);border:1px solid color-mix(in oklab,var(--ink) 18%,transparent);
+  position:relative;box-shadow:0 4px 8px -4px rgba(40,25,10,.4)}
+.tag i::after{content:"";position:absolute;top:5px;left:50%;width:5px;height:5px;border-radius:50%;transform:translateX(-50%);background:var(--surface)}
+.tag small{font-size:.74rem;color:var(--muted);margin-top:.25rem}
+.tag[aria-pressed="true"]{transform:translateY(4px)}
+.tag[aria-pressed="true"] small{color:var(--ink);font-weight:600}
+.tag:focus-visible i{outline:2px solid var(--ember);outline-offset:2px}
+.fb-seg{display:inline-flex;border:1px solid var(--line);border-radius:999px;padding:3px;background:var(--surface);justify-self:start}
+.fb-seg button{all:unset;cursor:pointer;padding:.3rem .9rem;border-radius:999px;font-size:.82rem;letter-spacing:.06em}
+.fb-seg button[aria-pressed="true"]{background:var(--ink);color:var(--linen)}
+.stage .close-x{position:absolute;top:.5rem;inset-inline-end:.5rem;z-index:3}
+@media (max-width:700px){
+  .stage{width:100%;max-height:100%;height:100%;margin:0;border-radius:0}
+  .stage-in{grid-template-columns:1fr;padding-top:3.4rem;align-content:start;min-height:100%}
+  .stage-fig{height:min(52vh,440px)}
+}
+
+/* ---------- welcome block ---------- */
+.intro{padding-block:clamp(1.8rem,4vw,3rem) 0}
+.intro-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem clamp(1rem,4vw,4rem);align-items:center}
+.intro h1{font-size:var(--step-4)}
+.hero-copy{display:grid;gap:1.1rem;min-width:0}
+.hero-actions{display:flex;flex-wrap:wrap;gap:.75rem}
+.promises{display:flex;flex-wrap:wrap;gap:.5rem 1.6rem;padding:0;margin:0;list-style:none;font-size:.95rem}
+.promises li{display:flex;align-items:center;gap:.5rem}
+.promises svg{width:18px;height:18px;color:var(--ember);flex:none}
+@media (max-width:820px){.intro-grid{grid-template-columns:1fr}}
+.intro h1,.hero-actions,.promises{animation:lift .9s var(--ease) both}
+.hero-actions{animation-delay:.12s}.promises{animation-delay:.24s}
+@keyframes lift{from{opacity:0;transform:translateY(14px)}}
+
+/* ---------- shop ---------- */
+.filters{display:flex;gap:.5rem;overflow-x:auto;padding-bottom:.5rem;margin-bottom:1.8rem;scrollbar-width:none}
+.filters::-webkit-scrollbar{display:none}
+.chip{flex:none;min-height:42px;padding:0 1.1rem;border-radius:999px;border:1px solid var(--line);background:var(--surface);cursor:pointer;white-space:nowrap;font-size:.95rem;transition:background-color .2s,color .2s,border-color .2s}
+.chip[aria-pressed="true"]{background:var(--ink);color:var(--linen);border-color:var(--ink)}
+/* search and sort above the grid */
+.shop-tools{display:flex;flex-wrap:wrap;align-items:center;gap:.7rem 1rem;margin:-.6rem 0 1.8rem}
+.search-box{position:relative;flex:1 1 280px;max-width:440px}
+.search-box svg{position:absolute;inset-inline-start:.95rem;top:50%;width:18px;height:18px;transform:translateY(-50%);color:var(--muted);pointer-events:none}
+.search-box input{width:100%;min-height:44px;padding-inline:2.6rem 2.6rem;border-radius:999px;border:1px solid var(--line);background:var(--surface);font-size:.95rem}
+.search-box input::-webkit-search-cancel-button{display:none}
+.search-box input:focus{outline:none;border-color:var(--ember);box-shadow:0 0 0 3px color-mix(in oklab,var(--ember) 18%,transparent)}
+.search-clear{position:absolute;inset-inline-end:.4rem;top:50%;transform:translateY(-50%);width:34px;height:34px;border:0;border-radius:50%;background:none;cursor:pointer;color:var(--muted);display:grid;place-items:center}
+.search-clear svg{position:static;transform:none;width:16px;height:16px}
+.sort-box{display:flex;align-items:center;gap:.5rem;font-size:.9rem;color:var(--muted)}
+.sort-box select{min-height:44px;padding:0 .9rem;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--ink);font-size:.92rem;cursor:pointer}
+.shop-count{font-size:.88rem;color:var(--muted);margin-inline-start:auto}
+@media (max-width:560px){.search-box{flex-basis:100%;max-width:none}.shop-count{margin-inline-start:auto}}
+.grid-none{grid-column:1/-1;display:grid;gap:.9rem;justify-items:start;padding-block:1.5rem;color:var(--muted)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:2.6rem 1.6rem}
+@media (max-width:560px){.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:2rem .8rem}}
+.card{display:grid;gap:.55rem;min-width:0;align-content:start}
+.card-media{all:unset;cursor:pointer;display:block;border-radius:0;transition:transform .5s var(--ease);will-change:transform;-webkit-tap-highlight-color:transparent}
+.card-media:active{transform:scale(.985)}
+.card-media:focus-visible{outline:2px solid var(--ember);outline-offset:4px}
+.frame{position:relative;aspect-ratio:3/4;max-width:100%;border-radius:0;overflow:hidden;display:grid;place-items:center;
+  box-shadow:0 1px 2px rgba(40,25,10,.05);transition:box-shadow .5s var(--ease)}
+.frame svg{width:78%;height:auto;transition:transform .6s var(--ease)}
+.frame img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .6s var(--ease)}
+@media (hover:hover){
+  .card-media:hover{transform:translateY(-6px)}
+  .card-media:hover .frame{box-shadow:0 24px 44px -20px rgba(40,25,10,.38)}
+  .card-media:hover .frame img{transform:scale(1.05)}
+  .card-media:hover .frame svg{transform:translateY(-6px) scale(1.03)}
+}
+/* photos appear softly once loaded (class "l" is set by ui.js), instead of popping in */
+.frame img,.slide img{opacity:0;filter:blur(14px);transform:scale(1.04);transition:opacity .5s ease,filter .7s ease,transform .7s var(--ease)}
+.frame img.l,.slide img.l{opacity:1;filter:none;transform:none}
+/* desktop: the second photo shows on hover */
+.frame img.alt{position:absolute;inset:0}
+.frame img.alt.l{opacity:0}
+@media (hover:hover){.card-media:hover .frame img.alt.l{opacity:1}}
+/* flying thumbnail when a piece goes into the cart */
+.fly{position:fixed;z-index:70;border-radius:0;overflow:hidden;display:grid;place-items:center;pointer-events:none;box-shadow:0 10px 30px -10px rgba(40,20,10,.5)}
+.fly img{width:100%;height:100%;object-fit:cover}.fly svg{width:78%}
+.badges{position:absolute;inset-block-end:.6rem;inset-inline:.6rem;display:flex;flex-wrap:wrap;gap:.3rem}
+.badge{padding:.15rem .6rem;border-radius:999px;background:var(--surface);font-size:.76rem;color:var(--mulberry)}
+.badge.sale{background:var(--mulberry);color:var(--on-mulberry)}
+.card-name{font-family:var(--display);font-size:1.1rem;line-height:1.3}
+.card-name button{all:unset;cursor:pointer}
+.card-name button:focus-visible{outline:2px solid var(--ember);outline-offset:2px}
+.card-price{display:flex;flex-wrap:wrap;align-items:baseline;gap:.2rem .5rem}
+.card-price b{font-weight:500;font-size:1.05rem}
+.price-old{color:var(--muted);font-size:.88rem}
+.card-opts{display:flex;flex-wrap:wrap;align-items:center;gap:.3rem .7rem;color:var(--muted);font-size:.84rem}
+.dots{display:flex;gap:4px}
+.dots i{width:12px;height:12px;border-radius:50%;border:1px solid color-mix(in oklab,var(--ink) 25%,transparent)}
+.card-opts s{opacity:.6}
+.stock{font-size:.82rem;display:flex;align-items:center;gap:.35rem}
+.stock::before{content:"";width:7px;height:7px;border-radius:50%;background:currentColor}
+.stock.ok{color:var(--success)}.stock.low{color:var(--ember)}.stock.out{color:var(--muted)}
+.card-actions{display:grid;grid-template-columns:1fr 1fr;gap:.45rem;margin-top:.2rem}
+@media (max-width:560px){.card-actions{grid-template-columns:1fr}.card-actions .btn{min-height:40px;font-size:.84rem;padding:0 .5rem}}
+.grid-msg{grid-column:1/-1;color:var(--muted);padding-block:2rem}
+/* cards rise softly into place, one after another, as they come into view */
+.card.rise{opacity:0;transform:translateY(24px) scale(.985)}
+.card.rise.in{opacity:1;transform:none;transition:opacity .6s ease var(--d,0s),transform .75s var(--ease) var(--d,0s)}
+@media (prefers-reduced-motion:reduce){
+  .card.rise{opacity:1;transform:none}
+  .card-media,.card-media:active,.card-media:hover,.card-media:hover .frame img,.frame,.frame img,.frame svg{transition:none;transform:none}
+}
+/* while the collection loads: grey shapes of cards with a light sweeping across, instead of a sentence */
+.skel{display:grid;gap:.55rem}
+.skel i{display:block;border-radius:6px;background:linear-gradient(100deg,color-mix(in oklab,var(--line) 70%,transparent) 30%,color-mix(in oklab,var(--surface) 85%,transparent) 50%,color-mix(in oklab,var(--line) 70%,transparent) 70%) 0 0/300% 100%;animation:sweep 1.4s linear infinite}
+.skel .s-img{aspect-ratio:3/4;border-radius:0}
+.skel .s-line{height:.95rem;width:70%}.skel .s-line.short{width:40%}
+.skel .s-btn{height:2.3rem;border-radius:999px;margin-top:.3rem}
+@keyframes sweep{from{background-position:100% 0}to{background-position:0 0}}
+@media (prefers-reduced-motion:reduce){.skel i{animation:none}}
+
+/* ---------- reviews ---------- */
+.card-rate{display:flex;align-items:center;gap:.35rem;font-size:.82rem;color:var(--muted);margin-top:-.3rem}
+.reviews-head{display:flex;flex-wrap:wrap;align-items:end;justify-content:space-between;gap:1rem}
+.rate-big{display:flex;align-items:center;gap:.7rem;font-size:1.15rem}
+.rate-big b{font-family:var(--display);font-size:var(--step-3);font-weight:500;line-height:1}
+.rev-row{display:grid;grid-auto-flow:column;grid-auto-columns:min(340px,82%);gap:1rem;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:.6rem;margin-top:1.6rem;scrollbar-width:thin}
+.rev-row>.rev{scroll-snap-align:start}
+.q-rate{all:unset;cursor:pointer;display:inline-flex;align-items:center;gap:.4rem;font-size:.9rem;color:var(--muted)}
+.q-rate:focus-visible{outline:2px solid var(--ember);outline-offset:2px}
+.q-reviews{display:grid;gap:.8rem;padding-top:1rem;border-top:1px solid var(--line)}
+.q-reviews h3{font-size:1.05rem;font-family:var(--body);font-weight:600}
+.q-reviews .rev{padding:.9rem 1rem}
+/* related pieces in the product window */
+.q-more{display:grid;gap:.8rem;padding-top:1rem;border-top:1px solid var(--line)}
+.q-more h3{font-size:1.05rem;font-family:var(--body);font-weight:600}
+.more-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:.7rem}
+@media (max-width:520px){.more-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.more{all:unset;cursor:pointer;display:grid;gap:.3rem;min-width:0;font-size:.84rem}
+.more .frame{border-radius:0}
+.more:hover .frame img,.more:hover .frame svg{transform:scale(1.04)}
+.more:focus-visible{outline:2px solid var(--ember);outline-offset:3px;border-radius:8px}
+.more span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.policy-link{font-size:.86rem;color:var(--muted)}
+.policy-link a{color:inherit;text-underline-offset:3px}
+
+/* ---------- size tip and visit ---------- */
+.story{background:var(--surface);border-block:1px solid var(--line)}
+.section.story{padding-block:clamp(1.5rem,4vw,2.5rem)}
+.story p{color:var(--muted);font-size:var(--step-1);max-width:60ch}
+.visit-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:2rem}
+.visit-grid h3{font-size:var(--step-1);margin-bottom:.5rem}
+.visit-grid p{color:var(--muted)}
+.visit-grid .btn{margin-top:1rem}
+.copy-row{display:flex;align-items:center;gap:.5rem;flex-wrap:wrap}
+#phoneTxt{direction:ltr;unicode-bidi:isolate;font-variant-numeric:tabular-nums;font-size:1.1rem;text-decoration:none}
+#visit{background:var(--linen)}
+.map{margin-top:2rem;aspect-ratio:16/7;min-height:280px;max-width:100%;border-radius:18px;overflow:hidden;border:1px solid var(--line);background:var(--surface)}
+.map iframe{display:block;width:100%;height:100%;border:0}
+.grid-empty{grid-column:1/-1;display:grid;gap:1rem;justify-items:start;padding:2rem;border:1px dashed var(--line);border-radius:18px;background:var(--surface)}
+.grid-empty .row-btns{display:flex;flex-wrap:wrap;gap:.6rem}
+
+/* ---------- product window ---------- */
+.quick{width:min(920px,calc(100% - 24px));max-height:calc(100% - 24px);border-radius:20px;opacity:0;transform:translateY(16px) scale(.98);transition:opacity .3s,transform .4s var(--ease)}
+.quick.is-open{opacity:1;transform:none}
+/* a tapped photo flies from the grid into the window (FLIP). While it flies, the window carries no transform
+   (so the fixed ghost keeps viewport coordinates) and its own gallery is hidden until the ghost lands. */
+.quick.zooming{transform:none!important;opacity:1!important;transition:none}
+.quick.zooming #qGal{opacity:0}
+.zoom-ghost{position:fixed;z-index:50;overflow:hidden;display:grid;place-items:center;pointer-events:none;will-change:transform}
+.zoom-ghost img{width:100%;height:100%;object-fit:cover;display:block}
+.zoom-ghost svg{width:78%;height:auto}
+@media (prefers-reduced-motion:reduce){.quick.zooming{transition:none}}
+.quick-grid{display:grid;grid-template-columns:1fr 1.1fr}
+.gal{position:relative;border-radius:0;overflow:hidden;min-height:360px;height:100%}
+.gal-track{display:flex;height:100%;overflow-x:auto;scroll-snap-type:x mandatory;scroll-behavior:smooth;scrollbar-width:none;overscroll-behavior-x:contain;transition:opacity .22s ease}
+.gal-track::-webkit-scrollbar{display:none}
+.gal-track.fade{opacity:0}
+.slide{all:unset;flex:0 0 100%;height:100%;scroll-snap-align:center;display:grid;place-items:center;overflow:hidden;box-sizing:border-box}
+button.slide{cursor:zoom-in}
+.slide img{width:100%;height:100%;object-fit:cover}
+.slide svg{width:78%;height:auto}
+.slide:focus-visible{outline:2px solid var(--ember);outline-offset:-4px}
+.gal-dots{position:absolute;inset-inline:0;bottom:.8rem;display:flex;justify-content:center;gap:6px;pointer-events:none}
+.gal-dots i{width:7px;height:7px;border-radius:50%;background:rgba(255,253,249,.6);box-shadow:0 0 0 1px rgba(40,20,10,.15);transition:width .25s,background-color .25s}
+.gal-dots i.on{width:18px;border-radius:4px;background:#FFFDF9}
+.gal-nav{position:absolute;top:50%;transform:translateY(-50%);width:40px;height:40px;border-radius:50%;border:0;background:rgba(255,253,249,.85);color:#3B2A26;cursor:pointer;display:none;place-items:center;font-size:1.2rem}
+.gal-nav.prev{inset-inline-start:.6rem}.gal-nav.next{inset-inline-end:.6rem}
+@media (hover:hover){.gal.multi .gal-nav{display:grid}}
+/* full-screen photo: pinch or double-tap to zoom, drag to look around */
+.zoom{width:100%;height:100%;max-width:100%;max-height:100%;margin:0;background:#120D0C;color:#FBF6F0;padding:0}
+.zoom:not([open]){display:none}
+.zoom-stage{position:absolute;inset:0;overflow:hidden;touch-action:none;display:grid;place-items:center;cursor:zoom-in}
+.zoom-stage.zoomed{cursor:grab}
+.zoom-stage img{max-width:100%;max-height:100%;object-fit:contain;transform-origin:0 0;will-change:transform;user-select:none;-webkit-user-drag:none}
+.zoom .close-x{inset-block-start:calc(12px + env(safe-area-inset-top,0px))}
+.zoom-hint{position:absolute;bottom:calc(16px + env(safe-area-inset-bottom,0px));inset-inline:0;text-align:center;font-size:.85rem;opacity:.7;pointer-events:none}
+.zoom-count{position:absolute;top:calc(22px + env(safe-area-inset-top,0px));inset-inline-start:20px;font-size:.9rem;opacity:.8;font-variant-numeric:tabular-nums}
+.zoom .gal-nav{display:grid;background:rgba(255,253,249,.15);color:#FBF6F0}
+.zoom .close-x{background:rgba(255,253,249,.15);border-color:rgba(255,253,249,.3);color:#FBF6F0}
+/* the ‹ › characters are mirrored by the browser in Arabic, so "previous" (on the right) points right */
+.gal-nav span{display:inline-block;line-height:1}
+.quick-body{padding:clamp(1.25rem,3vw,2.2rem);display:grid;gap:1rem;align-content:start;min-width:0}
+.quick-body h2{font-size:var(--step-2)}
+.quick-price{font-size:var(--step-1);color:var(--mulberry);display:flex;flex-wrap:wrap;gap:.2rem .6rem;align-items:baseline}
+.quick-desc{color:var(--muted)}
+.swatch span{gap:.5rem;grid-auto-flow:column}
+.swatch i{width:18px;height:18px;border-radius:50%;border:1px solid color-mix(in oklab,var(--ink) 25%,transparent)}
+.qty{display:inline-flex;align-items:center;border:1px solid var(--line);border-radius:999px;background:var(--surface)}
+.qty button{width:40px;height:40px;border:0;background:none;cursor:pointer;font-size:1.1rem}
+.qty button[disabled]{opacity:.35;cursor:not-allowed}
+.qty output{min-width:2ch;text-align:center;font-variant-numeric:tabular-nums}
+details{font-size:.92rem;color:var(--muted)}
+summary{cursor:pointer;color:var(--ink)}
+.size-table{width:100%;border-collapse:collapse;margin-top:.6rem;font-variant-numeric:tabular-nums}
+.size-table th,.size-table td{border-bottom:1px solid var(--line);padding:.35rem;text-align:start}
+.table-scroll{overflow-x:auto}
+.row{display:flex;justify-content:space-between;align-items:center;gap:1rem}
+.buy-row{display:grid;grid-template-columns:1fr 1fr;gap:.6rem}
+@media (max-width:700px){
+  .quick{width:100%;max-height:94%;margin:auto auto 0;border-radius:20px 20px 0 0;padding-bottom:env(safe-area-inset-bottom,0px);transform:translateY(40px)}
+  .quick-grid{grid-template-columns:1fr}
+  .gal{min-height:0;height:auto;aspect-ratio:4/4.4;border-radius:0}
+  .slide svg{width:auto;height:88%}
+}
+
+/* ---------- cart drawer: slides in from the reading-end side ---------- */
+.drawer{--off:100%;position:fixed;inset-block:0;inset-inline-end:0;inset-inline-start:auto;margin:0;height:100%;width:min(460px,100%);display:flex;flex-direction:column;transform:translateX(var(--off));transition:transform .45s var(--ease);padding-block:env(safe-area-inset-top,0px) env(safe-area-inset-bottom,0px)}
+[dir="rtl"] .drawer{--off:-100%}
+.drawer:not([open]){display:none}
+.drawer.is-open{transform:none}
+.panel-head{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:1rem 1.25rem;border-bottom:1px solid var(--line)}
+.panel-head h2{font-size:var(--step-1)}
+.panel-body{flex:1;overflow-y:auto;padding:1.25rem;display:grid;gap:1.1rem;align-content:start}
+.panel-foot{padding:1rem 1.25rem;border-top:1px solid var(--line);display:grid;gap:.6rem;background:var(--surface)}
+.line{display:grid;grid-template-columns:64px minmax(0,1fr) auto;gap:.8rem;align-items:start;padding-bottom:1rem;border-bottom:1px solid var(--line)}
+.line .frame{border-radius:0;width:64px}
+.line-info{min-width:0;display:grid;gap:.4rem}
+.line-info strong{font-weight:500;font-family:var(--display)}
+.line-sel{display:flex;flex-wrap:wrap;gap:.4rem}
+.line-sel select{min-height:36px;padding:0 .5rem;border-radius:8px;border:1px solid var(--line);background:var(--surface);font-size:.85rem;max-width:100%}
+.line .qty button{width:32px;height:32px}
+.line-end{display:grid;justify-items:end;gap:.2rem;text-align:end}
+.line-end small{color:var(--muted);font-size:.8rem}
+.sum{display:grid;gap:.35rem}
+.sum .row{font-size:.95rem}
+.sum .total{font-size:var(--step-1);font-weight:500;padding-top:.3rem;border-top:1px solid var(--line)}
+.note-pending{font-size:.85rem;color:var(--ember)}
+
+/* ---------- checkout window ---------- */
+.co{width:min(700px,calc(100% - 24px));max-height:calc(100% - 24px);border-radius:20px;display:flex;flex-direction:column;opacity:0;transform:translateY(16px);transition:opacity .3s,transform .4s var(--ease)}
+.co:not([open]){display:none}
+.co.is-open{opacity:1;transform:none}
+@media (max-width:640px){.co{width:100%;height:100%;max-height:100%;border-radius:0;padding-block:env(safe-area-inset-top,0px) env(safe-area-inset-bottom,0px)}}
+.co-items{display:grid;gap:.4rem;padding:.8rem 1rem;border-radius:12px;background:var(--linen);font-size:.9rem}
+.co-items .row span:first-child{min-width:0}
+.co-form{display:grid;gap:1rem}
+.hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+.co h3{font-size:1.05rem;font-family:var(--body);font-weight:600}
+.box-err{padding:.8rem 1rem;border-radius:12px;background:color-mix(in oklab,var(--danger) 10%,var(--surface));color:var(--danger);display:grid;gap:.6rem;justify-items:start}
+.review{display:grid;gap:1.2rem}
+.review section{display:grid;gap:.4rem}
+.review dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:.25rem 1rem;font-size:.95rem}
+.review dt{color:var(--muted)}
+.review dd{margin:0;min-width:0;overflow-wrap:anywhere}
+.done{display:grid;gap:1rem;justify-items:center;text-align:center;padding-block:1rem}
+.done h2{font-size:var(--step-2)}
+.done .ids{display:grid;gap:.6rem;width:100%;text-align:start}
+.done-actions{display:grid;grid-template-columns:1fr 1fr;gap:.6rem;width:100%}
+@media (max-width:480px){.done-actions,.buy-row{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<main id="top">
+  <!-- the boutique video, alone on screen, moved forward by scrolling (no sound, no controls, nothing on top).
+       It is drawn from a sequence of pictures (tools/make_film.sh), which behaves the same on every device:
+       the upright video on upright screens (phones), the wide video on wide screens (computers).
+       At its end the store follows. A tap glides to the store. -->
+  <a class="film" id="film" href="#brandLines" aria-label="Flame Boutique34">
+    <div class="film-pin">
+      <img class="film-bg" src="assets/intro-poster.jpg" alt="" aria-hidden="true">
+      <canvas class="film-bg" id="filmBg" aria-hidden="true"></canvas>
+      <picture><source media="(orientation: portrait)" srcset="assets/intro-poster-p.jpg"><img class="film-poster" src="assets/intro-poster.jpg" alt="" aria-hidden="true" fetchpriority="high"></picture>
+      <canvas id="filmCanvas" aria-hidden="true"></canvas>
+    </div>
+  </a>
+
+  <section class="brand-lines" id="brandLines" aria-label="FLAME BOUTIQUE 34">
+    <div class="wrap">
+      <p class="brand-name" lang="en">FLAME BOUTIQUE 34</p>
+      <hr class="brand-rule">
+      <p class="brand-quote" lang="ar" dir="rtl">حَقٌّ لِلْجَمَالِ عَلَيْكِ أَنْ يَزْهُو</p>
+      <p class="brand-note" lang="ar" dir="rtl">لا نحتاجُ إلى إشهارٍ، زبائنُنا يقومون بذلك</p>
+    </div>
+  </section>
+
+  <div id="racks"></div>
+
+  <section class="intro">
+    <div class="wrap intro-grid">
+      <h1 data-i18n="heroA"></h1>
+      <div class="hero-copy">
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="#shop" data-i18n="heroCta"></a>
+          <a class="btn btn-ghost" href="track.html" data-i18n="trackCta"></a>
+        </div>
+        <ul class="promises">
+          <li><svg aria-hidden="true"><use href="#i-cash"/></svg><span data-i18n="pCod"></span></li>
+          <li><svg aria-hidden="true"><use href="#i-truck"/></svg><span data-i18n="pShip"></span></li>
+          <li><svg aria-hidden="true"><use href="#i-swap"/></svg><span data-i18n="pSwap"></span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="shop">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 data-i18n="shopTitle"></h2>
+        <p data-i18n="shopSub"></p>
+      </div>
+      <div class="filters" id="filters" role="group"></div>
+      <div class="shop-tools" id="shopTools" hidden>
+        <div class="search-box" role="search">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M16 16l4.5 4.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+          <input id="q" type="search" enterkeyhint="search" autocomplete="off" spellcheck="false">
+          <button class="search-clear" type="button" id="qClear" hidden><svg aria-hidden="true"><use href="#i-x"/></svg><span class="sr" data-i18n="clearSearch"></span></button>
+        </div>
+        <label class="sort-box"><span data-i18n="sortBy"></span><select id="sort"></select></label>
+        <span class="shop-count" id="shopCount" aria-live="polite"></span>
+      </div>
+      <div class="grid" id="grid"></div>
+    </div>
+  </section>
+
+  <section class="section" id="reviews" hidden>
+    <div class="wrap">
+      <div class="reviews-head">
+        <div class="section-head" style="margin:0"><h2 data-i18n="revTitle"></h2><p data-i18n="revSub"></p></div>
+        <div class="rate-big" id="revAvg"></div>
+      </div>
+      <div class="rev-row" id="revRow"></div>
+    </div>
+  </section>
+
+  <section class="section story" id="story">
+    <div class="wrap"><p data-i18n="story2"></p></div>
+  </section>
+
+  <section class="section" id="visit">
+    <div class="wrap">
+      <div class="section-head"><h2 data-i18n="visitTitle"></h2></div>
+      <div class="visit-grid">
+        <div>
+          <h3 data-i18n="addrTitle"></h3>
+          <p id="addr"></p>
+          <a class="btn btn-ghost" id="mapLink" target="_blank" rel="noopener" data-i18n="openMap"></a>
+        </div>
+        <div id="hoursBox">
+          <h3 data-i18n="hoursTitle"></h3>
+          <p id="hours"></p>
+        </div>
+        <div id="phoneBox">
+          <h3 data-i18n="contactTitle"></h3>
+          <div class="copy-row"><a id="phoneTxt" class="ltr"></a><button class="link-btn" type="button" id="copyPhone" data-i18n="copy"></button></div>
+          <a class="btn btn-ghost" id="waLink" target="_blank" rel="noopener" style="margin-top:1rem"><svg aria-hidden="true"><use href="#i-wa"/></svg><span data-i18n="waChat"></span></a>
+        </div>
+      </div>
+      <div class="map" id="mapBox" hidden></div>
+    </div>
+  </section>
+</main>
+
+<!-- product window: choose color, size and quantity, then order now or add to the cart -->
+<dialog class="quick" id="quick" aria-labelledby="qName">
+  <button class="icon-btn close-x" type="button" data-close><svg aria-hidden="true"><use href="#i-x"/></svg><span class="sr" data-i18n="close"></span></button>
+  <form class="quick-grid" id="quickForm" novalidate>
+    <div class="gal" id="qGal">
+      <div class="gal-track" id="qTrack"></div>
+      <button class="gal-nav prev" type="button" data-i18n-label="prevPhoto"><span>‹</span></button>
+      <button class="gal-nav next" type="button" data-i18n-label="nextPhoto"><span>›</span></button>
+      <div class="gal-dots" id="qDots" aria-hidden="true"></div>
+    </div>
+    <div class="quick-body">
+      <div>
+        <h2 id="qName"></h2>
+        <p class="quick-price price" id="qPrice"></p>
+        <button class="q-rate" type="button" id="qRate" hidden></button>
+      </div>
+      <p class="quick-desc" id="qDesc"></p>
+      <p class="stock" id="qStock"></p>
+      <fieldset><legend data-i18n="color"></legend><div class="opts" id="qColors"></div></fieldset>
+      <fieldset><legend data-i18n="size"></legend><div class="opts" id="qSizes"></div><p class="err" id="qErr" role="alert"></p><p class="hint" id="qLeft" aria-live="polite"></p></fieldset>
+      <div class="row">
+        <span data-i18n="qty"></span>
+        <div class="qty"><button type="button" id="qMinus" data-i18n-label="less">−</button><output id="qQty">1</output><button type="button" id="qPlus" data-i18n-label="more">+</button></div>
+      </div>
+      <div class="buy-row">
+        <button class="btn btn-primary" type="button" id="qBuy" data-i18n="buyNow"></button>
+        <button class="btn btn-ghost" type="button" id="qAdd" data-i18n="addToCart"></button>
+      </div>
+      <p class="policy-link"><a href="policy.html" data-i18n="policyLink"></a></p>
+      <section class="q-reviews" id="qReviews" hidden></section>
+      <section class="q-more" id="qMore" hidden></section>
+    </div>
+  </form>
+</dialog>
+
+<!-- a piece from the rack, brought forward -->
+<dialog class="stage" id="stage" aria-labelledby="stName">
+  <div class="stage-in">
+    <button class="icon-btn close-x" type="button" data-close><svg aria-hidden="true"><use href="#i-x"/></svg><span class="sr" data-i18n="close"></span></button>
+    <div class="stage-fig" id="stFig"><img class="cur" id="stCur" alt=""><img class="next" id="stNext" alt="" aria-hidden="true"></div>
+    <div class="stage-info">
+      <h3 id="stName"></h3>
+      <p class="price" id="stPrice"></p>
+      <div class="tags" id="stTags" role="group"></div>
+      <div class="fb-seg" id="stSide" role="group" hidden><button type="button" data-side="front" aria-pressed="true" data-i18n="front"></button><button type="button" data-side="back" aria-pressed="false" data-i18n="back"></button></div>
+      <div class="buy-row"><button class="btn btn-primary" type="button" id="stBuy" data-i18n="buyNow"></button><button class="btn btn-ghost" type="button" id="stAdd" data-i18n="addToCart"></button></div>
+    </div>
+  </div>
+</dialog>
+
+<!-- full-screen photo -->
+<dialog class="zoom" id="zoom" aria-labelledby="zoomCount">
+  <div class="zoom-stage" id="zoomStage"><img id="zoomImg" alt=""></div>
+  <span class="zoom-count" id="zoomCount"></span>
+  <button class="gal-nav prev" type="button" id="zoomPrev" data-i18n-label="prevPhoto"><span>‹</span></button>
+  <button class="gal-nav next" type="button" id="zoomNext" data-i18n-label="nextPhoto"><span>›</span></button>
+  <button class="icon-btn close-x" type="button" id="zoomClose"><svg aria-hidden="true"><use href="#i-x"/></svg><span class="sr" data-i18n="close"></span></button>
+  <p class="zoom-hint" data-i18n="zoomHint"></p>
+</dialog>
+
+<!-- cart -->
+<dialog class="drawer" id="drawer" aria-labelledby="dTitle">
+  <div class="panel-head"><h2 id="dTitle" data-i18n="cartTitle"></h2><button class="icon-btn" type="button" data-close><svg aria-hidden="true"><use href="#i-x"/></svg><span class="sr" data-i18n="close"></span></button></div>
+  <div class="panel-body" id="dBody"></div>
+  <div class="panel-foot" id="dFoot"></div>
+</dialog>
+
+<!-- checkout: form -> review -> confirmed. Used for "order now" (one product) and for the whole cart. -->
+<dialog class="co" id="checkout" aria-labelledby="coTitle">
+  <div class="panel-head"><h2 id="coTitle"></h2><button class="icon-btn" type="button" id="coClose"><svg aria-hidden="true"><use href="#i-x"/></svg><span class="sr" data-i18n="close"></span></button></div>
+  <div class="panel-body" id="coBody"></div>
+  <div class="panel-foot" id="coFoot"></div>
+</dialog>
+
+<script src="assets/config.js"></script>
+<script src="locations.js"></script>
+<script src="shared.js"></script>
+<script src="api.js"></script>
+<script src="ui.js"></script>
+<script src="pixels.js"></script>
+<script>
+/* Interface strings. Hero, feature and size-tip texts come from the dashboard (settings.texts). */
+const T = {
+ ar:{heroCta:"تصفّحي المجموعة",trackCta:"تتبع طلبي",visitTitle:"زورينا في المحل",addrTitle:"العنوان",hoursTitle:"أوقات العمل",contactTitle:"الهاتف وواتساب",waChat:"راسلينا على واتساب",
+  openMap:"افتحي الخريطة",copy:"نسخ",copied:"تم نسخ الرقم",close:"إغلاق",color:"اللون",size:"المقاس",sizeGuide:"دليل المقاسات (بالسنتيمتر)",
+  sgBust:"محيط الصدر",sgHeight:"الطول",qty:"الكمية",less:"إنقاص الكمية",more:"زيادة الكمية",oneSize:"مقاس موحد",all:"الكل",
+  buyNow:"اطلبي الآن",addToCart:"أضيفي إلى السلة",added:"أُضيفت إلى السلة",best:"الأكثر طلباً",new:"جديد",sizes:"المقاسات",
+  inStock:"متوفر",low:"كمية محدودة",soldOut:"نفدت الكمية",left:n=>`بقي ${n} فقط من هذا المقاس`,pickSize:"اختاري المقاس أولاً.",
+  colorsN:n=>n>1?`${n} ألوان`:"لون واحد",off:p=>`تخفيض ${p}%`,
+  loading:"جارٍ تحميل المجموعة…",loadErr:"تعذّر تحميل المنتجات. تحقّقي من الاتصال ثم أعيدي تحميل الصفحة.",noProducts:"لا توجد قطع في هذا القسم حالياً.",comingSoon:"نُحضّر المجموعة الآن. تابعينا لتري القطع الجديدة أولاً.",mapTitle:"موقع المحل على الخريطة",prevPhoto:"الصورة السابقة",nextPhoto:"الصورة التالية",zoomPhoto:"تكبير الصورة",photoN:(i,n)=>`الصورة ${i} من ${n}`,zoomHint:"المسي مرتين أو باعدي بإصبعين للتكبير",
+  cartTitle:"سلتك",emptyCart:"سلتك فارغة. اختاري قطعة من المجموعة وأضيفيها هنا.",browse:"تصفّحي المجموعة",remove:"حذف",each:"للقطعة",
+  subtotal:"سعر المنتجات",shippingL:"التوصيل",total:"المجموع النهائي",totalNoShip:"المجموع دون التوصيل",checkout:"إتمام الطلب",keepShopping:"متابعة التسوق",
+  shipLater:"يُحسب عند اختيار الولاية",shipPending:"يحتاج إلى تأكيد",
+  pendingNote:"سعر التوصيل إلى هذه المنطقة غير محدد بعد ويحتاج إلى تأكيد. سنبلغك به عند الاتصال بك، قبل إرسال الطلب.",
+  coTitle:"إتمام الطلب",reviewTitle:"مراجعة الطلب",doneTitle:"تم استلام الطلب",yourItems:"طلبك",
+  fFirst:"الاسم",fLast:"اللقب",fPhone:"رقم الهاتف الأساسي",fPhone2:"رقم الهاتف الثاني",fWa:"رقم WhatsApp",waSame:"رقم WhatsApp هو نفسه رقم الهاتف الأساسي",
+  fIg:"حساب Instagram",fWilaya:"الولاية",fCommune:"البلدية",fDelivery:"طريقة التوصيل",fAddr:"العنوان التفصيلي",fNote:"ملاحظات إضافية",optional:"اختياري",
+  wilayaPh:"ابحثي بالاسم أو الرقم",communePh:"ابحثي عن البلدية",communeFirst:"اختاري الولاية أولاً",communeLoading:"جارٍ تحميل البلديات…",
+  communeType:"اكتبي اسم بلديتك",communeTypeHint:"قائمة بلديات هذه الولاية الجديدة لم تُضف إلى الموقع بعد، فاكتبي اسم البلدية.",
+  noMatch:"لا توجد نتيجة",home:"التوصيل إلى المنزل",desk:"التوصيل إلى مكتب شركة التوصيل",unavailable:"غير متوفر في هذه المنطقة",
+  addrPh:"الحي، الشارع، رقم المنزل، علامة قريبة",toReview:"مراجعة الطلب",edit:"تعديل المعلومات",confirm:"تأكيد الطلب",sending:"جارٍ تأكيد الطلب…",
+  customer:"معلومات الزبونة",delivery:"التوصيل",items:"المنتجات",name:"الاسم واللقب",
+  eFirst:"اكتبي الاسم (حرفان على الأقل).",eLast:"اكتبي اللقب (حرفان على الأقل).",ePhone:"رقم الهاتف إجباري: 10 أرقام يبدأ بـ 05 أو 06 أو 07.",
+  ePhoneOpt:"رقم غير صحيح. اتركيه فارغاً أو اكتبي 10 أرقام يبدأ بـ 05 أو 06 أو 07.",eIg:"اسم الحساب: حروف لاتينية وأرقام ونقاط وشرطات سفلية فقط.",
+  eWilaya:"اختاري الولاية من القائمة.",eCommune:"اختاري البلدية من القائمة.",eCommuneText:"اكتبي اسم البلدية.",eDelivery:"اختاري طريقة التوصيل المتوفرة.",
+  eAddr:"اكتبي العنوان التفصيلي للتوصيل إلى المنزل.",fixFields:"صحّحي الحقول المشار إليها ثم أعيدي المحاولة.",
+  eStock:"الكمية المطلوبة من «{name}» لم تعد متوفرة. عدّلي طلبك ثم أعيدي المحاولة.",eNet:"تعذّر تأكيد الطلب: لم يصل الطلب إلى المتجر. تحقّقي من الاتصال ثم أعيدي المحاولة، ولن يُسجَّل الطلب مرتين.",
+  eLimitOpen:"لديك طلبات سابقة ما زالت قيد التأكيد. سنتصل بك قريباً لتأكيدها، ويمكنك مراسلتنا على واتساب لإضافة قطع إليها.",
+  eLimitWait:"وصلنا منك طلب قبل لحظات. إن كان هذا طلباً جديداً، انتظري دقيقة ثم أعيدي المحاولة.",
+  eLimitIp:"وصلنا عدد كبير من الطلبات من هذه الشبكة. حاولي بعد قليل، أو راسلينا على واتساب.",
+  eBlocked:"تعذّر تسجيل الطلب من هذا الرقم. راسلينا على واتساب وسنساعدك.",
+  retry:"إعادة المحاولة",okTitle:"تم استلام طلبك بنجاح!",okText:"سيتم الاتصال بك لإتمام طلبك وتأكيد تفاصيل التوصيل.",
+  orderNo:"رقم الطلب",trackNo:"رقم التتبع",copyTrack:"نسخ رقم التتبع",copiedTrack:"تم نسخ رقم التتبع",copyFail:"تعذّر النسخ التلقائي. حدّدي الرقم وانسخيه يدوياً.",
+  trackMine:"تتبع طلبي",backShop:"العودة إلى المتجر",keepCode:"احتفظي برقم التتبع ورقم هاتفك لمتابعة طلبك.",cur:"دج",
+  revTitle:"آراء زبوناتنا",revSub:"ما كتبته زبوناتنا بعد استلام طلباتهن.",revN:n=>n===1?"رأي واحد":n===2?"رأيان":n<=10?`${n} آراء`:`${n} رأياً`,
+  rackTitle:"من رفوف المحل",rackHover:"مرّري على القطعة لتلتفت إليك، واضغطي لتقرّبيها.",rackSwipe:"اسحبي الرف، واضغطي على القطعة لتقرّبيها.",
+  front:"الأمام",back:"الخلف",
+  searchPh:"ابحثي: عباية سوداء، قفطان، فستان…",clearSearch:"مسح البحث",sortBy:"الترتيب",
+  sorts:{featured:"المقترح",new:"الأحدث",priceUp:"السعر: من الأقل",priceDown:"السعر: من الأعلى",rated:"الأعلى تقييماً",sale:"التخفيضات أولاً"},
+  piecesN:n=>n===1?"قطعة واحدة":n===2?"قطعتان":n<=10?`${n} قطع`:`${n} قطعة`,noResult:q=>`لا توجد قطعة تطابق «${q}». جرّبي كلمة أخرى أو اسم اللون أو القسم.`,
+  inAll:"البحث في كل الأقسام",
+  verified:"مشترية مؤكدة",more:"قد يعجبك أيضاً",policyLink:"الدفع والتوصيل والاستبدال",revOf:"آراء هذه القطعة",revFor:"عن:",outOf:"من 5"},
+ fr:{heroCta:"Voir la collection",trackCta:"Suivre ma commande",visitTitle:"Nous rendre visite",addrTitle:"Adresse",hoursTitle:"Horaires",contactTitle:"Téléphone et WhatsApp",waChat:"Écrivez-nous sur WhatsApp",
+  openMap:"Ouvrir la carte",copy:"Copier",copied:"Numéro copié",close:"Fermer",color:"Couleur",size:"Taille",sizeGuide:"Guide des tailles (en cm)",
+  sgBust:"Tour de poitrine",sgHeight:"Hauteur",qty:"Quantité",less:"Diminuer",more:"Augmenter",oneSize:"Taille unique",all:"Tout",
+  buyNow:"Commander maintenant",addToCart:"Ajouter au panier",added:"Ajouté au panier",best:"Le plus demandé",new:"Nouveau",sizes:"Tailles",
+  inStock:"Disponible",low:"Stock limité",soldOut:"Épuisé",left:n=>`Plus que ${n} dans cette taille`,pickSize:"Choisissez d'abord une taille.",
+  colorsN:n=>n>1?`${n} couleurs`:"1 couleur",off:p=>`-${p} %`,
+  loading:"Chargement de la collection…",loadErr:"Impossible de charger les produits. Vérifiez la connexion puis rechargez la page.",noProducts:"Aucune pièce dans cette catégorie pour le moment.",comingSoon:"Nous préparons la collection. Suivez-nous pour voir les nouvelles pièces en premier.",mapTitle:"La boutique sur la carte",prevPhoto:"Photo précédente",nextPhoto:"Photo suivante",zoomPhoto:"Agrandir la photo",photoN:(i,n)=>`Photo ${i} sur ${n}`,zoomHint:"Touchez deux fois ou écartez deux doigts pour zoomer",
+  cartTitle:"Votre panier",emptyCart:"Votre panier est vide. Choisissez une pièce dans la collection pour l'ajouter ici.",browse:"Voir la collection",remove:"Retirer",each:"l'unité",
+  subtotal:"Articles",shippingL:"Livraison",total:"Total",totalNoShip:"Total hors livraison",checkout:"Passer la commande",keepShopping:"Continuer mes achats",
+  shipLater:"Calculée selon la wilaya",shipPending:"À confirmer",
+  pendingNote:"Le prix de livraison pour cette zone n'est pas encore fixé. Nous vous le communiquerons lors de notre appel, avant l'envoi.",
+  coTitle:"Passer la commande",reviewTitle:"Vérifier la commande",doneTitle:"Commande reçue",yourItems:"Votre commande",
+  fFirst:"Prénom",fLast:"Nom",fPhone:"Téléphone principal",fPhone2:"Deuxième téléphone",fWa:"Numéro WhatsApp",waSame:"Mon numéro WhatsApp est le téléphone principal",
+  fIg:"Compte Instagram",fWilaya:"Wilaya",fCommune:"Commune",fDelivery:"Mode de livraison",fAddr:"Adresse détaillée",fNote:"Remarques",optional:"facultatif",
+  wilayaPh:"Cherchez par nom ou numéro",communePh:"Cherchez la commune",communeFirst:"Choisissez d'abord la wilaya",communeLoading:"Chargement des communes…",
+  communeType:"Écrivez le nom de votre commune",communeTypeHint:"La liste des communes de cette nouvelle wilaya n'est pas encore sur le site ; écrivez le nom de la commune.",
+  noMatch:"Aucun résultat",home:"Livraison à domicile",desk:"Livraison au bureau du transporteur",unavailable:"Non disponible dans cette zone",
+  addrPh:"Quartier, rue, numéro, repère",toReview:"Vérifier la commande",edit:"Modifier",confirm:"Confirmer la commande",sending:"Confirmation en cours…",
+  customer:"Vos coordonnées",delivery:"Livraison",items:"Articles",name:"Nom",
+  eFirst:"Indiquez votre prénom (2 lettres minimum).",eLast:"Indiquez votre nom (2 lettres minimum).",ePhone:"Téléphone obligatoire : 10 chiffres commençant par 05, 06 ou 07.",
+  ePhoneOpt:"Numéro invalide. Laissez vide ou indiquez 10 chiffres commençant par 05, 06 ou 07.",eIg:"Compte : lettres latines, chiffres, points et tirets bas uniquement.",
+  eWilaya:"Choisissez la wilaya dans la liste.",eCommune:"Choisissez la commune dans la liste.",eCommuneText:"Indiquez le nom de la commune.",eDelivery:"Choisissez un mode de livraison disponible.",
+  eAddr:"Indiquez l'adresse détaillée pour la livraison à domicile.",fixFields:"Corrigez les champs indiqués puis réessayez.",
+  eStock:"La quantité demandée pour « {name} » n'est plus disponible. Modifiez votre commande puis réessayez.",eNet:"La commande n'a pas été confirmée : elle n'est pas parvenue à la boutique. Vérifiez la connexion puis réessayez ; elle ne sera pas enregistrée deux fois.",
+  eLimitOpen:"Vous avez déjà des commandes en attente de confirmation. Nous vous appelons bientôt ; écrivez-nous sur WhatsApp pour y ajouter des pièces.",
+  eLimitWait:"Nous venons de recevoir une commande de votre part. S'il s'agit d'une nouvelle commande, réessayez dans une minute.",
+  eLimitIp:"Nous avons reçu beaucoup de commandes depuis ce réseau. Réessayez plus tard ou écrivez-nous sur WhatsApp.",
+  eBlocked:"La commande n'a pas pu être enregistrée depuis ce numéro. Écrivez-nous sur WhatsApp, nous vous aiderons.",
+  retry:"Réessayer",okTitle:"Votre commande a bien été reçue !",okText:"Nous vous appellerons pour finaliser votre commande et confirmer la livraison.",
+  orderNo:"N° de commande",trackNo:"N° de suivi",copyTrack:"Copier le n° de suivi",copiedTrack:"Numéro de suivi copié",copyFail:"La copie automatique a échoué. Sélectionnez le numéro pour le copier.",
+  trackMine:"Suivre ma commande",backShop:"Retour à la boutique",keepCode:"Gardez le n° de suivi et votre téléphone pour suivre la commande.",cur:"DA",
+  revTitle:"Avis de nos clientes",revSub:"Ce que nos clientes ont écrit après avoir reçu leur commande.",revN:n=>n===1?"1 avis":`${n} avis`,
+  rackTitle:"Sur les portants de la boutique",rackHover:"Survolez une pièce pour qu'elle se tourne vers vous, cliquez pour l'approcher.",rackSwipe:"Faites glisser le portant, touchez une pièce pour l'approcher.",
+  front:"Devant",back:"Dos",
+  searchPh:"Rechercher : abaya noire, caftan, robe…",clearSearch:"Effacer la recherche",sortBy:"Trier",
+  sorts:{featured:"Sélection",new:"Nouveautés",priceUp:"Prix croissant",priceDown:"Prix décroissant",rated:"Mieux notées",sale:"Promotions d'abord"},
+  piecesN:n=>n===1?"1 pièce":`${n} pièces`,noResult:q=>`Aucune pièce ne correspond à « ${q} ». Essayez un autre mot, une couleur ou une catégorie.`,
+  inAll:"Chercher dans toutes les catégories",
+  verified:"Achat vérifié",more:"Vous aimerez aussi",policyLink:"Paiement, livraison et échange",revOf:"Avis sur cette pièce",revFor:"Pour :",outOf:"sur 5"}
+};
+
+const UI = FBUI, $ = s=>document.querySelector(s), esc = FB.esc, store = UI.store;
+const t = k=>T[UI.lang][k];
+let S = FB.mergeSettings(null), PRODUCTS = [], RATES = {}, REVIEWS = [], loaded = false, loadFailed = false;
+const cached = FB_API.mode==="live" ? store.get("fb34-catalog",null) : null;  // live mode: show the last catalog at once, then refresh
+if (cached){ S = FB.mergeSettings(cached.settings); PRODUCTS = cached.products; RATES = cached.rates||{}; REVIEWS = cached.reviews||[]; loaded = true; FB_PIXELS.init(S); }
+let cart = store.get("fb34-cart",[]);
+let filter = "all", query = "", sortBy = "featured";
+const txt = k=>S.texts[k]?.[UI.lang] || FB.TEXTS[k]?.[UI.lang] || T[UI.lang][k] || "";
+const fmt = n=>FB.money(n,t("cur"));
+const byId = id=>PRODUCTS.find(p=>p.id===id);
+const sizeLabel = s=>s==="TU"?t("oneSize"):s;
+const nm = o=>o?.[UI.lang] || o?.ar || "";
+const sale = p=>p.compare_price>p.price ? Math.round((1-p.price/p.compare_price)*100) : 0;
+const priceHTML = p=>`<b class="price">${fmt(p.price)}</b>${sale(p)?`<s class="price price-old">${fmt(p.compare_price)}</s>`:""}`;
+function stockState(p){
+  if (FB.soldOut(p)) return ["out",t("soldOut")];
+  if (p.stock && p.sizes.some(s=>{const n=FB.stockOf(p,s); return n!=null&&n>0&&n<=3;})) return ["low",t("low")];
+  return ["ok",t("inStock")];
+}
+
+UI.chrome("store");
+
+/* ---------- shop ---------- */
+function renderFilters(){
+  const cats = [{id:"all",ar:T.ar.all,fr:T.fr.all},...S.categories];
+  if (!cats.some(c=>c.id===filter)) filter="all";
+  $("#filters").innerHTML = cats.map(c=>`<button class="chip" type="button" data-cat="${esc(c.id)}" aria-pressed="${c.id===filter}">${esc(nm(c))}</button>`).join("");
+}
+// search ignores case, accents, Arabic diacritics and letter variants; every word typed must match
+function haystack(p){
+  const cat = S.categories.find(c=>c.id===p.category);
+  return FB.fold([p.name?.ar, p.name?.fr, p.description?.ar, p.description?.fr, cat?.ar, cat?.fr,
+    ...p.colors.flatMap(c=>[c.ar, c.fr]), p.badge && T.ar[p.badge], p.badge && T.fr[p.badge]].filter(Boolean).join(" "));
+}
+const SORTS = {
+  featured: (a,b)=>a.sort-b.sort,
+  new: (a,b)=>String(b.created_at||"").localeCompare(String(a.created_at||"")) || a.sort-b.sort,
+  priceUp: (a,b)=>a.price-b.price,
+  priceDown: (a,b)=>b.price-a.price,
+  rated: (a,b)=>{ const x=FB.ratingOf(REVIEWS,a.id), y=FB.ratingOf(REVIEWS,b.id); return y.avg-x.avg || y.n-x.n || a.sort-b.sort; },
+  sale: (a,b)=>sale(b)-sale(a) || a.sort-b.sort
+};
+// the forms a typed word may take in the product texts: سوداء/أسود, عبايات/عباية, القفطان/قفطان, noire/noir, robes/robe
+function forms(w){
+  const f = new Set([w]);
+  const bare = w.replace(/^(وال|بال|لل|ال)(?=..)/, "");
+  f.add(bare);
+  if (/^...اء$/.test(bare)) f.add("ا" + bare.slice(0,3));          // فعلاء -> أفعل (colours)
+  [/(ات|ون|ين)$/, /ه$/, /ي$/].forEach(r=>{ if (bare.length > 3 && r.test(bare)) f.add(bare.replace(r, "")); });
+  if (/^[a-z]{4,}$/.test(w)) f.add(w.replace(/(es|e|s)$/, ""));
+  return [...f].filter(x=>x.length > 1 || x===w);
+}
+function shownList(){
+  const words = FB.fold(query).split(" ").filter(Boolean).map(forms);
+  return PRODUCTS.filter(p=>(filter==="all"||p.category===filter) && (!words.length || (h=>words.every(fs=>fs.some(w=>h.includes(w))))(haystack(p))))
+    .sort((a,b)=>FB.soldOut(a)-FB.soldOut(b) || SORTS[sortBy](a,b));  // sold-out pieces always last
+}
+function renderTools(){
+  $("#shopTools").hidden = !loaded || PRODUCTS.length < 2;
+  $("#q").placeholder = t("searchPh"); $("#q").setAttribute("aria-label", t("searchPh"));
+  $("#sort").innerHTML = Object.entries(t("sorts")).filter(([k])=>k!=="rated"||REVIEWS.length).filter(([k])=>k!=="sale"||PRODUCTS.some(sale))
+    .map(([k,l])=>`<option value="${k}" ${k===sortBy?"selected":""}>${l}</option>`).join("");
+  if (!$("#sort").value){ sortBy = "featured"; $("#sort").value = sortBy; }
+}
+// cards rise into place as they come into view, in a short cascade (each new render of the grid starts over)
+const cardIO = "IntersectionObserver" in window ? new IntersectionObserver(entries=>{
+  // in page order, which is the reading order (right to left in Arabic, left to right in French)
+  const hits = entries.filter(e=>e.isIntersecting).sort((a,b)=>a.target.compareDocumentPosition(b.target) & Node.DOCUMENT_POSITION_FOLLOWING ? -1 : 1);
+  // cards arriving within a moment of each other (in one or several batches) share one cascade
+  const now = performance.now(); if (now - cascade.t > 250) cascade.n = 0; cascade.t = now;
+  hits.forEach(e=>{ e.target.style.setProperty("--d", `${Math.min(cascade.n++,7)*70}ms`); e.target.classList.add("in"); cardIO.unobserve(e.target); });
+}, {rootMargin:"0px 0px -6% 0px", threshold:.08}) : null;
+const cascade = {n:0, t:0};
+function revealCards(){
+  document.querySelectorAll("#grid .card.rise:not(.in)").forEach(c=>cardIO ? cardIO.observe(c) : c.classList.add("in"));
+}
+function renderGrid(){
+  if (!loaded){
+    $("#grid").innerHTML = loadFailed ? `<p class="grid-msg">${t("loadErr")}</p>`
+      : `<p class="sr" role="status">${t("loading")}</p>` + Array.from({length:4}, ()=>`<div class="skel" aria-hidden="true"><i class="s-img"></i><i class="s-line"></i><i class="s-line short"></i><i class="s-btn"></i></div>`).join("");
+    return;
+  }
+  const list = shownList();
+  $("#shopCount").textContent = PRODUCTS.length ? t("piecesN")(list.length) : "";
+  $("#qClear").hidden = !query;
+  $("#grid").innerHTML = list.length ? list.map(p=>{
+    const [st, stLabel] = stockState(p), out = st==="out", off = sale(p);
+    return `<article class="card rise">
+      <button class="card-media" type="button" data-open="${esc(p.id)}" aria-label="${esc(nm(p.name))}">
+        <div class="frame" style="${FB.tint(p.colors[0]?.hex)}">${FB.media(p)}${(g=>g[1]?`<img class="alt" src="${esc(g[1])}" alt="" loading="lazy" decoding="async">`:"")(FB.gallery(p))}
+          <div class="badges">${off?`<span class="badge sale">${t("off")(off)}</span>`:""}${p.badge&&!out?`<span class="badge">${t(p.badge)}</span>`:""}</div></div>
+      </button>
+      <h3 class="card-name"><button type="button" data-open="${esc(p.id)}">${esc(nm(p.name))}</button></h3>
+      <p class="card-price">${priceHTML(p)}</p>
+      ${(r=>r.n?`<p class="card-rate">${FB.stars(r.avg)}<span>(${r.n})</span></p>`:"")(FB.ratingOf(REVIEWS,p.id))}
+      <p class="card-opts"><span class="dots" role="img" aria-label="${t("colorsN")(p.colors.length)}">${p.colors.map(c=>`<i style="background:${esc(c.hex)}" title="${esc(nm(c))}"></i>`).join("")}</span>
+        <span>${t("sizes")}: ${p.sizes.map(s=>FB.stockOf(p,s)===0?`<s>${esc(sizeLabel(s))}</s>`:esc(sizeLabel(s))).join("، ")}</span></p>
+      <p class="stock ${st}">${stLabel}</p>
+      <div class="card-actions">
+        <button class="btn btn-primary btn-sm" type="button" data-buy="${esc(p.id)}" ${out?"disabled":""}>${t("buyNow")}</button>
+        <button class="btn btn-ghost btn-sm" type="button" data-add="${esc(p.id)}" ${out?"disabled":""}>${t("addToCart")}</button>
+      </div>
+    </article>`;}).join("") : !PRODUCTS.length ? emptyShop() : query.trim() ? `<div class="grid-none"><p>${esc(t("noResult")(query.trim()))}</p><div class="hero-actions">
+      ${filter!=="all"?`<button class="btn btn-ghost btn-sm" type="button" id="searchAll">${t("inAll")}</button>`:""}<button class="btn btn-ghost btn-sm" type="button" id="searchClear2">${t("clearSearch")}</button></div></div>`
+    : `<p class="grid-msg">${t("noProducts")}</p>`;
+  revealCards();
+}
+// no piece online yet: say so and point to the shop's social pages
+function emptyShop(){
+  const links = [["Instagram",S.socials.instagram],["TikTok",S.socials.tiktok],["Facebook",S.socials.facebook]].filter(([,u])=>UI.safeUrl(u));
+  return `<div class="grid-empty"><p>${t("comingSoon")}</p>${links.length?`<div class="row-btns">${links.map(([n,u])=>`<a class="btn btn-ghost btn-sm" href="${esc(UI.safeUrl(u))}" target="_blank" rel="noopener">${n}</a>`).join("")}</div>`:""}</div>`;
+}
+
+/* ---------- reviews: only those the owner approved ---------- */
+const dateOf = iso=>{ const d=new Date(iso); return isNaN(d) ? "" : d.toLocaleDateString(UI.lang==="ar"?"ar-DZ":"fr-FR",{month:"long",year:"numeric"}); };
+function reviewHTML(r, withProduct){
+  const p = withProduct && r.product_id && byId(r.product_id);
+  return `<article class="rev">
+    ${FB.stars(r.rating)}
+    ${r.body?`<p>${esc(r.body)}</p>`:""}
+    ${r.photo&&UI.safeUrl(r.photo)?`<div class="rev-photo"><img src="${esc(r.photo)}" alt="" loading="lazy" decoding="async"></div>`:""}
+    ${p?`<div><span class="muted" style="font-size:.84rem">${t("revFor")}</span> <button class="rev-prod" type="button" data-open="${esc(p.id)}">${esc(nm(p.name))}</button></div>`:""}
+    <div class="rev-who"><b>${esc(r.name)}</b>${r.wilaya_name?`<span>${esc(r.wilaya_name)}</span>`:""}<span>${dateOf(r.created_at)}</span>${r.verified?`<span class="rev-ok">${t("verified")}</span>`:""}</div>
+  </article>`;
+}
+const fmtAvg = v=>(Math.round(v*10)/10).toLocaleString(UI.lang==="ar"?"ar-DZ":"fr-FR",{minimumFractionDigits:1});
+function renderReviews(){
+  const all = FB.ratingOf(REVIEWS);
+  $("#reviews").hidden = !all.n;
+  if (!all.n) return;
+  $("#revAvg").innerHTML = `<b>${fmtAvg(all.avg)}</b><span style="display:grid;gap:.2rem">${FB.stars(all.avg)}<small class="muted">${t("revN")(all.n)}</small></span>`;
+  $("#revRow").innerHTML = all.list.slice(0,24).map(r=>reviewHTML(r,true)).join("");
+}
+$("#revRow").addEventListener("click", e=>{ const b=e.target.closest("[data-open]"); if (b) openProduct(b.dataset.open); });
+
+/* ---------- the racks ----------
+   Pieces with a photo without background (product.cutout.front, or a colour's own cutout) hang side-on on a rail.
+   The owner makes the racks in the dashboard (settings.racks: name + pieces in order, shown or hidden); with none
+   made, one rack holds every piece that has such a photo. settings.racks_on = false hides them all.
+   Pointer over a piece (computer) or the one in the middle of a swiped rail (phone) turns to face the visitor;
+   a tap brings it forward in #stage, with its colours as hang tags and front/back. */
+const rackPic = (p, ci)=>p.colors?.[ci]?.cutout || p.cutout?.front || "";
+// a brass hanger: the hook over the rail, then the shoulders the piece hangs from
+const HANGER = `<svg class="hook" viewBox="0 0 22 34" aria-hidden="true"><g fill="none" stroke-linecap="round">
+  <path d="M5 16 C5 3 19 3 19 14 C19 18 17 20 14 20 M5 16 C5 22 11 26 11 32" stroke="#8A6233" stroke-width="2.8"/>
+  <path d="M5.6 15 C5.8 5 18 5 18.2 13 M5.6 17 C6 22 10.6 25.5 10.6 31" stroke="#F4E0B4" stroke-width="1" opacity=".85"/></g></svg><span class="bar" aria-hidden="true"></span>`;
+const hangs = p=>p && p.active !== false && !FB.soldOut(p) && !!(p.cutout?.front || p.colors?.some(c=>c.cutout));
+const onRack = ()=>PRODUCTS.filter(hangs);
+function racksToShow(){
+  if (S.racks_on === false) return [];
+  const made = (S.racks || []).filter(r=>r.active !== false);
+  if (!(S.racks || []).length) return [{id:"all", name:null, list:onRack()}];   // none made yet: one rack with everything
+  return made.map(r=>({id:r.id, name:r.name, list:(r.items || []).map(byId).filter(hangs)})).filter(r=>r.list.length);
+}
+function renderRack(){
+  const racks = racksToShow(), box = $("#racks");
+  if (!racks.length){ box.innerHTML = ""; return; }
+  const touch = matchMedia("(hover: none)").matches;
+  box.innerHTML = racks.map((r, k)=>`<section class="rack" id="rack-${esc(r.id)}" aria-labelledby="rackT-${k}">
+    <div class="wrap section-head"><h2 id="rackT-${k}">${esc(r.name ? nm(r.name) : t("rackTitle"))}</h2>${k === 0 ? `<p class="rack-sub">${touch ? t("rackSwipe") : t("rackHover")}</p>` : ""}</div>
+    <div class="rack-niche"><span class="rack-mount l"></span><span class="rack-mount r"></span>
+    <div class="rack-rail"><div class="rack-track">${r.list.map((p, i)=>{
+      const ci = Math.max(0, p.colors.findIndex(c=>c.cutout) < 0 || p.cutout?.front ? 0 : p.colors.findIndex(c=>c.cutout));
+      // no two pieces hang quite alike: a slightly different angle and height for each, the same on every visit
+      const tw = 64 + (i * 37 % 9), dy = (i * 53 % 5) - 2;
+      return `<button class="hang" type="button" data-rack="${esc(p.id)}" data-ci="${ci}" aria-label="${esc(nm(p.name))} — ${fmt(p.price)}" style="--tw:${tw}deg;--dy:${dy}px">
+        <span class="sw"><span class="turn">${HANGER}<img class="g" src="${esc(rackPic(p, ci))}" alt="" decoding="async" loading="lazy"></span></span><span class="cap">${esc(nm(p.name))}</span></button>`;
+    }).join("")}</div></div></div></section>`).join("");
+  faceMiddle();
+}
+// phones (and any rail wider than the screen): the piece nearest the middle of each rail turns to face the visitor
+let faceTick = false;
+function faceMiddle(){
+  faceTick = false;
+  document.querySelectorAll("#racks .rack-rail").forEach(rail=>{
+    const items = [...rail.querySelectorAll(".hang")];
+    if (rail.scrollWidth <= rail.clientWidth + 4){ items.forEach(h=>h.classList.remove("face")); return; }
+    const mid = rail.getBoundingClientRect().left + rail.clientWidth / 2;
+    let best = null, d = Infinity;
+    items.forEach(h=>{ const r = h.getBoundingClientRect(), x = Math.abs(r.left + r.width / 2 - mid); if (x < d){ d = x; best = h; } });
+    items.forEach(h=>h.classList.toggle("face", h === best));
+  });
+}
+// scroll does not bubble: listen while it passes down to the rails
+$("#racks").addEventListener("scroll", ()=>{ if (!faceTick){ faceTick = true; requestAnimationFrame(faceMiddle); } }, {passive:true, capture:true});
+addEventListener("resize", ()=>requestAnimationFrame(faceMiddle));
+
+let stg = null;   // {p, ci, side}
+function openStage(id, ci){
+  const p = byId(id); if (!p) return;
+  stg = {p, ci, side:"front"};
+  $("#stName").textContent = nm(p.name);
+  $("#stPrice").innerHTML = priceHTML(p);
+  const withPics = p.colors.map((c,i)=>[c,i]).filter(([c])=>c.cutout || p.cutout?.front);
+  $("#stTags").setAttribute("aria-label", t("color"));
+  $("#stTags").innerHTML = withPics.length > 1 ? withPics.map(([c,i])=>`<button class="tag" type="button" data-tag="${i}" aria-pressed="${i===ci}" style="--c:${esc(c.hex)}"><i></i><small>${esc(nm(c))}</small></button>`).join("") : "";
+  $("#stSide").hidden = !p.cutout?.back;
+  $$side("front");
+  $("#stCur").src = rackPic(p, ci); $("#stCur").alt = nm(p.name);
+  $("#stNext").classList.remove("wipe"); $("#stNext").removeAttribute("src");
+  $("#stBuy").disabled = $("#stAdd").disabled = FB.soldOut(p);
+  const fig = $("#stFig"); fig.classList.remove("flip","arrive"); void fig.offsetWidth; fig.classList.add("arrive");
+  UI.openDialog($("#stage"));
+  FB_PIXELS.view({id:p.id, name:nm(p.name), price:p.price, qty:1});
+}
+function $$side(side){ $("#stSide").querySelectorAll("button").forEach(b=>b.setAttribute("aria-pressed", b.dataset.side===side)); }
+// a new colour slides down over the old one
+function wipeTo(src){
+  const cur = $("#stCur"), next = $("#stNext");
+  if (matchMedia("(prefers-reduced-motion: reduce)").matches){ cur.src = src; return; }
+  next.classList.remove("wipe"); next.src = src; void next.offsetWidth; next.classList.add("wipe");
+  next.onanimationend = ()=>{ cur.src = src; next.classList.remove("wipe"); next.removeAttribute("src"); };
+}
+$("#racks").addEventListener("click", e=>{ const h = e.target.closest("[data-rack]"); if (h) openStage(h.dataset.rack, +h.dataset.ci); });
+$("#stTags").addEventListener("click", e=>{
+  const b = e.target.closest("[data-tag]"); if (!b || !stg) return;
+  const ci = +b.dataset.tag; if (ci === stg.ci) return;
+  stg.ci = ci; stg.side = "front"; $$side("front");
+  $("#stTags").querySelectorAll(".tag").forEach(x=>x.setAttribute("aria-pressed", x===b));
+  wipeTo(rackPic(stg.p, ci));
+});
+$("#stSide").addEventListener("click", e=>{
+  const b = e.target.closest("[data-side]"); if (!b || !stg || b.dataset.side === stg.side) return;
+  stg.side = b.dataset.side; $$side(stg.side);
+  const src = stg.side === "back" ? stg.p.cutout.back : rackPic(stg.p, stg.ci), fig = $("#stFig");
+  if (matchMedia("(prefers-reduced-motion: reduce)").matches){ $("#stCur").src = src; return; }
+  fig.classList.remove("flip"); void fig.offsetWidth; fig.classList.add("flip");
+  setTimeout(()=>{ $("#stCur").src = src; }, 270);   // swapped at the thin middle of the turn
+});
+$("#stFig").addEventListener("animationend", e=>{ if (e.target === e.currentTarget) e.currentTarget.classList.remove("flip","arrive"); });
+// from the stage to ordering: the product window, with the colour already chosen
+async function stageTo(kind){
+  const {p, ci} = stg; await UI.closeDialog($("#stage"));
+  if (!needsChoice(p)){ const it = {...directItem(p), color:ci}; return kind === "buy" ? openCheckout("buy",[it]) : addToCart(it); }
+  openProduct(p.id, kind);
+  const r = $(`#qColors input[value="${ci}"]`); if (r && !r.checked){ r.checked = true; paintQuickImage(ci, true); }
+}
+$("#stBuy").onclick = ()=>stageTo("buy");
+$("#stAdd").onclick = ()=>stageTo("add");
+
+/* ---------- texts and language ---------- */
+function applyTexts(){
+  document.querySelectorAll("[data-i18n]").forEach(el=>{el.textContent=txt(el.dataset.i18n)});
+  document.querySelectorAll("[data-i18n-label]").forEach(el=>el.setAttribute("aria-label",t(el.dataset.i18nLabel)));
+  $("#addr").textContent = S.address[UI.lang] || S.address.ar;
+  $("#hours").textContent = S.hours[UI.lang] || S.hours.ar;
+  $("#hoursBox").hidden = !(S.hours.ar||S.hours.fr);
+  $("#phoneTxt").textContent = S.phone_display;
+  $("#phoneTxt").href = "tel:" + FB.normPhone(S.phone_display);
+  const wa = UI.waUrl(S.whatsapp); $("#waLink").hidden = !wa; if (wa) $("#waLink").href = wa;
+  $("#phoneBox").hidden = !S.phone_display;
+  $("#mapLink").href = UI.safeUrl(S.map_url) || "#visit";
+  $("#mapLink").hidden = !UI.safeUrl(S.map_url);
+  showMap();
+  $("#film").setAttribute("aria-label", t("heroCta"));
+  UI.setSocial(S);
+  renderFilters(); renderTools(); renderGrid(); renderDrawer(); renderReviews(); renderRack();
+  if ($("#checkout").open) renderCheckout();
+  if ($("#quick").open && current) openProduct(current.id);
+}
+$("#langBtn").onclick = ()=>{ UI.setLang(UI.lang==="ar"?"fr":"ar"); applyTexts(); };
+
+/* ---------- product window ---------- */
+let current = null, qty = 1;
+const chosen = ()=>{ const f=new FormData($("#quickForm")); return {size:f.get("size"), color:+f.get("color")}; };
+const capOf = (p,size)=>Math.min(10, size!=null ? (FB.stockOf(p,size) ?? 10) : 10);
+// Apple-style zoom: clone the clicked photo and glide it from the grid into the window's gallery.
+// Falls back to a plain open when motion is reduced, the window is already open, or layout isn't ready.
+async function zoomToQuick(srcFrame, id){
+  const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (reduce || !srcFrame || $("#quick").open){ openProduct(id); return; }
+  let from; try { from = srcFrame.getBoundingClientRect(); } catch { openProduct(id); return; }
+  const dlg = $("#quick");
+  dlg.classList.add("zooming");
+  openProduct(id);
+  const gal = $("#qGal");
+  await new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r)));
+  const to = gal.getBoundingClientRect();
+  const cleanup = () => dlg.classList.remove("zooming");
+  if (!to.width || !to.height || !from.width){ cleanup(); return; }   // nothing to animate from/to
+  const ghost = document.createElement("div");
+  ghost.className = "zoom-ghost";
+  ghost.setAttribute("style", `left:0;top:0;width:${to.width}px;height:${to.height}px;transform-origin:top left;${gal.getAttribute("style")||""}`);
+  const slide = $("#qTrack").querySelector(".slide");
+  ghost.innerHTML = (slide && slide.innerHTML) || srcFrame.innerHTML;
+  ghost.querySelector("img")?.classList.add("l");
+  const sx = from.width / to.width, sy = from.height / to.height;
+  ghost.style.transform = `translate(${from.left}px,${from.top}px) scale(${sx},${sy})`;
+  dlg.append(ghost);
+  requestAnimationFrame(() => {
+    ghost.style.transition = "transform .44s var(--ease)";
+    ghost.style.transform = `translate(${to.left}px,${to.top}px) scale(1,1)`;
+  });
+  let done = false;
+  const finish = () => { if (done) return; done = true; cleanup(); ghost.remove(); };
+  ghost.addEventListener("transitionend", finish, {once:true});
+  setTimeout(finish, 560);
+}
+function openProduct(id, focusBtn){
+  const fresh = !$("#quick").open || current?.id !== id;
+  current = byId(id); if (!current) return;
+  const p = current, out = FB.soldOut(p), [st, stLabel] = stockState(p), prev = $("#quick").open && !fresh ? chosen() : {};
+  const rv = FB.ratingOf(REVIEWS, p.id);
+  $("#qRate").hidden = !rv.n;
+  $("#qRate").innerHTML = rv.n ? `${FB.stars(rv.avg)}<span>${fmtAvg(rv.avg)} · ${t("revN")(rv.n)}</span>` : "";
+  $("#qReviews").hidden = !rv.n;
+  $("#qReviews").innerHTML = rv.n ? `<h3>${t("revOf")}</h3>${rv.list.slice(0,10).map(r=>reviewHTML(r,false)).join("")}` : "";
+  if (fresh) FB_PIXELS.view({id:p.id, name:nm(p.name), price:p.price, qty:1});
+  const more = related(p);
+  $("#qMore").hidden = !more.length;
+  $("#qMore").innerHTML = more.length ? `<h3>${t("more")}</h3><div class="more-grid">${more.map(m=>`<button class="more" type="button" data-more="${esc(m.id)}">
+    <div class="frame" style="${FB.tint(m.colors[0]?.hex)}">${FB.media(m)}</div><span>${esc(nm(m.name))}</span><b class="price" style="font-weight:500">${fmt(m.price)}</b></button>`).join("")}</div>` : "";
+  if (fresh && $("#quick").open) $("#quick").scrollTo({top:0, behavior:"smooth"});
+  qty = fresh ? 1 : qty;
+  $("#qName").textContent = nm(p.name);
+  $("#qPrice").innerHTML = priceHTML(p);
+  $("#qDesc").textContent = nm(p.description);
+  $("#qStock").className = "stock " + st; $("#qStock").textContent = stLabel;
+  const ci = prev.color ?? 0;
+  $("#qColors").innerHTML = p.colors.map((c,i)=>`<label class="opt swatch"><input type="radio" name="color" value="${i}" ${i===ci?"checked":""}><span><i style="background:${esc(c.hex)}"></i>${esc(nm(c))}</span></label>`).join("");
+  const avail = p.sizes.filter(s=>FB.stockOf(p,s)!==0);
+  const pre = prev.size && avail.includes(prev.size) ? prev.size : avail.length===1 ? avail[0] : null;
+  $("#qSizes").innerHTML = p.sizes.map(s=>{const none=FB.stockOf(p,s)===0;
+    return `<label class="opt"><input type="radio" name="size" value="${esc(s)}" ${s===pre?"checked":""} ${none?"disabled":""}><span>${esc(sizeLabel(s))}</span></label>`}).join("");
+  $("#qErr").textContent = ""; showLeft();
+  $("#qQty").value = qty;
+  $("#qBuy").disabled = $("#qAdd").disabled = out;
+  paintQuickImage(ci);
+  UI.openDialog($("#quick"));
+  if (focusBtn) setTimeout(()=>$(focusBtn==="buy"?"#qBuy":"#qAdd").focus(), 50);
+}
+// up to 4 other pieces: same section first, then the best rated; sold-out pieces are left out
+function related(p){
+  const score = x=>(x.category===p.category ? 1000 : 0) + FB.ratingOf(REVIEWS,x.id).avg*10 - x.sort/1000;
+  return PRODUCTS.filter(x=>x.id!==p.id && !FB.soldOut(x)).sort((a,b)=>score(b)-score(a)).slice(0,4);
+}
+$("#qMore").addEventListener("click", e=>{ const b=e.target.closest("[data-more]"); if (b) openProduct(b.dataset.more); });
+$("#qRate").onclick = ()=>$("#qReviews").scrollIntoView({behavior:"smooth", block:"start"});
+/* ---------- photo gallery: swipe, dots, arrows; tap a photo for full screen ---------- */
+let gal = [], galIdx = 0, galObs = null;
+function paintQuickImage(ci, smooth){
+  const draw = ()=>{
+    gal = FB.gallery(current, ci); galIdx = 0;
+    const box = $("#qGal"), track = $("#qTrack");
+    box.setAttribute("style", FB.tint(current.colors[ci]?.hex));
+    box.classList.toggle("multi", gal.length > 1);
+    track.innerHTML = gal.length
+      ? gal.map((u,i)=>`<button class="slide" type="button" data-z="${i}" aria-label="${t("zoomPhoto")}: ${t("photoN")(i+1,gal.length)}"><img src="${esc(u)}" alt="${esc(nm(current.name))}" decoding="async" ${i?'loading="lazy"':""}></button>`).join("")
+      : `<div class="slide">${FB.garment(current, current.colors[ci]?.hex || "#8a7a80")}</div>`;
+    track.scrollLeft = 0;
+    $("#qDots").innerHTML = gal.length > 1 ? gal.map((_,i)=>`<i class="${i?"":"on"}"></i>`).join("") : "";
+    galObs?.disconnect();
+    if (gal.length > 1 && "IntersectionObserver" in window){
+      galObs = new IntersectionObserver(es=>es.forEach(e=>{ if (e.isIntersecting){ galIdx = +e.target.dataset.z; [...$("#qDots").children].forEach((d,i)=>d.classList.toggle("on", i===galIdx)); } }), {root:track, threshold:.6});
+      track.querySelectorAll(".slide").forEach(s=>galObs.observe(s));
+    }
+    track.classList.remove("fade");
+  };
+  // a color change cross-fades the photos instead of swapping them abruptly
+  if (smooth && !matchMedia("(prefers-reduced-motion: reduce)").matches){ $("#qTrack").classList.add("fade"); setTimeout(draw, 200); }
+  else draw();
+}
+function galGo(i){
+  const slides = $("#qTrack").querySelectorAll(".slide");
+  const n = Math.max(0, Math.min(slides.length-1, i));
+  slides[n]?.scrollIntoView({behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block:"nearest", inline:"center"});
+}
+$("#qGal").addEventListener("click", e=>{
+  if (e.target.closest(".gal-nav.prev")) galGo(galIdx-1);
+  else if (e.target.closest(".gal-nav.next")) galGo(galIdx+1);
+  else { const s = e.target.closest("[data-z]"); if (s) openZoom(+s.dataset.z); }
+});
+
+/* ---------- full-screen photo with pinch, double-tap and drag ---------- */
+const Z = {i:0, s:1, x:0, y:0, pts:new Map(), pinch:null, lastTap:0, moved:false};
+function openZoom(i){
+  if (!gal.length) return;
+  Z.i = i; showZoom();
+  UI.openDialog($("#zoom"));
+}
+function showZoom(){
+  Z.s = 1; Z.x = 0; Z.y = 0; applyZoom();
+  const img = $("#zoomImg"); img.src = gal[Z.i]; img.alt = nm(current.name);
+  $("#zoomCount").textContent = gal.length > 1 ? t("photoN")(Z.i+1, gal.length) : "";
+  $("#zoomPrev").hidden = $("#zoomNext").hidden = gal.length < 2;
+}
+function applyZoom(){
+  const img = $("#zoomImg"), w = img.clientWidth, h = img.clientHeight;
+  // keep the photo covering its frame: it can't be dragged past its edges
+  const mx = (Z.s - 1) * w, my = (Z.s - 1) * h;
+  Z.x = Math.min(0, Math.max(-mx, Z.x)); Z.y = Math.min(0, Math.max(-my, Z.y));
+  img.style.transform = `translate(${Z.x}px,${Z.y}px) scale(${Z.s})`;
+  $("#zoomStage").classList.toggle("zoomed", Z.s > 1.01);
+}
+function zoomAt(cx, cy, s){
+  const r = $("#zoomImg").getBoundingClientRect(), base = r.left - Z.x, top = r.top - Z.y;
+  const px = (cx - r.left) / Z.s, py = (cy - r.top) / Z.s;   // point under the finger, in image pixels
+  Z.s = Math.max(1, Math.min(4, s));
+  Z.x = cx - base - px * Z.s; Z.y = cy - top - py * Z.s;
+  applyZoom();
+}
+const stage = $("#zoomStage");
+stage.addEventListener("pointerdown", e=>{
+  stage.setPointerCapture(e.pointerId); Z.pts.set(e.pointerId, {x:e.clientX, y:e.clientY}); Z.moved = false;
+  if (Z.pts.size === 2){ const [a,b] = [...Z.pts.values()]; Z.pinch = {d:Math.hypot(a.x-b.x, a.y-b.y), s:Z.s}; }
+});
+stage.addEventListener("pointermove", e=>{
+  const prev = Z.pts.get(e.pointerId); if (!prev) return;
+  Z.pts.set(e.pointerId, {x:e.clientX, y:e.clientY});
+  if (Math.abs(e.clientX-prev.x) + Math.abs(e.clientY-prev.y) > 2) Z.moved = true;
+  if (Z.pts.size === 2 && Z.pinch){
+    const [a,b] = [...Z.pts.values()];
+    zoomAt((a.x+b.x)/2, (a.y+b.y)/2, Z.pinch.s * Math.hypot(a.x-b.x, a.y-b.y) / Z.pinch.d);
+  } else if (Z.pts.size === 1 && Z.s > 1){ Z.x += e.clientX - prev.x; Z.y += e.clientY - prev.y; applyZoom(); }
+});
+const endPointer = e=>{
+  Z.pts.delete(e.pointerId); if (Z.pts.size < 2) Z.pinch = null;
+  if (e.type === "pointerup" && !Z.moved){
+    const now = e.timeStamp;
+    if (now - Z.lastTap < 300){ zoomAt(e.clientX, e.clientY, Z.s > 1.01 ? 1 : 2.5); Z.lastTap = 0; }
+    else Z.lastTap = now;
+  }
+};
+stage.addEventListener("pointerup", endPointer); stage.addEventListener("pointercancel", endPointer);
+stage.addEventListener("wheel", e=>{ e.preventDefault(); zoomAt(e.clientX, e.clientY, Z.s * (e.deltaY < 0 ? 1.15 : 1/1.15)); }, {passive:false});
+$("#zoomPrev").onclick = ()=>{ Z.i = (Z.i - 1 + gal.length) % gal.length; showZoom(); };
+$("#zoomNext").onclick = ()=>{ Z.i = (Z.i + 1) % gal.length; showZoom(); };
+$("#zoomClose").onclick = ()=>{ UI.closeDialog($("#zoom")); galGo(Z.i); };
+$("#zoomImg").addEventListener("load", applyZoom);
+
+/* ---------- fly to cart: a small copy of the photo travels to the cart icon ---------- */
+function flyToCart(fromEl){
+  const to = $("#cartBtn"); if (!fromEl || !to || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  const a = fromEl.getBoundingClientRect(), b = to.getBoundingClientRect();
+  if (!a.width || !a.height) return;
+  const size = Math.min(a.width, a.height, 140), el = document.createElement("div");
+  el.className = "fly"; el.setAttribute("aria-hidden", "true");
+  el.style.cssText = `left:${a.left + (a.width-size)/2}px;top:${a.top + (a.height-size)/2}px;width:${size}px;height:${size*1.25}px;${fromEl.getAttribute("style")||""}`;
+  const img = fromEl.querySelector("img.l:not(.alt)"), svg = fromEl.querySelector("svg");
+  el.innerHTML = img ? `<img src="${esc(img.currentSrc || img.src)}" alt="">` : svg ? svg.outerHTML : "";
+  document.body.append(el);
+  const dx = b.left + b.width/2 - (a.left + a.width/2), dy = b.top + b.height/2 - (a.top + a.height/2);
+  el.animate([{transform:"translate(0,0) scale(1)", opacity:1},
+              {transform:`translate(${dx*.55}px,${dy*.55 - 60}px) scale(.55)`, opacity:.95, offset:.55},
+              {transform:`translate(${dx}px,${dy}px) scale(.12)`, opacity:.4}],
+    {duration:700, easing:"cubic-bezier(.5,0,.6,1)"}).onfinish = ()=>el.remove();
+}
+function showLeft(){
+  const {size} = chosen(), left = size ? FB.stockOf(current,size) : null;
+  $("#qLeft").textContent = left!=null&&left<=3 ? t("left")(left) : "";
+  qty = Math.max(1, Math.min(qty, capOf(current,size))); $("#qQty").value = qty;
+  $("#qPlus").disabled = qty >= capOf(current,size);
+}
+$("#qColors").addEventListener("change",e=>paintQuickImage(+e.target.value, true));
+$("#qSizes").addEventListener("change",()=>{ $("#qErr").textContent=""; showLeft(); });
+$("#qMinus").onclick=()=>{ qty=Math.max(1,qty-1); showLeft(); };
+$("#qPlus").onclick=()=>{ qty=Math.min(capOf(current,chosen().size),qty+1); showLeft(); };
+function quickPick(){
+  const {size,color} = chosen();
+  if (!size){ $("#qErr").textContent = t("pickSize"); $("#qSizes input:not(:disabled)")?.focus(); return null; }
+  return {id:current.id, size, color, qty};
+}
+$("#qAdd").onclick=async()=>{
+  const it=quickPick(); if(!it) return;
+  // the photo flies from where it was, once the window has closed
+  const slide = $("#qTrack").querySelectorAll(".slide")[galIdx] || $("#qGal"), r = slide.getBoundingClientRect();
+  const ghost = document.createElement("div"); ghost.style.cssText = `position:fixed;left:${r.left}px;top:${r.top}px;width:${r.width}px;height:${r.height}px;${$("#qGal").getAttribute("style")}`;
+  ghost.innerHTML = slide.innerHTML; ghost.querySelector("img")?.classList.add("l");
+  await UI.closeDialog($("#quick"));
+  document.body.append(ghost); flyToCart(ghost); ghost.remove();
+  addToCart(it);
+};
+$("#qBuy").onclick=async()=>{ const it=quickPick(); if(!it) return; await UI.closeDialog($("#quick")); openCheckout("buy",[it]); };
+// a product with one size and one color needs no choice: the card buttons act at once
+function needsChoice(p){ return p.colors.length>1 || p.sizes.filter(s=>FB.stockOf(p,s)!==0).length>1; }
+function directItem(p){ return {id:p.id, size:p.sizes.find(s=>FB.stockOf(p,s)!==0), color:0, qty:1}; }
+
+/* ---------- dialogs ---------- */
+document.querySelectorAll("dialog").forEach(d=>{
+  d.addEventListener("cancel",e=>{ e.preventDefault(); if (d.id==="checkout") closeCheckout(); else UI.closeDialog(d); });
+  d.addEventListener("click",e=>{ if (d.id!=="checkout" && (e.target===d||e.target.closest("[data-close]"))) UI.closeDialog(d); });
+});
+
+/* ---------- cart ---------- */
+const keyOf = l=>`${l.id}|${l.size}|${l.color}`;
+const lineOk = l=>{const p=byId(l.id); return p && p.sizes.includes(l.size) && p.colors[l.color] && !FB.soldOut(p);};
+const pixelLine = l=>{ const p=byId(l.id); return {id:l.id, name:nm(p?.name), price:p?.price||0, qty:l.qty}; };
+const sumOf = items=>items.reduce((s,l)=>s+(byId(l.id)?.price||0)*l.qty,0);
+function addToCart(it){
+  const p = byId(it.id), cap = capOf(p,it.size), line = cart.find(l=>keyOf(l)===keyOf(it));
+  line ? line.qty = Math.min(cap, line.qty+it.qty) : cart.push({...it, qty:Math.min(cap,it.qty)});
+  saveCart(); UI.toast(t("added"));
+  FB_PIXELS.add(pixelLine(it));
+  const c=$("#cartCount"), btn=$("#cartBtn"); c.classList.remove("bump"); btn.classList.remove("got"); void c.offsetWidth; c.classList.add("bump"); btn.classList.add("got");
+}
+function saveCart(){
+  if (loaded) cart = cart.filter(lineOk);
+  // merge lines that became identical after a size or color change
+  const merged = [];
+  cart.forEach(l=>{ const m = merged.find(x=>keyOf(x)===keyOf(l)); m ? m.qty = Math.min(capOf(byId(l.id)||{},l.size), m.qty+l.qty) : merged.push({...l}); });
+  cart = merged.map(({id,size,color,qty})=>({id,size,color,qty}));
+  store.set("fb34-cart",cart);
+  $("#cartCount").textContent = cart.reduce((s,l)=>s+l.qty,0);
+  renderDrawer();
+}
+// delivery estimate in the cart, from what the customer already picked in the checkout form
+function shipEstimate(){
+  const d = store.get("fb34-checkout",{});
+  if (!d.wilaya) return {text:t("shipLater"), fee:0, known:false};
+  const r = FB.rateFor(RATES, +d.wilaya, d.commune_id ?? null)[d.delivery||"home"];
+  if (!r.available || r.price==null) return {text:t("shipPending"), fee:0, known:false, pending:r.available};
+  return {text:fmt(r.price), fee:r.price, known:true};
+}
+function renderDrawer(){
+  const body=$("#dBody"), foot=$("#dFoot");
+  if (!loaded || !cart.length){
+    body.innerHTML = `<p class="muted">${t("emptyCart")}</p>`;
+    foot.innerHTML = `<a class="btn btn-ghost btn-block" href="#shop" data-close>${t("browse")}</a>`;
+    return;
+  }
+  body.innerHTML = cart.map((l,i)=>{
+    const p = byId(l.id), c = p.colors[l.color], cap = capOf(p,l.size);
+    return `<div class="line" data-i="${i}">
+      <div class="frame" style="${FB.tint(c.hex)}">${FB.media(p,l.color)}</div>
+      <div class="line-info"><strong>${esc(nm(p.name))}</strong>
+        <div class="line-sel">
+          <select data-k="color" aria-label="${t("color")}">${p.colors.map((x,j)=>`<option value="${j}" ${j===l.color?"selected":""}>${esc(nm(x))}</option>`).join("")}</select>
+          <select data-k="size" aria-label="${t("size")}">${p.sizes.map(s=>`<option value="${esc(s)}" ${s===l.size?"selected":""} ${FB.stockOf(p,s)===0&&s!==l.size?"disabled":""}>${esc(sizeLabel(s))}</option>`).join("")}</select>
+        </div>
+        <div class="qty" style="justify-self:start"><button type="button" data-dec aria-label="${t("less")}">−</button><output>${l.qty}</output><button type="button" data-inc aria-label="${t("more")}" ${l.qty>=cap?"disabled":""}>+</button></div>
+      </div>
+      <div class="line-end"><span class="price">${fmt(p.price*l.qty)}</span><small class="price">${fmt(p.price)} ${t("each")}</small><button class="link-btn" type="button" data-rm>${t("remove")}</button></div>
+    </div>`;}).join("");
+  const sub = sumOf(cart), sh = shipEstimate();
+  foot.innerHTML = `<div class="sum">
+      <div class="row"><span>${t("subtotal")}</span><span class="price">${fmt(sub)}</span></div>
+      <div class="row"><span>${t("shippingL")}</span><span class="price">${sh.text}</span></div>
+      <div class="row total"><span>${sh.known?t("total"):t("totalNoShip")}</span><span class="price">${fmt(sub+sh.fee)}</span></div>
+    </div>
+    <button class="btn btn-primary btn-block" type="button" id="toCheckout">${t("checkout")}</button>
+    <button class="btn btn-ghost btn-block" type="button" data-close>${t("keepShopping")}</button>`;
+}
+$("#drawer").addEventListener("click",async e=>{
+  const row = e.target.closest(".line"), l = row && cart[+row.dataset.i];
+  if (l && e.target.closest("[data-inc]")){ l.qty = Math.min(capOf(byId(l.id),l.size), l.qty+1); saveCart(); }
+  if (l && e.target.closest("[data-dec]")){ l.qty -= 1; if (l.qty<1) cart.splice(+row.dataset.i,1); saveCart(); }
+  if (l && e.target.closest("[data-rm]")){ cart.splice(+row.dataset.i,1); saveCart(); }
+  if (e.target.closest("#toCheckout")){ await UI.closeDialog($("#drawer")); openCheckout("cart"); }
+});
+$("#drawer").addEventListener("change",e=>{
+  const row = e.target.closest(".line"), l = row && cart[+row.dataset.i]; if (!l) return;
+  if (e.target.dataset.k==="color") l.color = +e.target.value;
+  if (e.target.dataset.k==="size"){ l.size = e.target.value; l.qty = Math.min(l.qty, capOf(byId(l.id),l.size)); }
+  saveCart();
+});
+$("#cartBtn").onclick=()=>{ renderDrawer(); UI.openDialog($("#drawer")); };
+
+/* ================= checkout =================
+   co.kind "buy" orders the given items only; "cart" orders the whole cart and empties it once confirmed.
+   co.key is the idempotency key of this attempt: sending it again returns the same order, never a second one. */
+let co = null, cbW = null, cbC = null, communeList = [];
+const draft = ()=>store.get("fb34-checkout",{});
+const coItems = ()=>co.kind==="cart" ? cart : co.items;
+function openCheckout(kind, items){
+  if (kind==="cart" && !cart.length) return;
+  co = {kind, items, step:"form", key:null, result:null, error:null, fieldErr:{}};
+  renderCheckout(); UI.openDialog($("#checkout"));
+  FB_PIXELS.checkout(coItems().map(pixelLine));
+  setTimeout(()=>$("#f_first")?.focus(), 80);
+}
+async function closeCheckout(){
+  if (co?.step==="sending") return;  // wait for the answer; closing now could hide a saved order
+  await UI.closeDialog($("#checkout"));
+  co = null;
+}
+$("#coClose").onclick = closeCheckout;
+
+function itemsHTML(items){
+  return items.map(l=>{const p=byId(l.id); if(!p) return ""; return `<div class="row"><span>${esc(nm(p.name))} <span class="muted">(${esc(nm(p.colors[l.color]))}، ${esc(sizeLabel(l.size))}) ×${l.qty}</span></span><span class="price">${fmt(p.price*l.qty)}</span></div>`;}).join("");
+}
+function delivState(){
+  const d = draft(), w = +d.wilaya||null;
+  const cid = d.commune_id ?? null;
+  return w ? FB.rateFor(RATES, w, cid) : null;
+}
+function totalsHTML(){
+  const sub = sumOf(coItems()), d = draft(), rs = delivState(), r = rs && d.delivery ? rs[d.delivery] : null;
+  const known = r && r.available && r.price!=null, pending = r && r.available && r.price==null;
+  return `<div class="sum">
+    <div class="row"><span>${t("subtotal")}</span><span class="price">${fmt(sub)}</span></div>
+    <div class="row"><span>${t("shippingL")}</span><span class="price">${known?fmt(r.price):pending?t("shipPending"):t("shipLater")}</span></div>
+    <div class="row total"><span>${known?t("total"):t("totalNoShip")}</span><span class="price">${fmt(sub+(known?r.price:0))}</span></div>
+    ${pending?`<p class="note-pending">${t("pendingNote")}</p>`:""}</div>`;
+}
+
+function renderCheckout(){
+  const body = $("#coBody"), foot = $("#coFoot");
+  $("#coClose").disabled = co.step==="sending";
+  if (co.step==="done") return renderDone();
+  if (co.step==="form"){
+    $("#coTitle").textContent = t("coTitle");
+    const d = draft();
+    body.innerHTML = `
+      <div class="co-items" aria-label="${t("yourItems")}">${itemsHTML(coItems())}</div>
+      <form class="co-form" id="coForm" novalidate>
+        <div class="two">
+          ${field("first","fFirst",`<input id="f_first" name="first_name" autocomplete="given-name" maxlength="40" value="${esc(d.first_name||"")}">`)}
+          ${field("last","fLast",`<input id="f_last" name="last_name" autocomplete="family-name" maxlength="40" value="${esc(d.last_name||"")}">`)}
+        </div>
+        <div class="two">
+          ${field("phone","fPhone",`<input id="f_phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" dir="ltr" placeholder="05 XX XX XX XX" value="${esc(d.phone||"")}">`)}
+          ${field("phone2","fPhone2",`<input id="f_phone2" name="phone2" type="tel" inputmode="tel" dir="ltr" placeholder="06 XX XX XX XX" value="${esc(d.phone2||"")}">`,true)}
+        </div>
+        <label class="check"><input type="checkbox" id="f_wasame" name="wa_same" ${d.wa_same!==false?"checked":""}> ${t("waSame")}</label>
+        <div class="two">
+          <div id="waBox" ${d.wa_same!==false?"hidden":""}>${field("whatsapp","fWa",`<input id="f_whatsapp" name="whatsapp" type="tel" inputmode="tel" dir="ltr" value="${esc(d.whatsapp||"")}">`,true)}</div>
+          ${field("instagram","fIg",`<div class="prefixed"><span class="ltr">@</span><input id="f_instagram" name="instagram" dir="ltr" autocapitalize="off" spellcheck="false" maxlength="31" value="${esc(d.instagram||"")}"></div>`,true)}
+        </div>
+        <div class="two">
+          ${field("wilaya","fWilaya",`<div class="combo"><input id="f_wilaya" placeholder="${t("wilayaPh")}"></div>`)}
+          <div id="communeBox">${field("commune","fCommune",`<div class="combo" id="communeCombo"><input id="f_commune" placeholder="${t("communeFirst")}" disabled></div>
+            <input id="f_commune_text" name="commune_name" maxlength="60" placeholder="${t("communeType")}" value="${esc(d.commune_name||"")}" hidden>
+            <p class="hint" id="communeHint" hidden>${t("communeTypeHint")}</p>`)}</div>
+        </div>
+        <fieldset id="f_delivery_box"><legend>${t("fDelivery")}</legend><div class="seg" id="f_delivery"></div><p class="err" id="e_delivery"></p></fieldset>
+        <div id="addrBox">${field("address","fAddr",`<textarea id="f_address" name="address" maxlength="200" placeholder="${t("addrPh")}">${esc(d.address||"")}</textarea>`)}</div>
+        ${field("note","fNote",`<textarea id="f_note" name="note" maxlength="500">${esc(d.note||"")}</textarea>`,true)}
+        <div class="hp" aria-hidden="true"><label>Website<input id="f_hp" name="website" tabindex="-1" autocomplete="off"></label></div>
+      </form>`;
+    foot.innerHTML = `<div id="coTotals">${totalsHTML()}</div><button class="btn btn-primary btn-block" type="button" id="coNext">${t("toReview")}</button>`;
+    wireForm();
+    Object.entries(co.fieldErr).forEach(([k,m])=>setErr(k,m));
+    return;
+  }
+  // review and sending
+  $("#coTitle").textContent = t("reviewTitle");
+  const d = draft(), w = FB.wilaya(d.wilaya), sending = co.step==="sending";
+  const wa = d.wa_same!==false ? d.phone : d.whatsapp;
+  body.innerHTML = `<div class="review">
+      <section><h3>${t("items")}</h3><div class="co-items">${itemsHTML(coItems())}</div></section>
+      <section><h3>${t("customer")}</h3><dl>
+        <dt>${t("name")}</dt><dd>${esc(d.first_name)} ${esc(d.last_name)}</dd>
+        <dt>${t("fPhone")}</dt><dd class="ltr">${esc(FB.normPhone(d.phone))}</dd>
+        ${d.phone2?`<dt>${t("fPhone2")}</dt><dd class="ltr">${esc(FB.normPhone(d.phone2))}</dd>`:""}
+        ${wa?`<dt>${t("fWa")}</dt><dd class="ltr">${esc(FB.normPhone(wa))}</dd>`:""}
+        ${d.instagram?`<dt>${t("fIg")}</dt><dd class="ltr">@${esc(d.instagram.replace(/^@/,""))}</dd>`:""}
+      </dl></section>
+      <section><h3>${t("delivery")}</h3><dl>
+        <dt>${t("fWilaya")}</dt><dd>${w?`${String(w[0]).padStart(2,"0")} ${esc(UI.lang==="ar"?w[1]:w[2])}`:""}</dd>
+        <dt>${t("fCommune")}</dt><dd>${esc(d.commune_label||d.commune_name||"")}</dd>
+        <dt>${t("fDelivery")}</dt><dd>${t(d.delivery)}</dd>
+        ${d.delivery==="home"?`<dt>${t("fAddr")}</dt><dd>${esc(d.address)}</dd>`:""}
+        ${d.note?`<dt>${t("fNote")}</dt><dd>${esc(d.note)}</dd>`:""}
+      </dl></section>
+      ${co.error?`<div class="box-err" role="alert"><span>${esc(co.error)}</span>${co.retry?`<button class="btn btn-primary btn-sm" type="button" id="coRetry">${t("retry")}</button>`:""}</div>`:""}
+    </div>`;
+  foot.innerHTML = `${totalsHTML()}
+    <button class="btn btn-primary btn-block" type="button" id="coConfirm" ${sending?"disabled":""}>${sending?`<span class="spin" aria-hidden="true"></span>${t("sending")}`:t("confirm")}</button>
+    <button class="btn btn-ghost btn-block" type="button" id="coEdit" ${sending?"disabled":""}>${t("edit")}</button>`;
+}
+function field(k, label, control, optional){
+  return `<div class="field"><label for="f_${k}">${t(label)}${optional?` <span class="opt-tag">(${t("optional")})</span>`:""}</label>${control}<p class="err" id="e_${k}"></p></div>`;
+}
+function setErr(k, msg){
+  const e = $("#e_"+k); if (e) e.textContent = msg||"";
+  const inp = k==="commune" && !$("#f_commune_text").hidden ? $("#f_commune_text") : $("#f_"+k);
+  if (inp && inp.tagName!=="DIV") inp.setAttribute("aria-invalid", msg?"true":"false");
+}
+function saveDraft(patch){ store.set("fb34-checkout", {...draft(), ...patch}); }
+
+function wireForm(){
+  const form = $("#coForm"), d = draft();
+  form.addEventListener("input", e=>{
+    const el = e.target; if (!el.name || el.name==="website") return;
+    saveDraft({[el.name]: el.type==="checkbox" ? el.checked : el.value});
+    if (co.fieldErr[fieldKey(el.name)]){ delete co.fieldErr[fieldKey(el.name)]; setErr(fieldKey(el.name),""); }
+  });
+  $("#f_wasame").addEventListener("change", e=>{ $("#waBox").hidden = e.target.checked; saveDraft({wa_same:e.target.checked}); });
+  cbW = UI.combobox($("#f_wilaya"), {emptyText:()=>t("noMatch"), onChange:v=>{
+    saveDraft({wilaya:v, commune_id:null, commune_label:"", commune_name:""});
+    clearErr("wilaya"); loadCommunes(v);
+  }});
+  cbW.setOptions(FB.WILAYAS.map(w=>({value:w[0], label:`${String(w[0]).padStart(2,"0")} - ${UI.lang==="ar"?w[1]:w[2]}`, hint:UI.lang==="ar"?w[2]:w[1], search:`${w[0]} ${String(w[0]).padStart(2,"0")} ${w[1]} ${w[2]}`})));
+  cbC = UI.combobox($("#f_commune"), {emptyText:()=>t("noMatch"), onChange:v=>{
+    const c = communeList.find(c=>c.id===v);
+    saveDraft({commune_id:v, commune_label:c?(UI.lang==="ar"?c.ar:c.fr):""});
+    clearErr("commune"); renderDelivery();
+  }});
+  if (d.wilaya){ cbW.set(+d.wilaya); loadCommunes(+d.wilaya, d.commune_id); } else renderDelivery();
+  $("#f_delivery").addEventListener("change", e=>{ saveDraft({delivery:e.target.value}); clearErr("delivery"); renderDelivery(); });
+  $("#coNext").onclick = toReview;
+}
+const fieldKey = n=>({first_name:"first",last_name:"last",commune_name:"commune"}[n]||n);
+function clearErr(k){ delete co.fieldErr[k]; setErr(k,""); }
+// communes of the chosen wilaya; a wilaya without a list (some new wilayas) takes the name as typed
+async function loadCommunes(w, keep){
+  const inp = $("#f_commune"), txtIn = $("#f_commune_text");
+  communeList = []; cbC.setOptions([]); renderDelivery();
+  if (!w){ inp.disabled = true; inp.placeholder = t("communeFirst"); return; }
+  inp.disabled = true; inp.placeholder = t("communeLoading");
+  try { communeList = await FB_API.communes(w); } catch { communeList = []; }
+  if (!co || co.step!=="form" || cbW.value!==w) return;
+  const typed = !communeList.length;
+  $("#communeCombo").hidden = typed; txtIn.hidden = !typed; $("#communeHint").hidden = !typed;
+  if (typed) txtIn.setAttribute("aria-describedby","communeHint");
+  inp.disabled = false; inp.placeholder = t("communePh");
+  cbC.setOptions(communeList.map(c=>({value:c.id, label:UI.lang==="ar"?c.ar:c.fr, hint:UI.lang==="ar"?c.fr:c.ar, search:`${c.ar} ${c.fr}`})));
+  if (keep!=null) cbC.set(+keep);
+  renderDelivery();
+}
+function renderDelivery(){
+  if (!co || co.step!=="form") return;
+  const d = draft(), rs = delivState();
+  let sel = d.delivery;
+  if (rs && sel && !rs[sel].available){ sel = null; saveDraft({delivery:null}); }
+  $("#f_delivery").innerHTML = ["home","desk"].map(m=>{
+    const r = rs?.[m], off = r && !r.available;
+    const info = !rs ? t("shipLater") : off ? t("unavailable") : r.price==null ? t("shipPending") : fmt(r.price);
+    return `<label class="opt"><input type="radio" name="delivery" value="${m}" ${sel===m?"checked":""} ${off?"disabled":""}><span>${t(m)}<small class="price">${info}</small></span></label>`;
+  }).join("");
+  $("#addrBox").hidden = sel!=="home";
+  $("#coTotals").innerHTML = totalsHTML();
+}
+
+// same rules as place_order() in the database; the server checks everything again
+function validate(){
+  const d = draft(), errs = {};
+  const len = v=>String(v||"").trim().length;
+  if (len(d.first_name)<2) errs.first = t("eFirst");
+  if (len(d.last_name)<2) errs.last = t("eLast");
+  if (!FB.validPhone(d.phone)) errs.phone = t("ePhone");
+  if (len(d.phone2) && !FB.validPhone(d.phone2)) errs.phone2 = t("ePhoneOpt");
+  if (d.wa_same===false && len(d.whatsapp) && !FB.validPhone(d.whatsapp)) errs.whatsapp = t("ePhoneOpt");
+  if (len(d.instagram) && !/^@?[A-Za-z0-9._]{1,30}$/.test(String(d.instagram).trim())) errs.instagram = t("eIg");
+  if (!cbW.value) errs.wilaya = t("eWilaya");
+  else if (communeList.length ? !cbC.value : len($("#f_commune_text").value)<2) errs.commune = communeList.length ? t("eCommune") : t("eCommuneText");
+  const rs = delivState();
+  if (!d.delivery || (rs && !rs[d.delivery].available)) errs.delivery = t("eDelivery");
+  if (d.delivery==="home" && len(d.address)<5) errs.address = t("eAddr");
+  return errs;
+}
+function toReview(){
+  const errs = validate();
+  ["first","last","phone","phone2","whatsapp","instagram","wilaya","commune","delivery","address"].forEach(k=>setErr(k,errs[k]));
+  co.fieldErr = errs;
+  const first = Object.keys(errs)[0];
+  if (first){
+    const el = first==="delivery" ? $("#f_delivery input:not(:disabled)") : first==="commune" && !$("#f_commune_text").hidden ? $("#f_commune_text") : $("#f_"+first);
+    el?.focus(); el?.scrollIntoView({block:"center", behavior:"smooth"});
+    return;
+  }
+  if (!communeList.length) saveDraft({commune_id:null, commune_label:""});
+  co.step = "review"; co.error = null; co.key ||= UI.uuid();
+  renderCheckout(); $("#coBody").scrollTop = 0;
+}
+$("#coFoot").addEventListener("click", e=>{
+  if (e.target.closest("#coConfirm")) submitOrder();
+  if (e.target.closest("#coEdit")){ co.step = "form"; co.key = null; co.error = null; renderCheckout(); }
+});
+$("#coBody").addEventListener("click", e=>{ if (e.target.closest("#coRetry")) submitOrder(); });
+
+async function submitOrder(){
+  if (co.step==="sending") return;  // one request at a time, whatever the number of taps
+  const d = draft(), items = coItems().map(({id,size,color,qty})=>({id,size,color,qty}));
+  const payload = {idempotency_key:co.key, first_name:d.first_name.trim(), last_name:d.last_name.trim(), phone:d.phone,
+    phone2:d.phone2||"", whatsapp:d.wa_same!==false ? d.phone : (d.whatsapp||""), instagram:(d.instagram||"").trim(),
+    wilaya:+d.wilaya, commune_id:communeList.length ? d.commune_id : null, commune_name:communeList.length ? "" : (d.commune_name||"").trim(),
+    delivery:d.delivery, address:d.delivery==="home" ? (d.address||"").trim() : "", note:(d.note||"").trim(), lang:UI.lang, items,
+    hp:$("#f_hp")?.value || ""};
+  co.step = "sending"; co.error = null; renderCheckout();
+  try {
+    const res = await FB_API.placeOrder(payload);
+    if (!res || !res.tracking_code) throw new Error("network");
+    co.result = res; co.step = "done";
+    if (!res.repeat) FB_PIXELS.purchase(items.map(pixelLine), res);
+    if (co.kind==="cart"){ cart = []; saveCart(); }
+    // keep only the place choices, so the next order and the cart estimate start from the same wilaya
+    store.set("fb34-checkout", {wilaya:d.wilaya, commune_id:d.commune_id, commune_label:d.commune_label, delivery:d.delivery});
+    renderCheckout(); refreshCatalog();
+  } catch(e){
+    const m = String(e?.message||e), inv = m.match(/invalid:(\w+)/), hit = m.match(/(?:out_of_stock|unavailable):(\S+)/);
+    if (inv && inv[1]!=="items" && inv[1]!=="request"){
+      // the server found a field to fix: back to the form with the message next to it
+      const k = fieldKey(inv[1]);
+      co.step = "form"; co.key = null; co.fieldErr = {[k]: t({first:"eFirst",last:"eLast",phone:"ePhone",phone2:"ePhoneOpt",whatsapp:"ePhoneOpt",
+        instagram:"eIg",wilaya:"eWilaya",commune:"eCommune",delivery:"eDelivery",address:"eAddr"}[k]||"fixFields")};
+      renderCheckout(); return;
+    }
+    co.step = "review";
+    const lim = m.match(/limit:(open|wait|ip)|\bblocked\b/);
+    if (lim){ co.error = t({open:"eLimitOpen", wait:"eLimitWait", ip:"eLimitIp"}[lim[1]] || "eBlocked"); co.retry = false; co.key = null; renderCheckout(); return; }
+    if (hit){ co.error = t("eStock").replace("{name}", nm(byId(hit[1])?.name)); co.retry = false; co.key = null; refreshCatalog(); }
+    else { co.error = t("eNet"); co.retry = true; }  // same key on retry: no double order
+    renderCheckout();
+  }
+}
+function renderDone(){
+  const r = co.result;
+  $("#coTitle").textContent = t("doneTitle");
+  $("#coBody").innerHTML = `<div class="done">
+    <svg class="check-mark" viewBox="0 0 84 84" aria-hidden="true"><circle cx="42" cy="42" r="38"/><path d="M26 43l11 11 21-23"/></svg>
+    <h2 role="status">${t("okTitle")}</h2>
+    <p class="muted">${t("okText")}</p>
+    ${FB_API.mode==="demo"?`<p class="demo-bar" style="padding:.5rem .8rem;border-radius:10px">${esc(UI.t("demo"))}</p>`:""}
+    <div class="ids">
+      <div class="row"><span class="muted">${t("orderNo")}</span><b class="ltr">${esc(r.order_number)}</b></div>
+      <div class="code-box"><span class="muted">${t("trackNo")}</span><b id="trackCode">${esc(r.tracking_code)}</b></div>
+      <p class="hint">${t("keepCode")}</p>
+    </div>
+    <div class="sum" style="width:100%;text-align:start">
+      <div class="row"><span>${t("subtotal")}</span><span class="price">${fmt(r.subtotal)}</span></div>
+      <div class="row"><span>${t("shippingL")}</span><span class="price">${r.shipping_pending?t("shipPending"):fmt(r.shipping)}</span></div>
+      <div class="row total"><span>${r.shipping_pending?t("totalNoShip"):t("total")}</span><span class="price">${fmt(r.total)}</span></div>
+      ${r.shipping_pending?`<p class="note-pending">${t("pendingNote")}</p>`:""}
+    </div>
+  </div>`;
+  $("#coFoot").innerHTML = `<button class="btn btn-primary btn-block" type="button" id="copyTrack">${UI.icon("i-copy")}${t("copyTrack")}</button>
+    <div class="done-actions"><a class="btn btn-ghost" href="track.html#${encodeURIComponent(r.tracking_code)}">${t("trackMine")}</a>
+    <button class="btn btn-ghost" type="button" id="backShop">${t("backShop")}</button></div>`;
+  $("#copyTrack").onclick = async ()=>{
+    const ok = await UI.copyText(r.tracking_code);
+    if (ok) UI.toast(t("copiedTrack"));
+    else { getSelection().selectAllChildren($("#trackCode")); UI.toast(t("copyFail")); }
+  };
+  $("#backShop").onclick = closeCheckout;
+}
+
+/* ---------- search and sort ---------- */
+let searchTimer;
+$("#q").addEventListener("input", e=>{
+  query = e.target.value; renderGrid();
+  clearTimeout(searchTimer);
+  if (query.trim().length > 1) searchTimer = setTimeout(()=>FB_PIXELS.search(query.trim()), 1500);
+});
+$("#q").addEventListener("keydown", e=>{ if (e.key==="Enter"){ e.preventDefault(); e.target.blur(); } if (e.key==="Escape" && query){ e.preventDefault(); clearSearch(); } });
+function clearSearch(){ query = ""; $("#q").value = ""; renderGrid(); $("#q").focus(); }
+$("#qClear").onclick = clearSearch;
+$("#sort").addEventListener("change", e=>{ sortBy = e.target.value; renderGrid(); });
+$("#grid").addEventListener("click", e=>{
+  if (e.target.id==="searchClear2") clearSearch();
+  if (e.target.id==="searchAll"){ filter = "all"; renderFilters(); renderGrid(); }
+});
+
+/* ---------- misc ---------- */
+$("#filters").addEventListener("click",e=>{const b=e.target.closest("[data-cat]"); if(!b) return; filter=b.dataset.cat; renderFilters(); renderGrid();});
+$("#grid").addEventListener("click",e=>{
+  const o=e.target.closest("[data-open]"), b=e.target.closest("[data-buy]"), a=e.target.closest("[data-add]");
+  if (o) return zoomToQuick(o.closest(".card")?.querySelector(".frame"), o.dataset.open);
+  const p = byId((b||a)?.dataset.buy || (b||a)?.dataset.add); if (!p) return;
+  if (needsChoice(p)) return openProduct(p.id, b?"buy":"add");
+  if (b) openCheckout("buy",[directItem(p)]);
+  else { flyToCart(a.closest(".card").querySelector(".frame")); addToCart(directItem(p)); }
+});
+$("#copyPhone").onclick=async()=>{ if (await UI.copyText(S.phone_display)) UI.toast(t("copied")); else getSelection().selectAllChildren($("#phoneTxt")); };
+
+function refreshCatalog(){
+  return FB_API.loadCatalog().then(d=>{
+    S=d.settings; PRODUCTS=d.products; RATES=d.rates||{}; REVIEWS=d.reviews||[]; loaded=true; loadFailed=false;
+    FB_PIXELS.init(S);
+    if (FB_API.mode==="live") store.set("fb34-catalog",d);
+    saveCart();
+    if (co && co.step==="form"){ renderDelivery(); renderFilters(); renderTools(); renderGrid(); UI.setSocial(S); } else applyTexts();
+  }).catch(()=>{ if(!loaded){ loadFailed=true; renderGrid(); } });
+}
+
+/* map of the shop, from the position in the Google Maps link; loaded only when the visit section is near */
+let mapSeen = false;
+function showMap(){
+  const box = $("#mapBox"), pt = FB.mapPoint(S.map_url);
+  box.hidden = !pt; if (!pt) return;
+  const src = `https://www.google.com/maps?q=${pt.lat},${pt.lng}&z=17&hl=${UI.lang}&output=embed`;
+  const put = ()=>{ if (box.dataset.src !== src){ box.dataset.src = src; box.innerHTML = `<iframe src="${src}" title="${t("mapTitle")}" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>`; } };
+  if (mapSeen) return put();
+  if (!("IntersectionObserver" in window)) { mapSeen = true; return put(); }
+  const io = new IntersectionObserver(([e])=>{ if (e.isIntersecting){ mapSeen = true; io.disconnect(); put(); } }, {rootMargin:"300px"});
+  io.observe(box);
+}
+
+/* ---------- film moved by scrolling ----------
+   The scroll position inside the film section picks the picture to show (eased, so it glides).
+   Pictures load in passes, coarse first (every 16th, then every 8th...), so the film can be scrolled
+   from the first seconds; until a picture has arrived, the nearest loaded one is shown.
+   The bars, cart and WhatsApp appear once the film is over (or as soon as they get keyboard focus). */
+(function film(){
+  const root = document.documentElement, box = $("#film"), cv = $("#filmCanvas");
+  const calm = matchMedia("(prefers-reduced-motion: reduce)").matches || navigator.connection?.saveData;
+  root.classList.toggle("calm", !!calm);
+  // the top bars (demo note, header) move into one fixed bar; the social links and shop location go right under the film
+  const bar = document.createElement("div"); bar.className = "topbar"; bar.id = "topbar";
+  document.querySelectorAll("body > .demo-bar, body > .site-header").forEach(el=>bar.append(el));
+  document.body.prepend(bar);
+  const social = document.querySelector("body > .social-bar");
+  if (social){ social.classList.add("under-film"); box.after(social); }
+  const progress = ()=>{ const r = box.getBoundingClientRect(), run = box.offsetHeight - innerHeight; return run > 0 ? Math.min(1, Math.max(0, -r.top / run)) : (r.top < 0 ? 1 : 0); };
+  const filmEnd = ()=>box.offsetTop + box.offsetHeight - innerHeight;
+  // once the film has been watched to the end (or skipped), a return to the home page in the same visit
+  // starts at the shop; scrolling up plays the film again
+  const SEEN = "fb34-film-seen", seen = ()=>{ try { sessionStorage.setItem(SEEN, "1"); } catch {} };
+  const bars = ()=>{ const shown = calm ? scrollY > 24 : progress() >= .985; bar.classList.toggle("show", shown); root.classList.toggle("at-film", !shown); if (shown && !calm) seen(); };
+  let back = false; try { back = sessionStorage.getItem(SEEN) === "1"; } catch {}
+  if (back && !location.hash && scrollY < 10){ scrollTo({top: filmEnd() + 2, behavior: "instant"}); }
+  addEventListener("scroll", bars, {passive:true}); addEventListener("resize", bars); bars();
+  box.addEventListener("click", e=>{ e.preventDefault(); seen(); scrollTo({top: filmEnd() + 2, behavior: calm ? "auto" : "smooth"}); });
+  if (calm || !cv.getContext){ cv.remove(); return; }  // the first picture stays as a still
+
+  const ctx = cv.getContext("2d"), bg = $("#filmBg"), bctx = bg.getContext("2d"), pin = box.querySelector(".film-pin");
+  // three picture sets: "p" upright (phones held upright), "l" wide and large (computers), "s" wide and small
+  const SETS = {l: __FILM_FRAMES__, s: __FILM_FRAMES__, p: __FILM_PFRAMES__};
+  const big = Math.max(screen.width, screen.height, innerWidth, innerHeight) > 1100;
+  let ext = "webp", started = false;
+  const upright = ()=>innerHeight > innerWidth;
+  const wanted = ()=>upright() ? "p" : (big && ext === "webp" ? "l" : "s");   // JPG exists for "p" and "s"
+  const sets = {};
+  function set(name){
+    if (sets[name]) return sets[name];
+    const n = SETS[name], order = [0], seen = new Set(order);
+    // loading order: 0, then every 16th, every 8th, 4th, 2nd, then the rest
+    for (const step of [16,8,4,2,1]) for (let i = 0; i < n; i += step) if (!seen.has(i)){ seen.add(i); order.push(i); }
+    return sets[name] = {name, n, order, pics: new Array(n), loaded: new Uint8Array(n), next: 0, busy: 0, count: 0,
+      blobs: new Array(n), ready: new Uint8Array(n), small: new Array(n), decoding: new Uint8Array(n)};
+  }
+  // Pictures are kept compressed (a few MB for the whole film) and only the ones around the current position are
+  // decoded, ahead of time and off the main thread (createImageBitmap). Decoding a picture at the moment it is drawn,
+  // or keeping all 200 decoded (hundreds of MB), is what made phones stutter. Every 16th picture also stays decoded
+  // at a small size, so a fast flick always has something close to show.
+  let BITMAP = "createImageBitmap" in window && "fetch" in window;
+  const NEAR = 8, FAR = 12;
+  let decodes = 0, center = 0;
+  // c: where the scroll is heading (the film eases towards it), so the pictures there are ready when it arrives
+  function keep(S, c){
+    if (!BITMAP) return;
+    center = c;
+    for (let i = 0; i < S.n; i++){   // let go of full pictures that are now far away
+      if (S.pics[i] && Math.abs(i - c) > FAR && Math.abs(i - Math.round(shown * (S.n - 1))) > 2){ S.pics[i].close?.(); S.pics[i] = null; S.ready[i] = S.small[i] ? 2 : 0; }
+    }
+    const want = [];
+    for (let d = 0; d <= NEAR; d++){ if (c + d < S.n) want.push(c + d); if (d && c - d >= 0) want.push(c - d); }
+    for (const i of want){
+      if (decodes >= 3) break;
+      if (!S.blobs[i] || S.pics[i] || S.decoding[i]) continue;
+      S.decoding[i] = 1; decodes++;
+      createImageBitmap(S.blobs[i]).then(bm=>{
+        if (Math.abs(i - center) > FAR){ bm.close(); return; }
+        S.pics[i] = bm; S.ready[i] = 1; drawn = "";
+      }, ()=>{}).finally(()=>{ S.decoding[i] = 0; decodes--; });
+    }
+  }
+  // the first picture and the coarse pass load at once; the rest waits for the page's own load, so the page
+  // is not held "loading" by the film on a slow connection
+  let gateOpen = document.readyState === "complete";
+  if (!gateOpen) addEventListener("load", ()=>{ gateOpen = true; pump(); }, {once:true});
+  let active = null, shown = 0, drawn = "", sized = "";
+  function pump(){
+    if (!started) return;
+    const S = active = set(wanted());
+    const limit = gateOpen ? S.order.length : 1 + Math.ceil(S.n / 16);
+    while (S.busy < 6 && S.next < limit){
+      const i = S.order[S.next++], url = `assets/film/${S.name}/${String(i+1).padStart(3,"0")}.${ext}`; S.busy++;
+      const viaImage = ()=>{   // the plain way, used when pictures cannot be fetched and decoded ahead
+        const im = new Image(); im.decoding = "async";
+        im.onload = ()=>{ S.pics[i] = im; S.ready[i] = 1; got(); };
+        im.onerror = ()=>{ S.busy--; pump(); };
+        im.src = url;
+      };
+      const got = ()=>{ S.busy--; S.loaded[i] = 1; S.count++; if (S === active){ cv.dataset.loaded = String(S.count); if (i === 0) cv.dataset.ready = "1"; } drawn = ""; pump(); };
+      if (BITMAP){
+        fetch(url).then(r=>r.ok ? r.blob() : Promise.reject(r.status)).then(async bl=>{
+          S.blobs[i] = bl;
+          // the first picture and every 16th: a small copy that always stays decoded
+          if (i % 16 === 0 || i === S.n - 1){
+            const small = await createImageBitmap(bl, {resizeWidth: Math.max(160, Math.round(cv.clientWidth * .6)), resizeQuality: "low"}).catch(()=>null);
+            if (small){ S.small[i] = small; if (!S.ready[i]) S.ready[i] = 2; }
+          }
+          got(); keep(S, Math.round(progress() * (S.n - 1)));
+        }).catch(()=>{ BITMAP = false; viaImage(); });
+      } else viaImage();
+    }
+  }
+  // WebP check (a 1x1 picture); old browsers get the JPG pictures
+  const probe = new Image();
+  probe.onload = ()=>{ if (!probe.width) ext = "jpg"; started = true; pump(); };
+  probe.onerror = ()=>{ ext = "jpg"; started = true; pump(); };
+  probe.src = "data:image/webp;base64,UklGRiIAAABXRUJQVlA4IBYAAAAwAQCdASoBAAEADsD+JaQAA3AAAAAA";
+  // the phone is turned: switch to the set that fits, keep showing the other one until it arrives
+  addEventListener("resize", ()=>{ if (started && active && wanted() !== active.name) pump(); });
+
+  function fit(){
+    // 1.5 pixels per screen point at most: the pictures themselves are 720 px wide on phones, so more adds no detail,
+    // only work (a 2x or 3x canvas was a main cause of stutter on phones)
+    const w = cv.clientWidth, h = cv.clientHeight, k = Math.min(devicePixelRatio || 1, 1.5), key = `${w}x${h}@${k}`;
+    if (key !== sized){ sized = key; cv.width = Math.round(w * k); cv.height = Math.round(h * k); drawn = ""; }
+  }
+  // closest picture ready to draw: a full one within reach first, else the closest small one
+  const nearest = (S, i)=>{
+    for (let d = 0; d <= FAR; d++){ if (i-d >= 0 && S.ready[i-d] === 1) return i-d; if (i+d < S.n && S.ready[i+d] === 1) return i+d; }
+    for (let d = 0; d < S.n; d++){ if (i-d >= 0 && S.ready[i-d]) return i-d; if (i+d < S.n && S.ready[i+d]) return i+d; }
+    return -1;
+  };
+  // picture for the current progress: from the wanted set, else from any set already loaded
+  function pick(p){
+    for (const S of [active, ...Object.values(sets).filter(x=>x !== active)]){
+      if (!S || !S.count) continue;
+      const i = nearest(S, Math.round(p * (S.n - 1)));
+      if (i >= 0) return [S, i];
+    }
+    return null;
+  }
+  function draw(S, i){
+    const src = S.pics[i] || S.small[i], W = cv.width, H = cv.height;
+    // a full picture or its small copy: only the shape matters for the sizes below
+    const im = {naturalWidth: src.naturalWidth || src.width, naturalHeight: src.naturalHeight || src.height};
+    // the picture's shape matches the screen: fill it (cover). Otherwise (wide picture on an upright screen, while
+    // the upright set is still on its way): the whole picture over a blurred copy that fills the screen.
+    const match = (im.naturalHeight > im.naturalWidth) === (H > W);
+    const s = match ? Math.max(W / im.naturalWidth, H / im.naturalHeight) : Math.min(W / im.naturalWidth, H / im.naturalHeight);
+    const dw = im.naturalWidth * s, dh = im.naturalHeight * s;
+    pin.classList.toggle("fill", match);
+    if (!match){
+      // the blurred copy is drawn small (the blur hides the detail) and stretched by CSS: cheap on any phone
+      const bw = 72, bh = Math.round(bw * bg.clientHeight / Math.max(1, bg.clientWidth)), c = Math.max(bw / im.naturalWidth, bh / im.naturalHeight);
+      if (bg.width !== bw || bg.height !== bh){ bg.width = bw; bg.height = bh; }
+      bctx.drawImage(src, (bw - im.naturalWidth * c) / 2, (bh - im.naturalHeight * c) / 2, im.naturalWidth * c, im.naturalHeight * c);
+      ctx.clearRect(0, 0, W, H);
+    }   // when it fills the screen the picture covers every pixel: nothing to clear
+    ctx.drawImage(src, (W - dw) / 2, (H - dh) / 2, dw, dh);
+    drawn = S.name + i + S.ready[i]; cv.dataset.frame = String(i); cv.dataset.set = S.name; cv.dataset.last = String(S.n - 1);
+  }
+  (function tick(){
+    const r = box.getBoundingClientRect();
+    if (r.bottom > 0 && r.top < innerHeight){   // only while the film is on screen
+      fit();
+      // the frame is locked straight to the scroll position — no easing, so it never lags behind the finger
+      const target = shown = progress();
+      if (active) keep(active, Math.round(target * (active.n - 1)));
+      const hit = pick(shown);
+      if (hit && hit[0].name + hit[1] + hit[0].ready[hit[1]] !== drawn) draw(hit[0], hit[1]);
+    }
+    requestAnimationFrame(tick);
+  })();
+})();
+// the brand lines appear as they come into view
+(function(){
+  const lines = $("#brandLines");
+  if (!("IntersectionObserver" in window)) return lines.classList.add("reveal");
+  const io = new IntersectionObserver(([e])=>{ if (e.isIntersecting){ lines.classList.add("reveal"); io.disconnect(); } }, {threshold:.25});
+  io.observe(lines);
+})();
+
+$("#cartCount").textContent = cart.reduce((s,l)=>s+l.qty,0);
+applyTexts();
+refreshCatalog().then(()=>{
+  // links from other pages: #cart opens the cart, #p-<id> opens a product
+  const h = decodeURIComponent(location.hash.slice(1));
+  if (h==="cart") $("#cartBtn").click();
+  else if (h.startsWith("p-") && byId(h.slice(2))) openProduct(h.slice(2));
+});
+if ("requestIdleCallback" in window) requestIdleCallback(()=>UI.ripple()); else setTimeout(()=>UI.ripple(), 600);
+</script>
+</body>
+</html>

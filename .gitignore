@@ -1,0 +1,5 @@
+node_modules/
+*.zip
+dist/
+tests/.run-*.mjs
+__pycache__/

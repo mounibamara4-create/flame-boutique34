@@ -1,0 +1,1601 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="claude:viewport-fit-sides" content="cover">
+<title>لوحة تحكم Flame Boutique34</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500&family=Marcellus&family=Noto+Naskh+Arabic:wght@400;600&family=Reem+Kufi:wght@500;600&display=swap">
+<style>
+/* Same palette as the store; the dashboard is a working tool, so it stays quiet and dense. */
+:root{
+  --linen:#FBF6F0; --surface:#FFFDF9; --ink:#3B2A26; --muted:#7A635D; --mulberry:#A3576A; --on-mulberry:#FFF8F5;
+  --ember:#B08A4A; --rose:#F4E3DE; --line:#E8D8CC; --danger:#B3343F; --frame:#FFFDF9;
+  --st-received:#9A7432; --st-contacting:#B0602C; --st-confirmed:#2F5D8A; --st-preparing:#4E5FA0; --st-handed_to_carrier:#6A4C93;
+  --st-out_for_delivery:#8A3F86; --st-delivered:#2E7D4F; --st-cancelled:#7F7479; --st-failed:#B3343F;
+  --display:"Marcellus","Reem Kufi",Georgia,serif;
+  --body:"Jost","Noto Naskh Arabic",system-ui,sans-serif;
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --linen:#1D1716; --surface:#28201E; --ink:#F4ECE6; --muted:#BFAEA6; --mulberry:#E7A9B6; --on-mulberry:#2A1A1E;
+  --ember:#D8B271; --rose:#3A2D2B; --line:#4A3B37; --danger:#F08A8F; --frame:#EFE4DE;
+  --st-received:#D8B271; --st-contacting:#E8A06A; --st-confirmed:#7FB0E0; --st-preparing:#9AA8E8; --st-handed_to_carrier:#B79BE0;
+  --st-out_for_delivery:#D79BD3; --st-delivered:#7CC79A; --st-cancelled:#A99DA5; --st-failed:#F08A8F; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --linen:#1D1716; --surface:#28201E; --ink:#F4ECE6; --muted:#BFAEA6; --mulberry:#E7A9B6; --on-mulberry:#2A1A1E;
+  --ember:#D8B271; --rose:#3A2D2B; --line:#4A3B37; --danger:#F08A8F; --frame:#EFE4DE;
+  --st-received:#D8B271; --st-contacting:#E8A06A; --st-confirmed:#7FB0E0; --st-preparing:#9AA8E8; --st-handed_to_carrier:#B79BE0;
+  --st-out_for_delivery:#D79BD3; --st-delivered:#7CC79A; --st-cancelled:#A99DA5; --st-failed:#F08A8F; color-scheme:dark}
+
+*,*::before,*::after{box-sizing:border-box}
+html{padding-block:env(safe-area-inset-top,0px) env(safe-area-inset-bottom,0px)}
+body{margin:0;background:var(--linen);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--surface)}
+[hidden]{display:none!important}
+h1,h2,h3{font-family:var(--display);font-weight:500;margin:0;line-height:1.25;text-wrap:balance}
+p{margin:0}
+a{color:inherit}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--ember);outline-offset:2px}
+img{max-width:100%}
+.wrap{max-width:1180px;margin-inline:auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.num{font-variant-numeric:tabular-nums;white-space:nowrap}
+.ltr{direction:ltr;unicode-bidi:isolate}
+.muted{color:var(--muted)}
+.small{font-size:.85rem}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.4rem;min-height:42px;padding:0 1.1rem;border-radius:999px;border:1px solid transparent;cursor:pointer;text-decoration:none;font-weight:500;white-space:nowrap}
+.btn-primary{background:var(--mulberry);color:var(--on-mulberry)}
+.btn-ghost{border-color:var(--line);background:var(--surface)}
+.btn-danger{border-color:var(--danger);color:var(--danger);background:transparent}
+.btn-danger.armed{background:var(--danger);color:var(--surface)}
+.btn[disabled]{opacity:.55;cursor:not-allowed}
+.btn-sm{min-height:34px;padding:0 .8rem;font-size:.88rem}
+.link{background:none;border:0;padding:.2rem;color:var(--mulberry);cursor:pointer;text-decoration:underline;text-underline-offset:3px}
+
+/* ---------- login ---------- */
+.login{min-height:100vh;min-height:100dvh;display:grid;place-items:center;padding:24px max(16px,env(safe-area-inset-right,0px)) 24px max(16px,env(safe-area-inset-left,0px))}
+.login form{width:min(380px,100%);display:grid;gap:1rem;background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:2rem 1.5rem;text-align:center}
+.login svg{width:44px;height:52px;margin-inline:auto}
+.login h1{font-size:1.5rem}
+
+/* ---------- shell ---------- */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--surface);border-bottom:1px solid var(--line)}
+.top-bar{display:flex;align-items:center;gap:.8rem;min-height:60px}
+.brand{display:flex;align-items:center;gap:.5rem;margin-inline-end:auto;min-width:0}
+.brand svg{width:24px;height:30px;flex:none}
+.brand b{font-family:var(--display);font-weight:500;font-size:1.15rem;white-space:nowrap}
+@media (max-width:520px){.brand b{display:none}}
+.pill{display:inline-flex;align-items:center;gap:.35rem;padding:.1rem .65rem;border-radius:999px;font-size:.8rem;border:1px solid var(--line);white-space:nowrap}
+.pill::before{content:"";width:7px;height:7px;border-radius:50%;background:currentColor}
+.tabs{display:flex;gap:.25rem;overflow-x:auto;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tab{flex:none;background:none;border:0;border-bottom:2px solid transparent;padding:.7rem .9rem;cursor:pointer;color:var(--muted);white-space:nowrap}
+.tab[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--mulberry)}
+.tab .count{background:var(--mulberry);color:var(--on-mulberry);border-radius:999px;font-size:.72rem;padding:0 .45rem;margin-inline-start:.3rem}
+main{padding-block:1.5rem 4rem}
+.panel{display:grid;gap:1.5rem}
+.panel>*{min-width:0}
+.panel-head{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:.8rem}
+.panel-head h2{font-size:1.5rem}
+.toolbar{display:flex;flex-wrap:wrap;gap:.5rem;align-items:center}
+.banner{padding:.8rem 1rem;border-radius:12px;background:var(--rose);display:flex;flex-wrap:wrap;gap:.6rem 1rem;align-items:center;justify-content:space-between}
+.box{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:1.2rem}
+.box h3{font-size:1.1rem;margin-bottom:.8rem}
+
+/* ---------- overview ---------- */
+.chips{display:flex;gap:.4rem;flex-wrap:wrap}
+.chip{min-height:36px;padding:0 .9rem;border-radius:999px;border:1px solid var(--line);background:transparent;cursor:pointer;white-space:nowrap;font-size:.9rem}
+.chip[aria-pressed="true"]{background:var(--ink);color:var(--linen);border-color:var(--ink)}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,200px),1fr));gap:1rem}
+.kpi{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:1rem 1.1rem;display:grid;gap:.2rem}
+.kpi .label{color:var(--muted);font-size:.9rem}
+.kpi .value{font-family:var(--display);font-size:1.75rem;line-height:1.2;font-variant-numeric:tabular-nums}
+.kpi .sub{color:var(--muted);font-size:.82rem}
+.two-col{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));gap:1rem}
+.chart-wrap{position:relative}
+.chart-wrap svg{display:block;width:100%;height:auto}
+.tip{position:absolute;pointer-events:none;background:var(--ink);color:var(--linen);padding:.35rem .6rem;border-radius:8px;font-size:.82rem;white-space:nowrap;transform:translate(-50%,-110%);opacity:0;transition:opacity .12s}
+.tip.on{opacity:1}
+.rank{list-style:none;margin:0;padding:0;display:grid;gap:.55rem}
+.rank li{display:grid;grid-template-columns:1fr auto;gap:.2rem .8rem;align-items:center}
+.rank .bar{grid-column:1/-1;height:4px;border-radius:4px;background:var(--rose);overflow:hidden}
+.rank .bar i{display:block;height:100%;background:var(--mulberry);border-radius:4px}
+.empty{color:var(--muted);padding-block:.5rem}
+
+/* ---------- orders ---------- */
+.search{min-height:40px;padding:0 .9rem;border-radius:999px;border:1px solid var(--line);background:var(--surface);min-width:0;width:280px;max-width:100%}
+.toolbar .field{flex:1 1 150px}
+.orders{display:grid;gap:.6rem}
+.order{background:var(--surface);border:1px solid var(--line);border-radius:14px}
+.order summary{list-style:none;cursor:pointer;display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1.4fr) auto auto;gap:.4rem 1rem;align-items:center;padding:.8rem 1rem}
+.order summary::-webkit-details-marker{display:none}
+.o-tags{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:.3rem}.o-tags:empty{display:none}
+.order summary small{display:block;color:var(--muted);font-size:.8rem}
+.order[open] summary{border-bottom:1px solid var(--line)}
+.order-body{padding:1rem;display:grid;gap:1rem;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr))}
+.order-body dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:.3rem .8rem}
+.order-body dt{color:var(--muted)}
+.order-body dd{margin:0;min-width:0;overflow-wrap:anywhere}
+.items{list-style:none;margin:0;padding:0;display:grid;gap:.4rem}
+.items li{display:flex;justify-content:space-between;gap:.6rem}
+.st{color:var(--st-received)}
+.st-received{color:var(--st-received)}.st-contacting{color:var(--st-contacting)}.st-confirmed{color:var(--st-confirmed)}.st-preparing{color:var(--st-preparing)}.st-handed_to_carrier{color:var(--st-handed_to_carrier)}.st-out_for_delivery{color:var(--st-out_for_delivery)}.st-delivered{color:var(--st-delivered)}.st-cancelled{color:var(--st-cancelled)}.st-failed{color:var(--st-failed)}
+.status-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,200px),1fr));gap:.5rem}
+.status-cell{display:flex;justify-content:space-between;align-items:center;gap:.6rem;padding:.55rem .8rem;border:1px solid var(--line);border-radius:12px;background:var(--surface);cursor:pointer;text-align:start}
+.status-cell:hover{border-color:var(--mulberry)}
+.status-cell b{font-size:1.1rem}
+.history{list-style:none;margin:0;padding:0;display:grid;gap:.35rem}
+.history li{display:flex;justify-content:space-between;align-items:center;gap:.6rem;flex-wrap:wrap}
+.commune-picks{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,220px),1fr));gap:.3rem .8rem;max-height:360px;overflow-y:auto;padding:.6rem;border:1px solid var(--line);border-radius:12px}
+td input[type=number]::placeholder{color:var(--muted)}
+.o-code small{display:block}
+@media (max-width:640px){.order summary{grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"code st" "who total"}.o-code{grid-area:code}.o-st{grid-area:st;justify-self:end}.o-who{grid-area:who;min-width:0}.o-total{grid-area:total;justify-self:end;align-self:start}}
+
+/* ---------- forms ---------- */
+.field{display:grid;gap:.3rem;min-width:0}
+.field label,.field .lbl{font-size:.88rem;color:var(--muted)}
+.field input:not([type=checkbox]):not([type=color]):not([type=file]),.field select,.field textarea{min-height:42px;padding:.5rem .8rem;border-radius:10px;border:1px solid var(--line);background:var(--linen);width:100%}
+.field textarea{min-height:76px;resize:vertical}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));gap:.8rem}
+.check{display:flex;align-items:center;gap:.5rem;cursor:pointer}
+.check input{width:18px;height:18px;accent-color:var(--mulberry)}
+.err{color:var(--danger);font-size:.88rem}
+.savebar{position:sticky;bottom:0;z-index:5;background:var(--surface);border-top:1px solid var(--line);padding-block:.8rem calc(.8rem + env(safe-area-inset-bottom,0px));display:flex;gap:.8rem;align-items:center;justify-content:flex-end;border-radius:12px 12px 0 0;padding-inline:1rem}
+
+/* ---------- products ---------- */
+.plist{display:grid;gap:.6rem}
+.prow{display:grid;grid-template-columns:56px minmax(0,1fr) auto auto;gap:.9rem;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:.6rem .9rem}
+.thumb{width:56px;aspect-ratio:3/4;border-radius:999px 999px 4px 4px;overflow:hidden;display:grid;place-items:center}
+.thumb svg{width:80%}
+.thumb img{width:100%;height:100%;object-fit:cover}
+.prow .name{font-family:var(--display);font-size:1.02rem}
+.prow .meta{color:var(--muted);font-size:.85rem;display:flex;flex-wrap:wrap;gap:.2rem .9rem}
+.prow .acts{display:flex;gap:.3rem;align-items:center}
+.icon{width:34px;height:34px;border-radius:999px;border:1px solid var(--line);background:var(--surface);cursor:pointer;display:inline-grid;place-items:center}
+.icon[disabled]{opacity:.35;cursor:not-allowed}
+.off{opacity:.55}
+@media (max-width:640px){.prow{grid-template-columns:48px minmax(0,1fr) auto}.prow .acts.move{display:none}.thumb{width:48px}}
+
+dialog{border:0;padding:0;color:var(--ink);background:var(--surface);max-width:100%;max-height:100%}
+dialog::backdrop{background:rgba(20,10,18,.55)}
+.editor{width:min(760px,calc(100% - 24px));max-height:calc(100% - 24px);border-radius:18px;display:flex;flex-direction:column}
+.editor:not([open]){display:none}
+.editor-head{display:flex;justify-content:space-between;align-items:center;gap:1rem;padding:1rem 1.2rem;border-bottom:1px solid var(--line)}
+.editor-body{overflow-y:auto;padding:1.2rem;display:grid;gap:1.1rem}
+.editor-foot{display:flex;flex-wrap:wrap;gap:.6rem;justify-content:space-between;padding:1rem 1.2rem;border-top:1px solid var(--line)}
+fieldset{border:1px solid var(--line);border-radius:12px;margin:0;padding:.9rem;display:grid;gap:.8rem;min-width:0}
+legend{padding:0 .4rem;font-weight:500}
+.color-row{display:grid;grid-template-columns:44px minmax(0,1fr) minmax(0,1fr) auto auto;gap:.5rem;align-items:center}
+.color-row input[type=color]{width:44px;height:42px;border:1px solid var(--line);border-radius:10px;background:none;padding:2px;cursor:pointer}
+.mini{width:42px;height:42px;border-radius:8px;overflow:hidden;border:1px solid var(--line);display:grid;place-items:center;font-size:.7rem;color:var(--muted);background:var(--linen)}
+.mini img{width:100%;height:100%;object-fit:cover}
+@media (max-width:560px){.color-row{grid-template-columns:44px minmax(0,1fr) auto;}.color-row .fr{grid-column:2}}
+.upload{display:inline-flex;align-items:center;gap:.4rem;cursor:pointer}
+.upload input{position:absolute;opacity:0;width:1px;height:1px}
+.stock-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(90px,1fr));gap:.5rem}
+.main-img{display:flex;gap:.8rem;align-items:center;flex-wrap:wrap}
+.main-img .thumb{width:72px}
+.extra-imgs{display:flex;flex-wrap:wrap;gap:.8rem}
+.extra{display:grid;gap:.3rem;justify-items:center}
+.extra .mini{width:72px;height:90px}
+.extra .icon{width:28px;height:28px;font-size:.8rem}
+
+/* ---------- shipping ---------- */
+.table-scroll{position:relative;overflow-x:auto;background:var(--surface);border:1px solid var(--line);border-radius:14px}
+table{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums}
+th,td{text-align:start;padding:.45rem .7rem;border-bottom:1px solid var(--line);white-space:nowrap}
+th{font-weight:500;color:var(--muted);font-size:.88rem;background:var(--surface);position:sticky;top:0}
+td input[type=number]{width:96px;min-height:36px;padding:.3rem .5rem;border-radius:8px;border:1px solid var(--line);background:var(--linen)}
+tr.disabled td{opacity:.5}
+.cat-row{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr) auto;gap:.5rem;align-items:end}
+
+.toast{position:fixed;inset-block-end:calc(20px + env(safe-area-inset-bottom,0px));left:50%;transform:translate(-50%,20px);opacity:0;z-index:50;background:var(--ink);color:var(--linen);padding:.7rem 1.1rem;border-radius:999px;transition:opacity .2s,transform .3s;pointer-events:none;max-width:calc(100% - 32px)}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+.toast.bad{background:var(--danger)}
+/* connection check on the login page */
+.diag{list-style:none;margin:0;padding:.8rem 1rem;display:grid;gap:.55rem;text-align:start;font-size:.86rem;border:1px solid var(--line);border-radius:12px;background:var(--surface)}
+.diag li{display:grid;grid-template-columns:1.3rem 1fr;gap:.1rem .4rem}
+.diag li::before{content:"✓";color:var(--st-delivered,#2E8B57);font-weight:700}
+.diag li.bad::before{content:"✕";color:var(--danger,#B3343F)}
+.diag li.wait::before{content:"…";color:var(--muted)}
+.diag small{grid-column:2;color:var(--muted)}
+.diag li.bad small{color:inherit}
+.diag code{display:block;margin-top:.25rem;direction:ltr;text-align:left;unicode-bidi:isolate;font-size:.76rem;overflow-wrap:anywhere;opacity:.85}
+tr.from-zr td{background:color-mix(in oklab,#2f6b3a 10%,transparent)}
+/* ZR Express in an order */
+.zr-box{display:grid;gap:.35rem;padding:.6rem .7rem;border:1px solid var(--line);border-radius:10px;background:var(--surface)}
+.zr-box .link{justify-self:start}
+.zr-pill{background:var(--surface)}
+.zr-delivered{color:#2f6b3a}.zr-returned,.zr-attempt,.zr-cancelled{color:#9a3b2f}
+/* customer history and WhatsApp messages in an order */
+.hist{font-size:.74rem}
+.wa-msgs{display:flex;flex-wrap:wrap;gap:.35rem}
+.wa-msgs .btn{min-height:32px;padding:0 .7rem;font-size:.8rem}
+.hist-list{list-style:none;margin:0;padding:0;display:grid;gap:.3rem}
+.hist-list li{display:flex;flex-wrap:wrap;gap:.2rem .5rem;align-items:center}
+/* racks tab */
+.rk-list{display:grid;gap:1rem}
+.rk{display:grid;gap:.8rem}
+.rk-head{display:grid;grid-template-columns:1fr 1fr auto;gap:.6rem 1rem;align-items:end}
+@media (max-width:760px){.rk-head{grid-template-columns:1fr}}
+.rk-items{display:flex;flex-wrap:wrap;gap:.7rem;padding:.8rem;border-radius:12px;border-top:5px solid #A27A48;background:var(--linen)}
+.rk-item{display:grid;gap:.25rem;justify-items:center;width:104px;text-align:center}
+.rk-item.off{opacity:.45}
+.rk-item .icon{width:26px;height:26px;font-size:.75rem}
+.rk-pic{width:72px;height:96px;display:grid;place-items:center;border-radius:6px;background:repeating-conic-gradient(#e6e0d8 0 25%,#fff 0 50%) 0 0/10px 10px}
+.rk-pic img{max-width:100%;max-height:100%;object-fit:contain}
+/* rack photos in the product editor: shown on a checkerboard, so a missing background is obvious */
+.cut-row{display:flex;flex-wrap:wrap;gap:1rem}
+.cut{display:grid;gap:.35rem;justify-items:start;max-width:220px}
+.cut-pic{width:120px;height:150px;border-radius:8px;border:1px solid var(--line);display:grid;place-items:center;overflow:hidden;
+  background:repeating-conic-gradient(#e6e0d8 0 25%,#fff 0 50%) 0 0/16px 16px}
+.cut-pic img{max-width:100%;max-height:100%;object-fit:contain}
+.cut-mini{background:repeating-conic-gradient(#e6e0d8 0 25%,#fff 0 50%) 0 0/10px 10px}
+.cut-mini img{object-fit:contain}
+/* reviews */
+.stars{position:relative;display:inline-block;line-height:1;letter-spacing:.08em;white-space:nowrap}
+.stars::before{content:"★★★★★";color:var(--line)}
+.stars>span{position:absolute;inset-block:0;inset-inline-start:0;overflow:hidden}
+.stars>span::before{content:"★★★★★";color:#C99A4E}
+.rlist{display:grid;gap:.7rem}
+.rrow{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:.6rem 1rem;align-items:start;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:.9rem 1rem}
+.rrow.pending{border-color:var(--mulberry)}
+.rrow p{overflow-wrap:anywhere}
+.rrow .meta{display:flex;flex-wrap:wrap;gap:.2rem .8rem;font-size:.85rem;color:var(--muted)}
+.rrow .acts{display:flex;flex-wrap:wrap;gap:.4rem;justify-content:flex-end}
+.rrow img{width:72px;height:72px;object-fit:cover;border-radius:8px;display:block}
+@media (max-width:640px){.rrow{grid-template-columns:1fr}.rrow .acts{justify-content:flex-start}}
+@media (prefers-reduced-motion:reduce){*{transition-duration:.01ms!important}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-flame" viewBox="0 0 30 36"><path fill="none" stroke="currentColor" stroke-width="1.3" d="M2 35V14a13 13 0 0 1 26 0v21"/><path style="fill:var(--ember)" d="M15 12c2 3.5 5.5 5.5 5 10a5 5 0 0 1-10 0c-.3-3.3 2.6-4.6 3.2-7 .6 1.5 1.2 2 1.8 2.4.4-1.6.3-3.3 0-5.4Z"/></symbol>
+</svg>
+
+<section class="login" id="login" hidden>
+  <form id="loginForm">
+    <svg aria-hidden="true"><use href="#i-flame"/></svg>
+    <h1>لوحة تحكم المتجر</h1>
+    <p class="muted small" id="loginHint"></p>
+    <div class="field" style="text-align:start" id="emailBox" hidden>
+      <label for="em">البريد الإلكتروني لحساب المالك</label>
+      <input id="em" type="email" autocomplete="username" dir="ltr">
+    </div>
+    <div class="field" style="text-align:start">
+      <label for="pw">كلمة المرور</label>
+      <input id="pw" type="password" autocomplete="current-password" required>
+    </div>
+    <p class="err" id="loginErr" role="alert"></p>
+    <button class="btn btn-primary" type="submit" id="loginBtn">دخول</button>
+    <button class="link small" type="button" id="diagBtn">فحص الاتصال بقاعدة البيانات</button>
+    <ol class="diag" id="diag" hidden></ol>
+    <a class="small muted" href="./">العودة إلى المتجر</a>
+  </form>
+</section>
+
+<div id="app" hidden>
+  <header class="top">
+    <div class="wrap top-bar">
+      <div class="brand"><svg aria-hidden="true"><use href="#i-flame"/></svg><b>Flame boutique34</b><span class="pill" id="modePill"></span></div>
+      <a class="btn btn-ghost btn-sm" href="./" target="_blank" rel="noopener">عرض المتجر</a>
+      <button class="btn btn-ghost btn-sm" type="button" id="logout">خروج</button>
+    </div>
+    <nav class="wrap tabs" role="tablist" id="tabs"></nav>
+  </header>
+  <main class="wrap" id="main"></main>
+</div>
+
+<dialog class="editor" id="editor" aria-labelledby="edTitle">
+  <div class="editor-head"><h2 id="edTitle"></h2><button class="icon" type="button" data-close aria-label="إغلاق">✕</button></div>
+  <form class="editor-body" id="edForm" novalidate></form>
+  <div class="editor-foot">
+    <button class="btn btn-danger" type="button" id="edDelete">حذف المنتج</button>
+    <div class="toolbar"><button class="btn btn-ghost" type="button" data-close>إلغاء</button><button class="btn btn-primary" type="submit" form="edForm" id="edSave">حفظ المنتج</button></div>
+  </div>
+</dialog>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script src="assets/config.js"></script>
+<script src="locations.js"></script>
+<script src="shared.js"></script>
+<script src="api.js"></script>
+<script>
+const $ = s=>document.querySelector(s), $$ = s=>[...document.querySelectorAll(s)];
+const esc = FB.esc, money = n=>FB.money(n);
+const clone = o=>JSON.parse(JSON.stringify(o));
+const sum = (a,f)=>a.reduce((s,x)=>s+(f(x)||0),0);
+let D = null;                 // {settings, products, orders}
+let tab = "overview";
+const ui = {period:"30", ordStatus:"all", ordQuery:"", ordLimit:60, open:new Set(), prodQuery:"", revStatus:"pending", revForm:null};
+
+const TABS = [["overview","نظرة عامة"],["orders","الطلبات"],["products","المنتجات"],["racks","الرفوف"],["reviews","الآراء"],["shipping","التوصيل"],["site","إعدادات الموقع"],["account","الحساب"]];
+
+/* ---------- feedback ---------- */
+let toastTimer;
+function toast(msg, bad){ const el=$("#toast"); el.textContent=msg; el.classList.toggle("bad",!!bad); el.classList.add("show"); clearTimeout(toastTimer); toastTimer=setTimeout(()=>el.classList.remove("show"),2600); }
+function errText(e){
+  const m = String(e?.message||e);
+  if (m.includes("schema:cutout")) return "قاعدة البيانات لا تعرف صور الرف بعد: شغّل supabase/setup.sql مرة أخرى في Supabase (آمن)، ثم أعد الحفظ.";
+  if (m.includes("storage_full")) return "امتلأت ذاكرة المتصفح في وضع التجربة. استعمل صوراً أقل أو أصغر.";
+  if (m.startsWith("courier:")){
+    const zr = {
+      "courier:keys": "أدخل مفاتيح ZR Express أولاً: إعدادات الموقع ← شركة التوصيل ZR Express.",
+      "courier:off": "الربط مع ZR Express غير مفعّل: إعدادات الموقع ← شركة التوصيل ZR Express.",
+      "courier:shipping": "حدّد سعر التوصيل أولاً: ZR تحتاج المبلغ الكامل الذي ستدفعه الزبونة عند الاستلام.",
+      "courier:status": "هذا الطلب ملغى أو مُسلَّم أو تعذّر تسليمه: لا يُرسل إلى ZR.",
+      "courier:auth": "ZR رفضت المفتاح (401): تحقّق من مفتاح API، ومن أن صلاحيته لم تنتهِ.",
+      "courier:tenant": "ZR رفضت الطلب (403): تحقّق من رقم الحساب (Tenant ID) ومن صلاحيات المفتاح.",
+      "courier:net": "تعذّر الوصول إلى ZR Express. أعد المحاولة بعد قليل.",
+      "courier:slow": "ZR لم تردّ في الوقت. أعد المحاولة: الموقع يتحقق أولاً من أن الطرد لم يُسجَّل من قبل، فلا يتكرر.",
+      "courier:nodesk": "لم تُرجع ZR أي مكتب في ولاية الزبونة. اتصل بها لتغيير التوصيل إلى المنزل.",
+      "courier:noid": "ZR لم تُرجع رقم الطرد. افتح حسابك في ZR وتحقق قبل إعادة الإرسال.",
+      "courier:path": "طلب غير مسموح به إلى ZR."}[m];
+    if (zr) return zr;
+    if (m === "courier:http" || m === "courier:refused") return "ZR Express رفضت الطلب" + (e.detail ? `: ${e.detail}` : ".");
+  }
+  if (m.includes("pg_net_missing")) return "فعّل الإضافة pg_net في Supabase أولاً (Database ← Extensions ← pg_net).";
+  if (m === "demo") return "في وضع التجربة لا يتصل الموقع بأي خدمة خارجية.";
+  if (m.includes("network")||m.includes("Failed to fetch")) return "تعذّر الاتصال. تحقّق من الإنترنت ثم أعد المحاولة.";
+  return "لم يتم الحفظ: " + m;
+}
+async function act(btn, fn, okMsg){
+  const label = btn?.textContent; if (btn){ btn.disabled = true; btn.textContent = "جارٍ الحفظ…"; }
+  try { await fn(); if (okMsg) toast(okMsg); return true; }
+  catch(e){ toast(errText(e), true); return false; }
+  finally { if (btn){ btn.disabled = false; btn.textContent = label; } }
+}
+
+/* ---------- login ---------- */
+const cfg = window.FB_CONFIG || {};
+// live mode without ADMIN_EMAIL in config.js: the owner types the email too
+const askEmail = FB_API.mode==="live" && !cfg.ADMIN_EMAIL;
+$("#emailBox").hidden = !askEmail;
+$("#loginHint").textContent = FB_API.mode==="demo"
+  ? "وضع التجربة: البيانات تُحفظ في هذا المتصفح فقط."
+  : askEmail ? "أدخل بريد حساب المالك وكلمة مروره في Supabase." : "أدخل كلمة مرور حساب المالك.";
+$("#loginForm").addEventListener("submit", async e=>{
+  e.preventDefault();
+  const btn=$("#loginBtn"); btn.disabled=true; $("#loginErr").textContent="";
+  if (askEmail && !/^\S+@\S+\.\S+$/.test($("#em").value.trim())){ $("#loginErr").textContent="اكتب البريد الإلكتروني لحساب المالك."; btn.disabled=false; $("#em").focus(); return; }
+  try { await FB_API.signIn($("#pw").value, askEmail ? $("#em").value.trim() : undefined); $("#pw").value=""; await start(); }
+  catch(err){
+    const m=String(err?.message||err);
+    $("#loginErr").textContent =
+      m.includes("not_admin") ? "كلمة المرور صحيحة، لكن هذا الحساب غير مربوط باللوحة: شغّل supabase/owner.sql بهذا البريد." :
+      /Email not confirmed/i.test(m) ? "البريد غير مؤكَّد: في Supabase ← Authentication ← Users، أكّد المستخدم أو أنشئه من جديد مع Auto Confirm User." :
+      /could not find|PGRST202|is_admin/i.test(m) ? "قاعدة البيانات غير مجهّزة: شغّل supabase/setup.sql في SQL Editor." :
+      m.includes("network")||m.includes("fetch") ? "تعذّر الاتصال. تحقّق من الإنترنت ثم أعد المحاولة." :
+      askEmail ? "البريد أو كلمة المرور غير صحيحة." : "كلمة المرور غير صحيحة.";
+  } finally { btn.disabled=false; }
+});
+/* connection check: tests the real Supabase project from this browser, changes nothing */
+const DIAG = {
+  url:["عنوان المشروع في config.js", "يجب أن يكون مثل https://xxxxxxxxxxxxxxxxxxxx.supabase.co (Project Settings ← Data API ← Project URL)."],
+  key:["المفتاح العام في config.js", "يجب أن يبدأ بـ sb_publishable_ (Project Settings ← API Keys ← Publishable key). لا تضع أبداً مفتاحاً يبدأ بـ sb_secret_."],
+  library:["تحميل مكتبة Supabase من الموقع", "الملف assets/vendor/supabase.js لم يُرفع مع الموقع. أعد رفع مجلد dist كاملاً."],
+  reach:["الاتصال بالمشروع والمفتاح", ""],
+  wilayas:["جدول الولايات", ""], communes:["البلديات", ""], products:["المنتجات الظاهرة في المتجر", ""], rates:["أسعار التوصيل", ""],
+  reviews:["جدول الآراء", "شغّل supabase/setup.sql مرة أخرى (آمن، لا يحذف شيئاً)."],
+  track:["دالة تتبع الطلب", "شغّل supabase/setup.sql في SQL Editor."],
+  order:["دالة إرسال الطلبات", "شغّل supabase/setup.sql في SQL Editor."],
+  bucket:["مخزن صور المنتجات", "شغّل supabase/setup.sql في SQL Editor."],
+  demo:["الموقع في وضع التجربة", "config.js لا يحتوي عنوان Supabase ومفتاحه."]
+};
+function diagAdvice(d){
+  const e = d.error;
+  if (d.key==="reach"){
+    if (/Invalid API key|No API key|401|JWT|apikey/i.test(e)) return "المفتاح غير مقبول: انسخ Publishable key من Project Settings ← API Keys وضعه في assets/config.js، ثم أعد النشر.";
+    if (/PGRST205|42P01|does not exist|schema cache/i.test(e)) return "الجداول غير موجودة: شغّل الملف supabase/setup.sql كاملاً في SQL Editor.";
+    if (/42501|permission denied/i.test(e)) return "الصلاحيات ناقصة: شغّل supabase/setup.sql مرة أخرى (آمن، لا يحذف شيئاً).";
+    if (/fetch|network|Load failed|NetworkError/i.test(e)) return "لا يصل المتصفح إلى Supabase: تحقّق من الإنترنت، ومن أن المشروع غير متوقف (Paused) في لوحة Supabase، ومن عنوان المشروع.";
+    return "تعذّر الاتصال.";
+  }
+  if (/PGRST20[25]|42P01|42883|does not exist|schema cache|Could not find/i.test(e)) return "غير موجود في قاعدة البيانات: شغّل supabase/setup.sql في SQL Editor.";
+  if (/42501|permission denied/i.test(e)) return "الصلاحيات ناقصة: شغّل supabase/setup.sql مرة أخرى.";
+  return DIAG[d.key]?.[1] || "";
+}
+$("#diagBtn").onclick = async e=>{
+  const btn = e.currentTarget, box = $("#diag");
+  btn.disabled = true; box.hidden = false; box.innerHTML = `<li class="wait">جارٍ الفحص…</li>`;
+  let steps; try { steps = await FB_API.diagnose(); } catch(err){ steps = [{key:"reach", ok:false, error:String(err?.message||err)}]; }
+  const info = d=>{
+    if (!d.ok) return `${esc(diagAdvice(d))}${d.error?` <code>${esc(d.error.slice(0,160))}</code>`:""}`;
+    if (d.key==="wilayas") return d.info==="69" ? "69 ولاية" : `${esc(d.info)} فقط من 69: شغّل supabase/setup.sql مرة أخرى.`;
+    if (d.key==="communes") return +d.info>=1541 ? `${esc(d.info)} بلدية` : `${esc(d.info)} فقط: شغّل supabase/setup.sql مرة أخرى.`;
+    if (d.key==="products") return +d.info ? `${esc(d.info)} قطعة` : "لا توجد قطع ظاهرة بعد: أضفها من تبويب المنتجات بعد الدخول.";
+    if (d.key==="rates") return +d.info ? `${esc(d.info)} سعر` : "لم تُدخل أسعار التوصيل بعد (تبويب التوصيل).";
+    if (d.key==="url") return `<code>${esc(d.info)}</code>`;
+    if (d.key==="key") return `<code>${esc(d.info)}</code>`;
+    return "";
+  };
+  const warn = d=>d.ok && ((d.key==="wilayas" && d.info!=="69") || (d.key==="communes" && +d.info<1541));
+  box.innerHTML = steps.map(d=>`<li class="${d.ok&&!warn(d)?"":"bad"}"><span>${esc(DIAG[d.key]?.[0]||d.key)}</span>${info(d)?`<small>${info(d)}</small>`:""}</li>`).join("")
+    + (steps.every(d=>d.ok&&!warn(d)) ? `<li><span>الاتصال سليم.</span><small>إن رُفض الدخول بعد ذلك: تأكد من البريد وكلمة المرور، ومن تشغيل supabase/owner.sql ببريد المالك نفسه.</small></li>` : "");
+  btn.disabled = false;
+};
+$("#logout").onclick = async ()=>{ await FB_API.signOut(); location.reload(); };
+
+async function start(){
+  $("#login").hidden = true; $("#app").hidden = false;
+  $("#modePill").textContent = FB_API.mode==="demo" ? "وضع التجربة" : "متصل";
+  $("#modePill").className = "pill " + (FB_API.mode==="demo" ? "st" : "st-delivered");
+  $("#main").innerHTML = `<p class="muted">جارٍ تحميل البيانات…</p>`;
+  try { D = await FB_API.adminLoad(); }
+  catch(e){ $("#main").innerHTML = `<p class="err">${esc(errText(e))}</p>`; return; }
+  ZR = await FB_API.courierGet().catch(()=>null);   // null: the database does not have the ZR part yet
+  const h = location.hash.slice(1); if (TABS.some(t=>t[0]===h)) tab = h;
+  render();
+  if (ZR?.enabled) zrSync(false);
+  listenForOrders();
+}
+async function reload(){ D = await FB_API.adminLoad(); }
+
+/* ---------- shell ---------- */
+function render(){
+  const counts = {orders: D.orders.filter(o=>o.status==="received").length, reviews: (D.reviews||[]).filter(r=>r.status==="pending").length};
+  $("#tabs").innerHTML = TABS.map(([k,l])=>`<button class="tab" role="tab" type="button" data-tab="${k}" aria-selected="${k===tab}">${l}${counts[k]?`<span class="count num">${counts[k]}</span>`:""}</button>`).join("");
+  $("#main").onclick = null; $("#main").onchange = null; $("#main").oninput = null;
+  ({overview:renderOverview, orders:renderOrders, products:renderProducts, racks:renderRacks, reviews:renderReviews, shipping:renderShipping, site:renderSite, account:renderAccount})[tab]();
+}
+$("#tabs").addEventListener("click", async e=>{
+  const b=e.target.closest("[data-tab]"); if(!b) return;
+  if (tab==="racks" && b.dataset.tab!=="racks") rk = null;
+  tab=b.dataset.tab; try{history.replaceState(null,"","#"+tab)}catch{}
+  render(); window.scrollTo(0,0);
+  // fetch fresh orders and stock in the background, then redraw the same tab
+  const was = tab; try { await reload(); } catch { return; }
+  if (tab===was && !$("#editor").open && ["overview","orders","products"].includes(tab) || tab===was && tab==="reviews" && !ui.revForm) render();
+});
+document.addEventListener("visibilitychange", async ()=>{
+  if (document.hidden || !D || $("#editor").open || !["overview","orders"].includes(tab)) return;
+  try { await reload(); render(); } catch {}
+});
+
+/* ================= overview ================= */
+const DAY = 864e5;
+function periodStart(p){
+  const d = new Date(); d.setHours(0,0,0,0);
+  if (p==="today") return d;
+  if (p==="month") return new Date(d.getFullYear(), d.getMonth(), 1);
+  return new Date(d - (+p-1)*DAY);
+}
+const isActive = o=>!FB.RELEASES.includes(o.status);
+const stLabel = s=>FB.STATUSES[s]?.ar || s;
+const fullName = o=>`${o.first_name||""} ${o.last_name||""}`.trim() || o.customer_name || "";
+function renderOverview(){
+  const from = periodStart(ui.period);
+  const inP = D.orders.filter(o=>new Date(o.created_at) >= from);
+  const active = inP.filter(isActive);
+  const delivered = inP.filter(o=>o.status==="delivered");
+  const sales = sum(active,o=>o.total), collected = sum(delivered,o=>o.total);
+  const profit = sum(delivered,o=>o.subtotal-o.cost_total);
+  const waiting = D.orders.filter(o=>o.status==="received").length;
+  const pendingShip = D.orders.filter(o=>o.shipping_pending && isActive(o)).length;
+  const low = D.products.flatMap(p=>p.sizes.map(s=>[p,s,FB.stockOf(p,s)])).filter(([,,n])=>n!=null&&n<=2);
+  const counts = {}; inP.forEach(o=>counts[o.status]=(counts[o.status]||0)+1);
+
+  // top products / wilayas in the period
+  const byProd = {}, byW = {};
+  active.forEach(o=>{
+    (o.order_items||[]).forEach(l=>{ const k=l.product_id; byProd[k] ||= {name:l.name?.ar||k,qty:0,rev:0}; byProd[k].qty+=l.qty; byProd[k].rev+=l.unit_price*l.qty; });
+    const w=o.wilaya_code; byW[w] ||= {name:`${String(w).padStart(2,"0")} ${FB.wilaya(w)?.[1]||o.wilaya_name||""}`,n:0,rev:0}; byW[w].n++; byW[w].rev+=o.total;
+  });
+  const topP = Object.values(byProd).sort((a,b)=>b.qty-a.qty||b.rev-a.rev).slice(0,6);
+  const topW = Object.values(byW).sort((a,b)=>b.n-a.n).slice(0,6);
+  const rank = (list, val, sub) => list.length ? `<ol class="rank">${list.map(x=>`<li><span>${esc(x.name)}</span><span class="num">${val(x)}</span><span class="bar"><i style="width:${Math.max(4,val.raw(x)/val.raw(list[0])*100)}%"></i></span>${sub?`<small class="muted small" style="grid-column:1/-1">${sub(x)}</small>`:""}</li>`).join("")}</ol>` : `<p class="empty">لا توجد طلبات في هذه الفترة.</p>`;
+  const qtyVal = Object.assign(x=>`${x.qty} قطعة`,{raw:x=>x.qty});
+  const nVal = Object.assign(x=>`${x.n} طلب`,{raw:x=>x.n});
+
+  $("#main").innerHTML = `<section class="panel">
+    <div class="panel-head"><h2>نظرة عامة</h2>
+      <div class="chips" id="period">${[["today","اليوم"],["7","7 أيام"],["30","30 يوماً"],["month","هذا الشهر"]].map(([k,l])=>`<button class="chip" type="button" data-p="${k}" aria-pressed="${ui.period===k}">${l}</button>`).join("")}</div>
+    </div>
+    ${waiting?`<div class="banner"><span><b class="num">${waiting}</b> ${waiting===1?"طلب جديد ينتظر":"طلبات جديدة تنتظر"} الاتصال والتأكيد.</span><button class="btn btn-primary btn-sm" type="button" data-go="received">عرض الطلبات الجديدة</button></div>`:""}
+    ${pendingShip?`<div class="banner"><span><b class="num">${pendingShip}</b> ${pendingShip===1?"طلب سعرُ توصيله":"طلبات سعرُ توصيلها"} غير محدد بعد. حدّده من تفاصيل الطلب بعد الاتفاق مع الزبونة.</span><button class="btn btn-ghost btn-sm" type="button" data-go="pendingShip">عرضها</button></div>`:""}
+    <div class="kpis">
+      <div class="kpi"><span class="label">المبيعات</span><span class="value">${money(sales)}</span><span class="sub">${active.length} طلب، دون الملغاة والتي تعذّر تسليمها</span></div>
+      <div class="kpi"><span class="label">المبلغ المُحصَّل</span><span class="value">${money(collected)}</span><span class="sub">${delivered.length} طلب تم تسليمه ودفعه</span></div>
+      <div class="kpi"><span class="label">الربح التقريبي</span><span class="value">${money(profit)}</span><span class="sub">من الطلبات المُسلَّمة، بعد سعر الشراء ودون التوصيل</span></div>
+      <div class="kpi"><span class="label">عدد الطلبات</span><span class="value num">${inP.length}</span><span class="sub">متوسط الطلب ${money(active.length?sales/active.length:0)}</span></div>
+    </div>
+    <div class="box"><h3>الطلبات حسب الحالة في هذه الفترة</h3>
+      <div class="status-grid">${Object.keys(FB.STATUSES).map(s=>`<button type="button" class="status-cell" data-go="${s}"><span class="pill st-${s} st">${stLabel(s)}</span><b class="num">${counts[s]||0}</b></button>`).join("")}</div>
+    </div>
+    <div class="box"><h3>المبيعات اليومية</h3><div class="chart-wrap" id="chart"></div></div>
+    <div class="two-col">
+      <div class="box"><h3>الأكثر مبيعاً</h3>${rank(topP,qtyVal,x=>money(x.rev))}</div>
+      <div class="box"><h3>الطلبات حسب الولاية</h3>${rank(topW,nVal,x=>money(x.rev))}</div>
+    </div>
+    <div class="box"><h3>مخزون منخفض</h3>${low.length?`<ul class="rank">${low.map(([p,s,n])=>`<li><span>${esc(p.name.ar)}، المقاس ${esc(s==="TU"?"موحد":s)}</span><span class="num ${n===0?"st-failed":"st"}">${n===0?"نفد":`بقي ${n}`}</span></li>`).join("")}</ul>`:`<p class="empty">كل المقاسات المتتبَّعة فيها 3 قطع أو أكثر، أو المخزون غير متتبَّع.</p>`}</div>
+  </section>`;
+  drawChart(from);
+  $("#period").onclick = e=>{ const b=e.target.closest("[data-p]"); if(b){ ui.period=b.dataset.p; renderOverview(); } };
+  $("#main").onclick = e=>{ const g=e.target.closest("[data-go]"); if(!g) return; ui.ordStatus=g.dataset.go; ui.ordQuery=""; tab="orders"; render(); window.scrollTo(0,0); };
+}
+
+// one series (daily sales), one hue, no legend; hover or focus a day to read its value
+function drawChart(from){
+  const start = ui.period==="today" ? new Date(+periodStart("7")) : from;
+  const days = Math.max(1, Math.round((periodStart("today") - start)/DAY) + 1);
+  const vals = Array.from({length:days},(_,i)=>({d:new Date(+start+i*DAY),v:0,n:0}));
+  D.orders.forEach(o=>{ if(!isActive(o)) return; const i=Math.floor((new Date(o.created_at)-start)/DAY); if(i>=0&&i<days){ vals[i].v+=o.total; vals[i].n++; } });
+  const W=720, H=230, L=56, R=8, T=12, B=28, max=Math.max(...vals.map(x=>x.v),1);
+  const step = 10**Math.floor(Math.log10(max)), top = Math.ceil(max/step)*step;
+  const y = v=>T+(H-T-B)*(1-v/top), bw=(W-L-R)/days, gap=Math.min(6,bw*.3);
+  const short = v=>v>=1000?`${Math.round(v/100)/10} ألف`:String(v);
+  const dm = d=>`${d.getDate()}/${d.getMonth()+1}`;
+  const every = Math.ceil(days/8);
+  let svg = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="المبيعات اليومية" dir="ltr">`;
+  [0,.5,1].forEach(f=>{ const v=top*f; svg+=`<line x1="${L}" x2="${W-R}" y1="${y(v)}" y2="${y(v)}" stroke="currentColor" stroke-opacity=".12"/><text x="${L-8}" y="${y(v)+4}" text-anchor="end" font-size="11" fill="currentColor" fill-opacity=".6">${short(v)}</text>`; });
+  vals.forEach((x,i)=>{
+    const bx=L+i*bw+gap/2, w=Math.max(1,bw-gap), h=Math.max(0,y(0)-y(x.v)), r=Math.min(4,w/2,h);
+    if (h>0) svg+=`<path d="M${bx} ${y(0)}V${y(x.v)+r}q0 ${-r} ${r} ${-r}h${w-2*r}q${r} 0 ${r} ${r}V${y(0)}Z" style="fill:var(--mulberry)"/>`;
+    if ((days-1-i)%every===0) svg+=`<text x="${bx+w/2}" y="${H-8}" text-anchor="middle" font-size="11" fill="currentColor" fill-opacity=".6">${dm(x.d)}</text>`;
+    svg+=`<rect class="hit" data-i="${i}" x="${L+i*bw}" y="${T}" width="${bw}" height="${H-T-B}" fill="transparent" tabindex="0"/>`;
+  });
+  svg += `<line x1="${L}" x2="${W-R}" y1="${y(0)}" y2="${y(0)}" stroke="currentColor" stroke-opacity=".35"/></svg><div class="tip" id="tip"></div>`;
+  const box=$("#chart"); box.innerHTML=svg;
+  const tip=$("#tip");
+  const show = el=>{ const x=vals[+el.dataset.i], r=el.getBoundingClientRect(), b=box.getBoundingClientRect();
+    tip.textContent=`${dm(x.d)}: ${money(x.v)} (${x.n} طلب)`; tip.style.left=`${r.left-b.left+r.width/2}px`; tip.style.top=`${Math.max(30,y(x.v)/H*b.height)}px`; tip.classList.add("on"); };
+  box.querySelectorAll(".hit").forEach(el=>{ el.addEventListener("pointerenter",()=>show(el)); el.addEventListener("focus",()=>show(el)); });
+  box.addEventListener("pointerleave",()=>tip.classList.remove("on"));
+  box.addEventListener("focusout",()=>tip.classList.remove("on"));
+}
+
+/* ================= orders ================= */
+const fmtDate = s=>{ const d=new Date(s), p=n=>String(n).padStart(2,"0"); return `${p(d.getDate())}/${p(d.getMonth()+1)}/${d.getFullYear()} ${p(d.getHours())}:${p(d.getMinutes())}`; };
+const waNum = ph=>"213"+String(ph).replace(/^0/,"");
+const isBlocked = ph=>(D.blocked||[]).some(b=>b.phone===ph);
+/* ---------- the customer's history: her other orders, by phone number ----------
+   A refused delivery ("failed") is the costly case with payment on delivery, so it stands out. */
+function historyOf(o){
+  const nums = new Set([o.phone, o.phone2, o.whatsapp].filter(Boolean));
+  const others = D.orders.filter(x=>x.id!==o.id && (nums.has(x.phone) || (x.phone2 && nums.has(x.phone2))))
+    .sort((a,b)=>String(b.created_at).localeCompare(String(a.created_at)));
+  const n = st=>others.filter(x=>x.status===st).length;
+  return {others, failed:n("failed"), cancelled:n("cancelled"), delivered:n("delivered"),
+    open:others.filter(x=>!["delivered","failed","cancelled"].includes(x.status)).length};
+}
+function historyBadge(h){
+  if (h.failed) return `<span class="pill st-failed st hist" title="طلبات سابقة لم تُستلم">⚠️ رفضت الاستلام ${h.failed===1?"مرة":h.failed===2?"مرتين":h.failed+" مرات"}</span>`;
+  if (h.cancelled >= 2) return `<span class="pill st-cancelled st hist" title="طلبات سابقة أُلغيت">ألغت ${h.cancelled} طلبات</span>`;
+  if (h.delivered) return `<span class="pill st-delivered st hist" title="طلبات سابقة استلمتها">زبونة وفية: ${h.delivered===1?"طلب مُسلّم":h.delivered===2?"طلبان مُسلّمان":h.delivered+" طلبات مُسلّمة"}</span>`;
+  if (!h.others.length) return `<span class="pill hist muted">أول طلب</span>`;
+  return "";
+}
+/* ---------- ready WhatsApp messages, in the customer's language ---------- */
+const siteUrl = ()=>location.origin + location.pathname.replace(/admin\.html$/,"");
+function waMessages(o){
+  const fr = o.lang === "fr", name = o.first_name || "", no = o.order_number || "", track = `${siteUrl()}track.html#${o.tracking_code||""}`;
+  const items = (o.order_items||[]).map(l=>`- ${(fr ? l.name?.fr : l.name?.ar) || l.name?.ar || ""} (${(fr ? l.color?.fr : l.color?.ar) || ""}, ${l.size==="TU" ? (fr?"taille unique":"مقاس موحد") : l.size}) ×${l.qty}`).join("\n");
+  const ship = o.shipping_pending ? (fr ? "à confirmer" : "يحتاج إلى تأكيد") : FB.money(o.shipping, fr ? "DA" : "دج");
+  const total = FB.money(o.total, fr ? "DA" : "دج");
+  const where = `${o.wilaya_name||""}${o.commune_name ? " - " + o.commune_name : ""}`;
+  const delivery = o.delivery==="desk" ? (fr ? "au bureau du transporteur" : "إلى مكتب شركة التوصيل") : (fr ? "à domicile" : "إلى المنزل");
+  return fr ? [
+    ["confirm", "تأكيد الطلب", `Bonjour ${name}, ici Flame Boutique34 🌸\nNous avons bien reçu votre commande ${no} :\n${items}\nLivraison ${delivery} (${where}) : ${ship}\nTotal : ${total}\nPouvez-vous nous confirmer la commande ? Merci !`],
+    ["ship", "سعر التوصيل", `Bonjour ${name}, pour votre commande ${no}, la livraison ${delivery} vers ${where} coûte ${o.shipping_pending ? "… DA" : ship}. Total : ${o.shipping_pending ? "… DA" : total}. Nous confirmez-vous ?`],
+    ["noreply", "لم نتمكن من الاتصال", `Bonjour ${name}, ici Flame Boutique34. Nous avons essayé de vous appeler pour confirmer la commande ${no}. Quand pouvons-nous vous joindre ?`],
+    ["sent", "الطلب في الطريق", `Bonjour ${name}, votre commande ${no} est en route 🚚\nSuivez-la ici : ${track}\nPréparez ${total} pour la livraison. Merci !`],
+    ["thanks", "شكراً + طلب رأيها", `Merci ${name} pour votre confiance 🌸 Nous espérons que la commande ${no} vous plaît. Votre avis nous aide beaucoup : ${track}`]
+  ] : [
+    ["confirm", "تأكيد الطلب", `السلام عليكم ${name}، معك Flame Boutique34 🌸\nوصلنا طلبك ${no}:\n${items}\nالتوصيل ${delivery} (${where}): ${ship}\nالمجموع: ${total}\nهل تؤكدين الطلب؟ شكراً لك!`],
+    ["ship", "سعر التوصيل", `السلام عليكم ${name}، بخصوص طلبك ${no}: سعر التوصيل ${delivery} إلى ${where} هو ${o.shipping_pending ? "… دج" : ship}، فيصبح المجموع ${o.shipping_pending ? "… دج" : total}. هل تؤكدين؟`],
+    ["noreply", "لم نتمكن من الاتصال", `السلام عليكم ${name}، معك Flame Boutique34. حاولنا الاتصال بك لتأكيد طلبك ${no}. متى يناسبك أن نتصل؟`],
+    ["sent", "الطلب في الطريق", `السلام عليكم ${name}، طلبك ${no} في الطريق إليك 🚚\nتتبعيه من هنا: ${track}\nجهّزي مبلغ ${total} عند الاستلام. شكراً لك!`],
+    ["thanks", "شكراً + طلب رأيها", `شكراً لثقتك ${name} 🌸 نتمنى أن يعجبك طلبك ${no}. رأيك يهمنا ويساعد زبونات أخريات: ${track}`]
+  ];
+}
+const waLink = (num, text)=>`https://wa.me/${waNum(num)}?text=${encodeURIComponent(text)}`;
+function renderOrders(){
+  const q = FB.fold(ui.ordQuery);
+  const counts = {all:D.orders.length, pendingShip:D.orders.filter(o=>o.shipping_pending&&isActive(o)).length};
+  D.orders.forEach(o=>counts[o.status]=(counts[o.status]||0)+1);
+  const list = D.orders.filter(o=>(ui.ordStatus==="all" || o.status===ui.ordStatus || (ui.ordStatus==="pendingShip" && o.shipping_pending && isActive(o))) &&
+    (!q || [o.order_number,o.tracking_code,fullName(o),o.phone,o.phone2,o.whatsapp,o.instagram,o.wilaya_name,o.commune_name].some(v=>FB.fold(v).includes(q))));
+  $("#main").innerHTML = `<section class="panel">
+    <div class="panel-head"><h2>الطلبات</h2>
+      <div class="toolbar"><input class="search" id="oq" type="search" placeholder="رقم الطلب أو التتبع، الاسم، الهاتف" value="${esc(ui.ordQuery)}"><button class="btn btn-ghost btn-sm" type="button" id="csv">تصدير CSV</button>${ZR?.enabled?`<button class="btn btn-ghost btn-sm" type="button" id="zrSync">تحديث حالات ZR</button>`:""}</div>
+    </div>
+    <div class="chips" id="ost">${[["all","الكل"],...Object.entries(FB.STATUSES).map(([k,v])=>[k,v.ar]),["pendingShip","توصيل يحتاج تأكيد"]].map(([k,l])=>`<button class="chip" type="button" data-s="${k}" aria-pressed="${ui.ordStatus===k}">${l} <span class="num muted">${counts[k]||0}</span></button>`).join("")}</div>
+    <div class="orders">${list.length ? list.slice(0,ui.ordLimit).map(orderHTML).join("") : `<p class="empty">${D.orders.length?"لا توجد طلبات تطابق البحث أو هذه الحالة.":"لم تصل أي طلبات بعد. ستظهر هنا فور تأكيد أول زبونة لطلبها في المتجر."}</p>`}</div>
+    ${list.length>ui.ordLimit?`<button class="btn btn-ghost" type="button" id="more">عرض المزيد (${list.length-ui.ordLimit})</button>`:""}
+    ${(D.blocked||[]).length?`<details class="box"><summary>الأرقام المحظورة <span class="num muted">(${D.blocked.length})</span></summary>
+      <p class="small muted">لا تُقبل طلبات جديدة من هذه الأرقام. تظهر للزبونة رسالة عامة تدعوها إلى مراسلتكم على واتساب.</p>
+      <ul class="items">${D.blocked.map(b=>`<li><span><span class="ltr num">${esc(b.phone)}</span>${b.note?` <span class="small muted">${esc(b.note)}</span>`:""}</span><button class="link" type="button" data-unblock="${esc(b.phone)}">رفع الحظر</button></li>`).join("")}</ul></details>`:""}
+  </section>`;
+  $("#oq").addEventListener("input",e=>{ ui.ordQuery=e.target.value; const pos=e.target.selectionStart; renderOrders(); const i=$("#oq"); i.focus(); i.setSelectionRange(pos,pos); });
+  $("#ost").onclick = e=>{ const b=e.target.closest("[data-s]"); if(b){ ui.ordStatus=b.dataset.s; ui.ordLimit=60; renderOrders(); } };
+  $("#more")?.addEventListener("click",()=>{ ui.ordLimit+=60; renderOrders(); });
+  $("#csv").onclick = ()=>exportCsv(list);
+  $("#zrSync")?.addEventListener("click", e=>zrSync(true, e.target));
+  $$(".order").forEach(d=>d.addEventListener("toggle",()=>{ d.open?ui.open.add(+d.dataset.id):ui.open.delete(+d.dataset.id); }));
+}
+function orderHTML(o){
+  const items = (o.order_items||[]).map(l=>`<li><span>${esc(l.name?.ar||l.product_id)} <span class="muted small">${esc(l.color?.ar||"")}، ${esc(l.size==="TU"?"موحد":l.size)} × ${l.qty} (${money(l.unit_price)} للقطعة)</span></span><span class="num">${money(l.unit_price*l.qty)}</span></li>`).join("");
+  const hist = [...(o.order_status_history||[])].sort((a,b)=>a.created_at.localeCompare(b.created_at)).reverse()
+    .map(h=>`<li><span><span class="pill st-${h.status} st">${stLabel(h.status)}</span>${h.note?` <span class="small">${esc(h.note)}</span>`:""}</span><time class="num small muted">${fmtDate(h.created_at)}</time></li>`).join("");
+  const wa = o.whatsapp || o.phone;
+  return `<details class="order" data-id="${o.id}" ${ui.open.has(o.id)?"open":""}>
+    <summary>
+      <span class="o-code"><b class="ltr">${esc(o.order_number||"")}</b><small class="ltr">${esc(o.tracking_code||"")}</small><small class="num">${fmtDate(o.created_at)}</small></span>
+      <span class="o-who">${esc(fullName(o))}<small>${esc(String(o.wilaya_code).padStart(2,"0"))} ${esc(o.wilaya_name||"")}، ${esc(o.commune_name||"")}، ${o.delivery==="desk"?"مكتب":"منزل"}</small></span>
+      <span class="num o-total">${money(o.total)}${o.shipping_pending?`<small class="st">+ توصيل يحتاج تأكيد</small>`:""}</span>
+      <span class="pill st-${o.status} st o-st">${stLabel(o.status)}</span>
+      <span class="o-tags">${isBlocked(o.phone)?`<span class="pill st-failed st">رقم محظور</span>`:""}${historyBadge(historyOf(o))}${o.courier_tracking?`<span class="pill hist zr-pill zr-${esc(o.courier_stage||"other")}" title="${esc(o.courier_label||"")}">ZR: ${ZR_SHORT[o.courier_stage]||"مسجّل"}</span>`:""}</span>
+    </summary>
+    <div class="order-body">
+      <dl>
+        <dt>الزبونة</dt><dd>${esc(fullName(o))}</dd>
+        <dt>الهاتف</dt><dd><span class="ltr num" style="user-select:all">${esc(o.phone)}</span> · <a href="tel:${esc(o.phone)}">اتصال</a></dd>
+        ${o.phone2?`<dt>هاتف ثانٍ</dt><dd><span class="ltr num" style="user-select:all">${esc(o.phone2)}</span> · <a href="tel:${esc(o.phone2)}">اتصال</a></dd>`:""}
+        <dt>واتساب</dt><dd><span class="ltr num" style="user-select:all">${esc(wa)}</span> · <a href="https://wa.me/${waNum(wa)}" target="_blank" rel="noopener">فتح المحادثة</a></dd>
+        <dt>رسائل جاهزة</dt><dd class="wa-msgs">${waMessages(o).map(([k,l,txt])=>`<a class="btn btn-ghost btn-sm" data-wa="${k}" href="${esc(waLink(wa, txt))}" target="_blank" rel="noopener">${l}</a>`).join("")}
+          <span class="small muted" style="flex-basis:100%">تفتح واتساب برسالة مكتوبة ${o.lang==="fr"?"بالفرنسية (لغة الزبونة)":"بالعربية"}. راجِع الرسالة ثم أرسلها.</span></dd>
+        ${(h=>h.others.length?`<dt>طلباتها السابقة</dt><dd><ul class="hist-list">${h.others.slice(0,6).map(x=>`<li><span class="ltr num">${esc(x.order_number||"")}</span> <span class="small muted num">${fmtDate(x.created_at).slice(0,10)}</span> <span class="pill st-${x.status} st">${stLabel(x.status)}</span> <span class="num small">${money(x.total)}</span></li>`).join("")}</ul>${h.others.length>6?`<span class="small muted">و${h.others.length-6} أخرى</span>`:""}</dd>`:"")(historyOf(o))}
+        ${o.instagram?`<dt>Instagram</dt><dd><a class="ltr" href="https://instagram.com/${encodeURIComponent(o.instagram)}" target="_blank" rel="noopener">@${esc(o.instagram)}</a></dd>`:""}
+        <dt>الولاية</dt><dd>${esc(String(o.wilaya_code).padStart(2,"0"))} ${esc(o.wilaya_name||"")}</dd>
+        <dt>البلدية</dt><dd>${esc(o.commune_name||"")}${o.commune_id==null?` <span class="small muted">(كتبتها الزبونة)</span>`:""}</dd>
+        <dt>التوصيل</dt><dd>${o.delivery==="desk"?"إلى مكتب شركة التوصيل":"إلى المنزل"}${o.address?`: ${esc(o.address)}`:""}</dd>
+        ${o.note?`<dt>ملاحظة الزبونة</dt><dd>${esc(o.note)}</dd>`:""}
+        <dt>رقم التتبع</dt><dd class="ltr" style="user-select:all">${esc(o.tracking_code||"")}</dd>
+      </dl>
+      <div style="display:grid;gap:.6rem;align-content:start">
+        <ul class="items">${items}</ul>
+        <ul class="items small muted"><li><span>سعر المنتجات</span><span class="num">${money(o.subtotal)}</span></li><li><span>التوصيل</span><span class="num">${o.shipping_pending?"يحتاج تأكيد":money(o.shipping)}</span></li></ul>
+        <ul class="items"><li><b>${o.shipping_pending?"المجموع دون التوصيل":"المجموع النهائي"}</b><b class="num">${money(o.total)}</b></li><li class="small muted"><span>الربح التقريبي</span><span class="num">${money(o.subtotal-o.cost_total)}</span></li></ul>
+        ${o.shipping_pending?`<div class="field"><label for="sh-${o.id}">سعر التوصيل المتفق عليه (دج)</label><div class="toolbar"><input id="sh-${o.id}" type="number" min="0" step="50" inputmode="numeric" style="max-width:140px"><button class="btn btn-ghost btn-sm" type="button" data-ship="${o.id}">حفظ السعر</button></div></div>`:""}
+      </div>
+      <div style="display:grid;gap:.7rem;align-content:start">
+        ${zrBlock(o)}
+        <div class="field"><label for="st-${o.id}">الحالة الجديدة</label><select id="st-${o.id}">${Object.entries(FB.STATUSES).map(([k,l])=>`<option value="${k}" ${k===o.status?"selected":""}>${l.ar}</option>`).join("")}</select></div>
+        <div class="field"><label for="sn-${o.id}">ملاحظة مع هذا التحديث (اختياري)</label><input id="sn-${o.id}" maxlength="300"></div>
+        <button class="btn btn-primary btn-sm" type="button" data-status="${o.id}">تحديث الحالة</button>
+        <p class="small muted">تظهر الحالة الجديدة وتاريخها للزبونة في صفحة التتبع. عند الإلغاء أو تعذّر التسليم تعود القطع إلى المخزون.</p>
+        <div class="field"><span class="lbl">سجل الحالات</span><ul class="history">${hist}</ul></div>
+        <div class="field"><label for="nt-${o.id}">ملاحظة داخلية (لا تراها الزبونة)</label><textarea id="nt-${o.id}">${esc(o.admin_note||"")}</textarea></div>
+        <button class="btn btn-ghost btn-sm" type="button" data-note="${o.id}">حفظ الملاحظة</button>
+        ${isBlocked(o.phone) ? `<p class="small muted">هذا الرقم محظور: لا تُقبل منه طلبات جديدة.</p>`
+          : `<button class="btn btn-danger btn-sm" type="button" data-block="${o.id}">طلب وهمي: حظر الرقم${["received","contacting","confirmed"].includes(o.status)?" وإلغاء الطلب":""}</button>`}
+      </div>
+    </div>
+  </details>`;
+}
+/* ---------- ZR Express in each order ---------- */
+let ZR = null;
+const ZR_SHORT = {created:"مسجّل", transit:"في الطريق", out:"خرج للتوصيل", desk:"في المكتب", attempt:"محاولة لم تنجح", delivered:"سُلّم", returned:"مرتجع", cancelled:"ملغى", other:"لدى الشركة"};
+const zrChoice = {};   // per order: what the owner picked when ZR's names did not match ours
+function zrBlock(o){
+  if (o.courier_tracking){
+    const stg = FB.COURIER_STAGES[o.courier_stage] || FB.COURIER_STAGES.other;
+    return `<div class="zr-box"><b>ZR Express</b>
+      <div>رقم التتبع عند ZR: <span class="ltr num" style="user-select:all">${esc(o.courier_tracking)}</span></div>
+      <div><span class="pill hist zr-pill zr-${esc(o.courier_stage||"other")}">${stg.ar}</span>${o.courier_label?` <span class="small muted" dir="auto">${esc(o.courier_label)}</span>`:""}</div>
+      ${o.courier_at?`<div class="small muted">آخر تغيير: <span class="num">${fmtDate(o.courier_at)}</span></div>`:""}
+      ${o.courier_stage==="returned"?`<p class="small err">الطرد في طريق العودة إلى المحل. عند وصوله، اختر «تعذّر التسليم» لتعود القطع إلى المخزون.</p>`:""}
+      <button class="link small" type="button" data-zr-unlink="${o.id}">فكّ الربط مع هذا الطرد</button></div>`;
+  }
+  if (!ZR?.enabled || ["cancelled","failed","delivered"].includes(o.status)) return "";
+  return `<div class="zr-box"><b>ZR Express</b>
+    ${o.shipping_pending?`<p class="small muted">حدّد سعر التوصيل أولاً، ثم أرسل الطلب.</p>`:""}
+    <button class="btn btn-primary btn-sm" type="button" data-zr-send="${o.id}" ${o.shipping_pending?"disabled":""}>إرسال إلى ZR Express</button>
+    <div id="zrc-${o.id}"></div>
+    <p class="small muted">بعد تأكيد الطلب مع الزبونة. يُسجَّل الطرد في حسابك عند ZR بالاسم والهاتف والعنوان والمبلغ <span class="num">${money(o.total)}</span>${FB_API.mode==="demo"?" (وضع التجربة: لا يُرسل شيء فعلاً)":""}.</p></div>`;
+}
+const ZR_STEPS = {check:"التحقق من أنه لم يُرسل من قبل…", places:"مطابقة الولاية والبلدية مع ZR…", send:"إرسال الطرد…", read:"قراءة رقم التتبع…"};
+const ZR_NEED = {wilaya:"لم أجد ولاية الزبونة في قائمة ZR بشكل مؤكد. اختر الولاية كما تسمّيها ZR:",
+  commune:"لم أجد بلدية الزبونة في قائمة ZR بشكل مؤكد. اختر البلدية كما تسمّيها ZR:",
+  desk:"في هذه الولاية أكثر من مكتب ZR. اختر المكتب الذي ستستلم منه الزبونة:"};
+async function zrSend(id, btn){
+  const o = D.orders.find(x=>x.id===id), box = $("#zrc-"+id), label = btn.textContent;
+  btn.disabled = true;
+  try {
+    const r = await FB_API.courierSend(o, zrChoice[id] || {}, step=>{ btn.textContent = ZR_STEPS[step] || label; });
+    if (r.need){
+      box.innerHTML = `<div class="field"><label for="zrsel-${id}">${ZR_NEED[r.need]}</label>
+        <select id="zrsel-${id}"><option value="">اختر…</option>${r.options.map(x=>`<option value="${esc(x.id)}">${esc(x.name)}</option>`).join("")}</select></div>
+        <button class="btn btn-ghost btn-sm" type="button" data-zr-pick="${id}" data-need="${r.need}">متابعة الإرسال</button>`;
+      zrChoice[id] = {...(zrChoice[id]||{}), ...(r.wilaya?{wilaya:r.wilaya}:{}), ...(r.commune?{commune:r.commune}:{})};
+      return;
+    }
+    delete zrChoice[id];
+    toast(r.already ? `هذا الطلب مسجّل عند ZR من قبل: ${r.tracking}` : `أُرسل إلى ZR Express. رقم التتبع: ${r.tracking}`);
+    await reload(); render();
+  } catch(e){ toast(errText(e), true); }
+  finally { if (btn.isConnected){ btn.disabled = false; btn.textContent = label; } }
+}
+// ask ZR about parcels on their way, then read the answers a few seconds later
+let zrBusy = false;
+async function zrSync(manual, btn){
+  if (zrBusy) return; zrBusy = true;
+  const label = btn?.textContent; if (btn){ btn.disabled = true; btn.textContent = "جارٍ السؤال عند ZR…"; }
+  try {
+    const a = await FB_API.courierSync();
+    if (a.asked) await new Promise(ok=>setTimeout(ok, 6000));
+    const b = a.asked ? await FB_API.courierSync() : {read: 0};
+    const before = JSON.stringify(D.orders.map(o=>[o.id,o.status,o.courier_stage]));
+    await reload();
+    const changed = before !== JSON.stringify(D.orders.map(o=>[o.id,o.status,o.courier_stage]));
+    if (manual) toast(a.off ? "الربط مع ZR غير مفعّل." : `تم. ${(a.read||0)+(b.read||0)} طرد قُرئت حالته.`);
+    // never redraw under the owner's typing
+    if (changed && ["orders","overview"].includes(tab) && !$("#main").contains(document.activeElement)) render();
+  } catch(e){ if (manual) toast(errText(e), true); }
+  finally { zrBusy = false; if (btn?.isConnected){ btn.disabled = false; btn.textContent = label; } }
+}
+document.addEventListener("click", async e=>{
+  const zs = e.target.closest("[data-zr-send]"), zp = e.target.closest("[data-zr-pick]"), zu = e.target.closest("[data-zr-unlink]");
+  if (zs){ zrSend(+zs.dataset.zrSend, zs); return; }
+  if (zp){
+    const id = +zp.dataset.zrPick, v = $("#zrsel-"+id).value;
+    if (!v){ toast("اختر من القائمة أولاً.", true); return; }
+    zrChoice[id] = {...(zrChoice[id]||{}), [zp.dataset.need==="desk"?"hub":zp.dataset.need]: v};
+    zrSend(id, $(`[data-zr-send="${id}"]`) || zp); return;
+  }
+  if (zu){
+    if (!zu.classList.contains("armed")){ zu.classList.add("armed"); zu.textContent = "اضغط مرة أخرى للتأكيد (الطرد لا يُحذف عند ZR)"; return; }
+    if (await act(zu, async ()=>{ await FB_API.courierUnlink(+zu.dataset.zrUnlink); await reload(); }, "فُكّ الربط. يمكن إرسال الطلب من جديد.")) render();
+    return;
+  }
+});
+document.addEventListener("click", async e=>{
+  const st = e.target.closest("[data-status]"), nb = e.target.closest("[data-note]"), sb = e.target.closest("[data-ship]");
+  const bl = e.target.closest("[data-block]"), ub = e.target.closest("[data-unblock]");
+  if (bl){
+    if (!bl.classList.contains("armed")){ bl.classList.add("armed"); bl.textContent = "اضغط مرة أخرى للتأكيد"; return; }
+    const o = D.orders.find(x=>x.id===+bl.dataset.block);
+    if (await act(bl, async ()=>{
+      await FB_API.blockPhone(o.phone, `طلب وهمي ${o.order_number||""}`);
+      if (["received","contacting","confirmed"].includes(o.status)) await FB_API.setOrderStatus(o.id, "cancelled", "طلب وهمي: حُظر الرقم");
+      await reload();
+    }, "حُظر الرقم. القطع المحجوزة عادت إلى المخزون.")) render();
+  }
+  if (ub){ if (await act(ub, async ()=>{ await FB_API.unblockPhone(ub.dataset.unblock); await reload(); }, "رُفع الحظر عن الرقم.")) render(); }
+  if (st){
+    const id = +st.dataset.status, status = $("#st-"+id).value, note = $("#sn-"+id).value.trim(), o = D.orders.find(o=>o.id===id);
+    if (status===o.status && !note){ toast("اختر حالة مختلفة عن الحالية.", true); return; }
+    if (status===o.status){ toast("الحالة نفسها: لتسجيل ملاحظة فقط استعمل الملاحظة الداخلية.", true); return; }
+    if (await act(st, async ()=>{ await FB_API.setOrderStatus(id, status, note); await reload(); }, `تم تحديث الحالة إلى «${stLabel(status)}».`)) render();
+  }
+  if (nb){
+    const id = +nb.dataset.note, note = $("#nt-"+id).value;
+    await act(nb, async ()=>{ await FB_API.updateOrder(id,{admin_note:note}); D.orders.find(o=>o.id===id).admin_note=note; }, "تم حفظ الملاحظة.");
+  }
+  if (sb){
+    const id = +sb.dataset.ship, v = $("#sh-"+id).value;
+    if (v==="" || +v<0){ toast("اكتب سعر التوصيل بالدينار.", true); return; }
+    if (await act(sb, async ()=>{ await FB_API.updateOrder(id,{shipping:Math.round(+v)}); await reload(); }, "تم حفظ سعر التوصيل وتحديث المجموع.")) render();
+  }
+});
+function exportCsv(list){
+  const rows = [["رقم الطلب","رقم التتبع","التاريخ","الحالة","الاسم","اللقب","الهاتف","هاتف ثان","واتساب","Instagram","الولاية","البلدية","التوصيل","العنوان","المنتجات","سعر المنتجات","التوصيل (دج)","المجموع","الربح"]];
+  list.forEach(o=>rows.push([o.order_number,o.tracking_code,fmtDate(o.created_at),stLabel(o.status),o.first_name,o.last_name,o.phone,o.phone2,o.whatsapp,o.instagram,
+    `${o.wilaya_code} ${o.wilaya_name||""}`,o.commune_name,o.delivery==="desk"?"مكتب":"منزل",o.address,
+    (o.order_items||[]).map(l=>`${l.name?.ar||l.product_id} ${l.size} x${l.qty}`).join(" + "),o.subtotal,o.shipping_pending?"يحتاج تأكيد":o.shipping,o.total,o.subtotal-o.cost_total]));
+  const csv = "﻿"+rows.map(r=>r.map(v=>`"${String(v??"").replace(/"/g,'""')}"`).join(",")).join("\n");
+  const a = document.createElement("a"); a.href = URL.createObjectURL(new Blob([csv],{type:"text/csv"})); a.download = `orders-${new Date().toISOString().slice(0,10)}.csv`; a.click();
+}
+
+/* ================= products ================= */
+const catName = id=>D.settings.categories.find(c=>c.id===id)?.ar || "بدون قسم";
+function stockSummary(p){
+  if (!p.stock) return "المخزون غير متتبَّع";
+  const total = p.sizes.reduce((s,z)=>s+(FB.stockOf(p,z)||0),0), out = p.sizes.filter(z=>FB.stockOf(p,z)===0);
+  return `${total} قطعة${out.length?`، نفد: ${out.map(z=>z==="TU"?"موحد":z).join("، ")}`:""}`;
+}
+function renderProducts(){
+  const q = ui.prodQuery.trim().toLowerCase();
+  const list = D.products.filter(p=>!q || (p.name.ar+" "+p.name.fr).toLowerCase().includes(q));
+  $("#main").innerHTML = `<section class="panel">
+    <div class="panel-head"><h2>المنتجات <span class="muted num small">(${D.products.length})</span></h2>
+      <div class="toolbar"><input class="search" id="pq" type="search" placeholder="بحث عن منتج" value="${esc(ui.prodQuery)}"><button class="btn btn-primary" type="button" id="addP">إضافة منتج</button></div>
+    </div>
+    ${D.products.length ? `<div class="plist">${list.map((p,i)=>`
+      <div class="prow ${p.active?"":"off"}">
+        <div class="thumb" style="${FB.tint(p.colors[0]?.hex)}">${FB.media(p)}</div>
+        <div style="min-width:0"><div class="name">${esc(p.name.ar)}</div>
+          <div class="meta"><span>${esc(catName(p.category))}</span><span class="num">${money(p.price)}${p.compare_price>p.price?` <s>${money(p.compare_price)}</s>`:""}</span><span>${stockSummary(p)}</span>${p.active?"":"<span>مخفي من المتجر</span>"}</div></div>
+        <div class="acts move">${q?"":`<button class="icon" type="button" data-up="${esc(p.id)}" aria-label="تقديم" ${i===0?"disabled":""}>↑</button><button class="icon" type="button" data-down="${esc(p.id)}" aria-label="تأخير" ${i===list.length-1?"disabled":""}>↓</button>`}</div>
+        <div class="acts"><button class="btn btn-ghost btn-sm" type="button" data-edit="${esc(p.id)}">تعديل</button></div>
+      </div>`).join("")}</div>` :
+      `<div class="box" style="display:grid;gap:.8rem;justify-items:start"><p>لا توجد منتجات بعد. أضف أول قطعة بصورها وسعرها ومقاساتها، وستظهر في المتجر فور حفظها.</p>
+        <button class="btn btn-primary" type="button" id="addP2">إضافة منتج</button></div>`}
+  </section>`;
+  $("#pq").addEventListener("input",e=>{ ui.prodQuery=e.target.value; const pos=e.target.selectionStart; renderProducts(); const i=$("#pq"); i.focus(); i.setSelectionRange(pos,pos); });
+  $("#addP").onclick = ()=>openEditor(null);
+  $("#addP2")?.addEventListener("click",()=>openEditor(null));
+  $("#main").onclick = async e=>{
+    const ed = e.target.closest("[data-edit]"); if (ed) return openEditor(ed.dataset.edit);
+    const mv = e.target.closest("[data-up],[data-down]"); if (!mv) return;
+    const id = mv.dataset.up||mv.dataset.down, i = D.products.findIndex(p=>p.id===id), j = mv.dataset.up ? i-1 : i+1;
+    if (j<0||j>=D.products.length) return;
+    [D.products[i],D.products[j]] = [D.products[j],D.products[i]];
+    D.products.forEach((p,k)=>p.sort=k);
+    renderProducts();
+    await act(null, ()=>Promise.all([D.products[i],D.products[j]].map(p=>FB_API.saveProduct(p))));
+  };
+}
+
+/* ---------- product editor ---------- */
+let ed = null, isNew = false;
+function openEditor(id){
+  isNew = !id;
+  ed = id ? clone(D.products.find(p=>p.id===id)) : {id:"p-"+Date.now().toString(36), name:{ar:"",fr:""}, description:{ar:"",fr:""},
+    category:D.settings.categories[0]?.id||"", type:"abaya", price:0, compare_price:null, cost:0, badge:null,
+    colors:[{ar:"أسود",fr:"Noir",hex:"#211B20",image:""}], sizes:["S","M","L","XL","XXL"], stock:null, image:"", images:[], active:true, sort:D.products.length};
+  ed.images ||= [];  // products saved before extra photos existed
+  ed.cutout = {front:"", back:"", ...(ed.cutout||{})};  // rack photos (no background)
+  $("#edTitle").textContent = isNew ? "منتج جديد" : `تعديل: ${ed.name.ar}`;
+  $("#edDelete").hidden = isNew; $("#edDelete").classList.remove("armed"); $("#edDelete").textContent = "حذف المنتج";
+  drawEditor();
+  $("#editor").showModal();
+}
+function drawEditor(){
+  const typeOpts = Object.entries(FB.TYPES).map(([k,l])=>`<option value="${k}" ${ed.type===k?"selected":""}>${l}</option>`).join("");
+  const catOpts = D.settings.categories.map(c=>`<option value="${esc(c.id)}" ${ed.category===c.id?"selected":""}>${esc(c.ar)}</option>`).join("");
+  $("#edForm").innerHTML = `
+    <div class="grid2">
+      <div class="field"><label for="e-nar">الاسم بالعربية</label><input id="e-nar" value="${esc(ed.name.ar)}" required></div>
+      <div class="field"><label for="e-nfr">الاسم بالفرنسية</label><input id="e-nfr" dir="ltr" value="${esc(ed.name.fr)}"></div>
+      <div class="field"><label for="e-dar">الوصف بالعربية</label><textarea id="e-dar">${esc(ed.description?.ar||"")}</textarea></div>
+      <div class="field"><label for="e-dfr">الوصف بالفرنسية</label><textarea id="e-dfr" dir="ltr">${esc(ed.description?.fr||"")}</textarea></div>
+    </div>
+    <div class="grid2">
+      <div class="field"><label for="e-price">السعر (دج)</label><input id="e-price" type="number" min="0" step="50" inputmode="numeric" value="${ed.price||""}"></div>
+      <div class="field"><label for="e-cmp">السعر الأصلي قبل التخفيض (اختياري؛ يظهر مشطوباً مع نسبة التخفيض)</label><input id="e-cmp" type="number" min="0" step="50" inputmode="numeric" value="${ed.compare_price||""}"></div>
+      <div class="field"><label for="e-cost">سعر الشراء (لحساب الربح، لا تراه الزبونات)</label><input id="e-cost" type="number" min="0" step="50" inputmode="numeric" value="${ed.cost||""}"></div>
+    </div>
+    <div class="grid2">
+      <div class="field"><label for="e-cat">القسم</label><select id="e-cat">${catOpts}</select></div>
+      <div class="field"><label for="e-badge">الشارة</label><select id="e-badge"><option value="">بدون</option><option value="new" ${ed.badge==="new"?"selected":""}>جديد</option><option value="best" ${ed.badge==="best"?"selected":""}>الأكثر طلباً</option></select></div>
+      <div class="field"><label for="e-type">الرسم عند غياب الصورة</label><select id="e-type">${typeOpts}</select></div>
+    </div>
+    <fieldset><legend>الصورة الرئيسية</legend>
+      <div class="main-img"><div class="thumb" style="${FB.tint(ed.colors[0]?.hex)}">${FB.media({...ed,colors:ed.colors.map(c=>({...c,image:""}))})}</div>
+        <label class="btn btn-ghost btn-sm upload">${ed.image?"تغيير الصورة":"رفع صورة"}<input type="file" accept="image/*" data-up="main"></label>
+        ${ed.image?`<button class="link" type="button" data-rmimg="main">إزالة الصورة</button>`:""}
+        <span class="small muted">تُصغَّر الصورة تلقائياً لتفتح بسرعة على الهاتف.</span></div>
+    </fieldset>
+    <fieldset><legend>صور إضافية (الخلف، التفاصيل، القماش…)</legend>
+      <p class="small muted">تظهر بعد الصورة الرئيسية في معرض المنتج، بنفس الترتيب هنا. الصورة الثانية تظهر أيضاً عند مرور الفأرة على البطاقة في الحاسوب.</p>
+      <div class="extra-imgs">${(ed.images||[]).map((u,i,a)=>`<div class="extra">
+        <div class="mini"><img src="${esc(u)}" alt=""></div>
+        <div class="toolbar"><button class="icon" type="button" data-mv="${i}" data-d="-1" aria-label="تقديم الصورة" ${i===0?"disabled":""}>→</button><button class="icon" type="button" data-mv="${i}" data-d="1" aria-label="تأخير الصورة" ${i===a.length-1?"disabled":""}>←</button><button class="icon" type="button" data-rmx="${i}" aria-label="حذف الصورة">✕</button></div>
+      </div>`).join("")}</div>
+      <label class="btn btn-ghost btn-sm upload" style="justify-self:start">إضافة صور<input type="file" accept="image/*" multiple data-up="extra"></label>
+    </fieldset>
+    <fieldset><legend>صور الرف (بلا خلفية)</legend>
+      <p class="small muted">تظهر القطعة معلّقة في قسم «الرف» في الصفحة الرئيسية إذا كانت لها صورة أمامية <b>بلا خلفية</b> (PNG شفاف). يمكنك قصّ الخلفية على iPhone بالضغط المطوّل على القطعة في الصورة ثم «نسخ» أو «مشاركة»، أو بموقع remove.bg، أو بتطبيق Canva. الأجمل: القطعة على علّاقة، مصوّرة أمام حائط فاتح أملس.</p>
+      <div class="cut-row">
+        ${[["front","الأمام (ضرورية للرف)"],["back","الخلف (اختيارية: تُظهر زر أمام / خلف)"]].map(([k,l])=>`<div class="cut">
+          <div class="cut-pic">${ed.cutout[k]?`<img src="${esc(ed.cutout[k])}" alt="">`:`<span class="small muted">لا توجد</span>`}</div>
+          <span class="small">${l}</span>
+          <div class="toolbar"><label class="btn btn-ghost btn-sm upload">${ed.cutout[k]?"تغيير":"رفع"}<input type="file" accept="image/png,image/webp,image/*" data-up="cut-${k}"></label>
+          ${ed.cutout[k]?`<button class="link" type="button" data-rmcut="${k}">إزالة</button>`:""}</div></div>`).join("")}
+      </div>
+      <p class="small muted">لكل لون صورة رف خاصة به (اختيارية): زر «رف» في سطر اللون أدناه.</p>
+    </fieldset>
+    <fieldset><legend>الألوان</legend>
+      ${ed.colors.map((c,i)=>`<div class="color-row">
+        <input type="color" value="${esc(c.hex)}" data-c="${i}" data-k="hex" aria-label="اللون">
+        <div class="field"><input value="${esc(c.ar)}" data-c="${i}" data-k="ar" placeholder="الاسم بالعربية" aria-label="اسم اللون بالعربية"></div>
+        <div class="field fr"><input value="${esc(c.fr)}" data-c="${i}" data-k="fr" dir="ltr" placeholder="Nom en français" aria-label="اسم اللون بالفرنسية"></div>
+        <label class="mini upload" title="صورة هذا اللون">${c.image?`<img src="${esc(c.image)}" alt="">`:"صورة"}<input type="file" accept="image/*" data-up="${i}"></label>
+        <label class="mini upload cut-mini" title="صورة الرف لهذا اللون (بلا خلفية)">${c.cutout?`<img src="${esc(c.cutout)}" alt="">`:"رف"}<input type="file" accept="image/png,image/webp,image/*" data-up="cutc-${i}"></label>
+        <button class="icon" type="button" data-rmc="${i}" aria-label="حذف اللون" ${ed.colors.length===1?"disabled":""}>✕</button>
+      </div>`).join("")}
+      <button class="btn btn-ghost btn-sm" type="button" id="addColor" style="justify-self:start">إضافة لون</button>
+    </fieldset>
+    <fieldset><legend>المقاسات والمخزون</legend>
+      <div class="field"><label for="e-sizes">المقاسات، مفصولة بفاصلة (اكتب TU للمقاس الموحد)</label><input id="e-sizes" dir="ltr" value="${esc(ed.sizes.join(", "))}"></div>
+      <label class="check"><input type="checkbox" id="e-track" ${ed.stock?"checked":""}> تتبّع الكمية المتوفرة لكل مقاس</label>
+      ${ed.stock?`<div class="stock-grid">${ed.sizes.map(s=>`<div class="field"><label>${esc(s==="TU"?"موحد":s)}</label><input type="number" min="0" inputmode="numeric" data-stock="${esc(s)}" value="${ed.stock[s]??0}"></div>`).join("")}</div>`:""}
+    </fieldset>
+    <label class="check"><input type="checkbox" id="e-active" ${ed.active?"checked":""}> ظاهر في المتجر</label>
+    <p class="err" id="edErr" role="alert"></p>`;
+}
+// read the form back into `ed` before any re-draw so nothing typed is lost
+function collect(){
+  const v = id=>$("#"+id).value.trim(), n = id=>Math.max(0,Math.round(+$("#"+id).value||0));
+  ed.name = {ar:v("e-nar"), fr:v("e-nfr")};
+  ed.description = {ar:v("e-dar"), fr:v("e-dfr")};
+  ed.price = n("e-price"); ed.compare_price = n("e-cmp")||null; ed.cost = n("e-cost");
+  ed.category = $("#e-cat").value; ed.badge = $("#e-badge").value||null; ed.type = $("#e-type").value;
+  $$("#edForm [data-c]").forEach(el=>{ ed.colors[+el.dataset.c][el.dataset.k] = el.value.trim(); });
+  ed.sizes = [...new Set(v("e-sizes").split(/[,،]/).map(s=>s.trim()).filter(Boolean))];
+  const old = ed.stock || {};
+  $$("#edForm [data-stock]").forEach(el=>{ old[el.dataset.stock] = Math.max(0,Math.round(+el.value||0)); });
+  ed.stock = $("#e-track").checked ? Object.fromEntries(ed.sizes.map(s=>[s, old[s]??0])) : null;
+  ed.active = $("#e-active").checked;
+}
+$("#edForm").addEventListener("change", e=>{
+  if (e.target.id==="e-track" || e.target.id==="e-sizes"){ collect(); drawEditor(); }
+});
+$("#edForm").addEventListener("click", e=>{
+  if (e.target.id==="addColor"){ collect(); ed.colors.push({ar:"",fr:"",hex:"#8a7a80",image:""}); drawEditor(); }
+  const rc = e.target.closest("[data-rmc]"); if (rc){ collect(); ed.colors.splice(+rc.dataset.rmc,1); drawEditor(); }
+  if (e.target.closest("[data-rmimg]")){ collect(); ed.image=""; drawEditor(); }
+  const rcut = e.target.closest("[data-rmcut]"); if (rcut){ collect(); ed.cutout[rcut.dataset.rmcut]=""; drawEditor(); }
+  const rx = e.target.closest("[data-rmx]"); if (rx){ collect(); ed.images.splice(+rx.dataset.rmx,1); drawEditor(); }
+  const mv = e.target.closest("[data-mv]"); if (mv){ collect(); const i=+mv.dataset.mv, j=i+(+mv.dataset.d); [ed.images[i],ed.images[j]]=[ed.images[j],ed.images[i]]; drawEditor(); }
+});
+$("#edForm").addEventListener("change", async e=>{
+  const inp = e.target.closest("input[type=file][data-up]"); if (!inp || !inp.files[0]) return;
+  collect();
+  const target = inp.dataset.up, files = [...inp.files];
+  $("#edSave").disabled = true;
+  let failed = 0, opaque = false;
+  for (const [k, file] of files.entries()){
+    $("#edErr").textContent = files.length > 1 ? `جارٍ تجهيز الصور ورفعها (${k+1} من ${files.length})…` : "جارٍ تجهيز الصورة ورفعها…";
+    try {
+      const cut = target.startsWith("cut"), clear = cut && await clearEdges(file);
+      if (cut && !clear) opaque = true;
+      // a rack photo without background is trimmed to the piece, so it hangs right under the hanger on the rail
+      const url = await FB_API.uploadImage(await shrink(file, FB_API.mode==="demo" ? 640 : 1400, clear));
+      if (target==="cut-front") ed.cutout.front = url;
+      else if (target==="cut-back") ed.cutout.back = url;
+      else if (target.startsWith("cutc-")) ed.colors[+target.slice(5)].cutout = url;
+      else if (target==="main") ed.image = url;
+      else if (target==="extra") (ed.images ||= []).push(url);
+      else ed.colors[+target].image = url;
+    } catch(err){ failed++; }
+  }
+  drawEditor();
+  $("#edErr").textContent = failed ? `تعذّر رفع ${failed === 1 ? "صورة واحدة" : failed + " صور"}. جرّب صوراً بصيغة JPG أو PNG.`
+    : opaque ? "تنبيه: يبدو أن صورة الرف ما زالت بخلفيتها، فستظهر في الرف كمستطيل. استعمل صورة PNG بلا خلفية." : "";
+  $("#edSave").disabled = false;
+});
+// a photo without background has see-through corners; one with its background does not
+async function clearEdges(file){
+  try {
+    const img = await createImageBitmap(file), c = document.createElement("canvas"); c.width = 40; c.height = 40;
+    const x = c.getContext("2d"); x.drawImage(img, 0, 0, 40, 40);
+    return [[0,0],[39,0],[0,39],[39,39],[20,0]].every(([a,b])=>x.getImageData(a,b,1,1).data[3] < 30);
+  } catch { return true; }
+}
+// the part of a picture that is not see-through (measured on a small copy), with a thin margin; null if all of it is
+function alphaBox(img){
+  const k = Math.min(1, 400/Math.max(img.width, img.height)), w = Math.max(1, Math.round(img.width*k)), h = Math.max(1, Math.round(img.height*k));
+  const c = document.createElement("canvas"); c.width = w; c.height = h;
+  const x = c.getContext("2d", {willReadFrequently: true}); x.drawImage(img, 0, 0, w, h);
+  const d = x.getImageData(0, 0, w, h).data;
+  let x0 = w, y0 = h, x1 = -1, y1 = -1;
+  for (let y = 0; y < h; y++) for (let i = 0; i < w; i++) if (d[(y*w + i)*4 + 3] > 16){ if (i < x0) x0 = i; if (i > x1) x1 = i; if (y < y0) y0 = y; if (y > y1) y1 = y; }
+  if (x1 < 0 || (x0 <= 1 && y0 <= 1 && x1 >= w-2 && y1 >= h-2)) return null;
+  const pad = 2, X = Math.max(0, (x0 - pad)/k), Y = Math.max(0, (y0 - pad)/k);
+  return {x: Math.floor(X), y: Math.floor(Y), w: Math.ceil(Math.min(img.width, (x1 + 1 + pad)/k) - X), h: Math.ceil(Math.min(img.height, (y1 + 1 + pad)/k) - Y)};
+}
+// resize in the browser and save as WebP (it keeps transparency) so the store stays light on phones
+async function shrink(file, max, trim = false){
+  const img = await createImageBitmap(file);
+  const box = (trim && alphaBox(img)) || {x: 0, y: 0, w: img.width, h: img.height};
+  const k = Math.min(1, max/Math.max(box.w, box.h));
+  const c = document.createElement("canvas"); c.width = Math.round(box.w*k); c.height = Math.round(box.h*k);
+  c.getContext("2d").drawImage(img, box.x, box.y, box.w, box.h, 0, 0, c.width, c.height);
+  return new Promise((res, rej)=>c.toBlob(b=>b?res(b):rej(new Error("encode")), "image/webp", .82));
+}
+$("#edForm").addEventListener("submit", async e=>{
+  e.preventDefault(); collect();
+  const err = !ed.name.ar ? "اكتب اسم المنتج بالعربية." : !ed.price ? "اكتب سعر المنتج." :
+    ed.compare_price!=null && ed.compare_price<=ed.price ? "السعر الأصلي يجب أن يكون أعلى من سعر البيع، أو اتركه فارغاً." :
+    !ed.sizes.length ? "أضف مقاساً واحداً على الأقل." : ed.colors.some(c=>!c.ar) ? "اكتب اسم كل لون بالعربية." : "";
+  if (err){ $("#edErr").textContent = err; return; }
+  if (!ed.name.fr) ed.name.fr = ed.name.ar;
+  ed.colors.forEach(c=>{ if(!c.fr) c.fr = c.ar; });
+  const ok = await act($("#edSave"), async ()=>{ await FB_API.saveProduct(ed); await reload(); }, isNew ? "تمت إضافة المنتج." : "تم حفظ المنتج.");
+  if (ok){ $("#editor").close(); render(); }
+});
+$("#edDelete").onclick = async e=>{
+  const b = e.currentTarget;
+  if (!b.classList.contains("armed")){ b.classList.add("armed"); b.textContent = "اضغط مرة أخرى لتأكيد الحذف"; return; }
+  const ok = await act(b, async ()=>{ await FB_API.deleteProduct(ed.id); await reload(); }, "تم حذف المنتج.");
+  if (ok){ $("#editor").close(); render(); }
+};
+$("#editor").addEventListener("click", e=>{ if (e.target.closest("[data-close]")) $("#editor").close(); });
+
+/* ================= racks =================
+   The owner makes racks for the home page: a name, the pieces in order, shown or hidden. Only pieces with a
+   picture without background can hang. With no rack made, the store shows one rack with every such piece.
+   Changes stay here until «حفظ الرفوف». */
+const canHang = p=>!!(p.cutout?.front || p.colors?.some(c=>c.cutout));
+const hangPic = p=>p.cutout?.front || p.colors?.find(c=>c.cutout)?.cutout || "";
+let rk = null;   // the racks being edited: {on, list}
+function renderRacks(){
+  rk ||= {on: D.settings.racks_on !== false, list: clone(D.settings.racks || [])};
+  rk.list.forEach(r=>{ r.items ||= []; r.name ||= {ar:"", fr:""}; });
+  const pieces = D.products.filter(canHang), missing = D.products.filter(p=>!canHang(p));
+  const pName = id=>D.products.find(p=>p.id===id)?.name.ar;
+  const thumb = p=>`<div class="rk-pic">${hangPic(p)?`<img src="${esc(hangPic(p))}" alt="">`:""}</div>`;
+  $("#main").innerHTML = `<section class="panel">
+    <div class="panel-head"><h2>الرفوف</h2><div class="toolbar"><button class="btn btn-primary" type="button" id="rkAdd">إضافة رف</button></div></div>
+    <p class="small muted">تظهر الرفوف في الصفحة الرئيسية بعد الفيديو، بهذا الترتيب. لا تُعلَّق على الرف إلا القطع التي لها <b>صورة بلا خلفية</b> (تبويب المنتجات ← تعديل ← «صور الرف»). القطع النافدة لا تظهر.</p>
+    <label class="check"><input type="checkbox" id="rkOn" ${rk.on?"checked":""}> إظهار الرفوف في المتجر</label>
+    ${!rk.list.length ? `<div class="box"><p>${pieces.length
+        ? `لم تنشئ أي رف بعد، فيعرض المتجر رفاً واحداً تلقائياً فيه كل القطع ذات صور الرف (<span class="num">${pieces.length}</span>). أنشئ رفوفاً لتختار بنفسك اسم كل رف وقطعه وترتيبها.`
+        : "لا توجد بعد قطع لها صورة بلا خلفية، فلا يظهر أي رف في المتجر."}</p></div>`
+      : `<div class="rk-list">${rk.list.map((r,i)=>{
+          const inRack = (r.items||[]).filter(id=>D.products.some(p=>p.id===id));
+          const addable = pieces.filter(p=>!inRack.includes(p.id));
+          return `<div class="box rk" data-rk="${i}">
+          <div class="rk-head">
+            <div class="field"><label>اسم الرف بالعربية</label><input data-k="ar" value="${esc(r.name?.ar||"")}" placeholder="مثلاً: رف العبايات"></div>
+            <div class="field"><label>بالفرنسية (اختياري)</label><input data-k="fr" dir="ltr" value="${esc(r.name?.fr||"")}" placeholder="Abayas"></div>
+            <div class="toolbar"><button class="icon" type="button" data-rkmove="-1" aria-label="تقديم الرف" ${i===0?"disabled":""}>↑</button><button class="icon" type="button" data-rkmove="1" aria-label="تأخير الرف" ${i===rk.list.length-1?"disabled":""}>↓</button>
+              <label class="check small"><input type="checkbox" data-k="active" ${r.active!==false?"checked":""}> ظاهر</label>
+              <button class="btn btn-danger btn-sm" type="button" data-rkdel>حذف الرف</button></div>
+          </div>
+          <div class="rk-items">${inRack.length ? inRack.map((id,j)=>{ const p = D.products.find(x=>x.id===id);
+            return `<div class="rk-item ${canHang(p)?"":"off"}" title="${canHang(p)?"":"هذه القطعة لم تعد لها صورة رف، فلن تظهر"}">${thumb(p)}<span class="small">${esc(p.name.ar)}</span>
+              <div class="toolbar"><button class="icon" type="button" data-itmove="${j}" data-d="-1" aria-label="تقديم القطعة" ${j===0?"disabled":""}>→</button><button class="icon" type="button" data-itmove="${j}" data-d="1" aria-label="تأخير القطعة" ${j===inRack.length-1?"disabled":""}>←</button><button class="icon" type="button" data-itdel="${j}" aria-label="إزالة القطعة من الرف">✕</button></div></div>`; }).join("")
+            : `<p class="small muted">الرف فارغ: أضف إليه قطعاً. الرف الفارغ لا يظهر في المتجر.</p>`}</div>
+          ${addable.length ? `<div class="toolbar"><select data-additem aria-label="قطعة لإضافتها"><option value="">اختر قطعة لإضافتها…</option>${addable.map(p=>`<option value="${esc(p.id)}">${esc(p.name.ar)}</option>`).join("")}</select>
+            <button class="btn btn-ghost btn-sm" type="button" data-addall>إضافة كل القطع المتبقية (${addable.length})</button></div>` : ""}
+        </div>`; }).join("")}</div>`}
+    ${missing.length ? `<details class="box"><summary>قطع ليست لها صورة رف بعد <span class="num muted">(${missing.length})</span></summary>
+      <p class="small muted">لتعليقها على رف، ارفع لها صورة بلا خلفية.</p>
+      <ul class="items">${missing.map(p=>`<li><span>${esc(p.name.ar)}</span><button class="btn btn-ghost btn-sm" type="button" data-cutfor="${esc(p.id)}">رفع صورة الرف</button></li>`).join("")}</ul></details>` : ""}
+    <div class="savebar"><span class="small muted" id="rkDirty"></span><button class="btn btn-primary" type="button" id="rkSave">حفظ الرفوف</button></div>
+  </section>`;
+  const dirty = ()=>{ $("#rkDirty").textContent = "تغييرات غير محفوظة"; };
+  // typed names and the shown/hidden boxes are kept before every redraw
+  const keep = ()=>$$(".rk").forEach(el=>{ const r = rk.list[+el.dataset.rk];
+    r.name = {ar: el.querySelector('[data-k="ar"]').value.trim(), fr: el.querySelector('[data-k="fr"]').value.trim()};
+    r.active = el.querySelector('[data-k="active"]').checked; });
+  $("#main").oninput = e=>{ if (e.target.closest(".rk") || e.target.id==="rkOn") dirty(); };
+  $("#main").onchange = e=>{
+    if (e.target.id==="rkOn"){ rk.on = e.target.checked; dirty(); }
+    const add = e.target.closest("[data-additem]");
+    if (add && add.value){ keep(); rk.list[+add.closest(".rk").dataset.rk].items.push(add.value); renderRacks(); dirty(); }
+  };
+  $("#main").onclick = async e=>{
+    const el = e.target.closest(".rk"), r = el && rk.list[+el.dataset.rk];
+    if (e.target.id==="rkAdd"){ keep(); rk.list.push({id:"r-"+Date.now().toString(36), name:{ar:"",fr:""}, items:[], active:true}); renderRacks(); dirty(); $$(".rk").pop().querySelector('[data-k="ar"]').focus(); return; }
+    const mv = e.target.closest("[data-rkmove]");
+    if (mv){ keep(); const i = +el.dataset.rk, j = i + (+mv.dataset.rkmove); [rk.list[i], rk.list[j]] = [rk.list[j], rk.list[i]]; renderRacks(); dirty(); return; }
+    const del = e.target.closest("[data-rkdel]");
+    if (del){
+      if (!del.classList.contains("armed")){ del.classList.add("armed"); del.textContent = "اضغط مرة أخرى لحذف الرف"; return; }
+      keep(); rk.list.splice(+el.dataset.rk, 1); renderRacks(); dirty(); return;   // the pieces themselves are not touched
+    }
+    const im = e.target.closest("[data-itmove]");
+    if (im){ keep(); const i = +im.dataset.itmove, j = i + (+im.dataset.d), it = r.items.filter(id=>D.products.some(p=>p.id===id)); [it[i], it[j]] = [it[j], it[i]]; r.items = it; renderRacks(); dirty(); return; }
+    const idel = e.target.closest("[data-itdel]");
+    if (idel){ keep(); r.items = r.items.filter(id=>D.products.some(p=>p.id===id)); r.items.splice(+idel.dataset.itdel, 1); renderRacks(); dirty(); return; }
+    if (e.target.closest("[data-addall]")){ keep(); const has = new Set(r.items); D.products.filter(canHang).forEach(p=>{ if (!has.has(p.id)) r.items.push(p.id); }); renderRacks(); dirty(); return; }
+    const cf = e.target.closest("[data-cutfor]");
+    if (cf){ openEditor(cf.dataset.cutfor); setTimeout(()=>$('#edForm input[data-up="cut-front"]')?.closest("fieldset")?.scrollIntoView({block:"center"}), 120); return; }
+    if (e.target.id==="rkSave"){
+      keep();
+      const bad = rk.list.findIndex(x=>!x.name.ar);
+      if (bad >= 0){ toast("اكتب اسم كل رف بالعربية.", true); $$(".rk")[bad].querySelector('[data-k="ar"]').focus(); return; }
+      rk.list.forEach(x=>{ if (!x.name.fr) x.name.fr = x.name.ar; x.items = (x.items||[]).filter(id=>D.products.some(p=>p.id===id)); });
+      const next = {...D.settings, racks: clone(rk.list), racks_on: rk.on};
+      if (await act(e.target, ()=>FB_API.saveSettings(next), "تم حفظ الرفوف.")){ D.settings = next; rk = null; renderRacks(); }
+    }
+  };
+}
+
+/* ================= reviews =================
+   Customers review a delivered order from the tracking page; their review waits here until it is published.
+   The owner can also add a review received elsewhere: it is published without the "verified buyer" mark. */
+const REV_STATUS = {pending:"بانتظار المراجعة", approved:"منشور", hidden:"مخفي"};
+const prodName = id=>D.products.find(p=>p.id===id)?.name.ar;
+function renderReviews(){
+  if (D.reviews == null){
+    $("#main").innerHTML = `<section class="panel"><div class="panel-head"><h2>آراء الزبونات</h2></div>
+      <div class="box"><p>جدول الآراء غير موجود بعد في قاعدة البيانات. أعد تشغيل الملف <b>supabase/schema.sql</b> في SQL Editor (تشغيله مرة أخرى آمن ولا يحذف شيئاً)، ثم أعد تحميل الصفحة.</p></div></section>`;
+    return;
+  }
+  const by = st=>D.reviews.filter(r=>r.status===st), list = by(ui.revStatus);
+  const pub = by("approved"), avg = pub.length ? sum(pub,r=>r.rating)/pub.length : 0;
+  const f = ui.revForm;
+  $("#main").innerHTML = `<section class="panel">
+    <div class="panel-head"><h2>آراء الزبونات</h2>
+      <div class="toolbar">${pub.length?`<span class="small">${FB.stars(avg)} <span class="num">${avg.toFixed(1)}</span> من ${pub.length} رأي منشور</span>`:""}
+        <button class="btn btn-primary" type="button" id="addRev">إضافة رأي</button></div></div>
+    <p class="small muted">تكتب الزبونة رأيها من صفحة «تتبع طلبي» بعد أن تجعل حالة طلبها «تم التسليم». لا يظهر أي رأي في المتجر قبل أن تنشره أنت.</p>
+    ${f?`<form class="box" id="revForm" style="display:grid;gap:.8rem" novalidate>
+      <h3>رأي وصلك من زبونة (واتساب، إنستغرام…)</h3>
+      <p class="small muted">انقل رأياً حقيقياً فقط، بموافقة صاحبته. يظهر دون علامة «مشترية مؤكدة».</p>
+      <div class="grid2">
+        <div class="field"><label for="rv-name">اسم الزبونة كما يظهر</label><input id="rv-name" maxlength="40" value="${esc(f.name)}" placeholder="مثلاً: سارة ب."></div>
+        <div class="field"><label for="rv-w">الولاية (اختياري)</label><input id="rv-w" maxlength="40" value="${esc(f.wilaya_name)}"></div>
+      </div>
+      <div class="grid2">
+        <div class="field"><label for="rv-rating">التقييم</label><select id="rv-rating">${[5,4,3,2,1].map(n=>`<option value="${n}" ${+f.rating===n?"selected":""}>${"★".repeat(n)} (${n})</option>`).join("")}</select></div>
+        <div class="field"><label for="rv-prod">القطعة (اختياري)</label><select id="rv-prod"><option value="">المتجر عموماً</option>${D.products.map(p=>`<option value="${esc(p.id)}" ${f.product_id===p.id?"selected":""}>${esc(p.name.ar)}</option>`).join("")}</select></div>
+      </div>
+      <div class="field"><label for="rv-body">نص الرأي</label><textarea id="rv-body" maxlength="600">${esc(f.body)}</textarea></div>
+      <div class="main-img">${f.photo?`<div class="mini" style="width:72px;height:72px"><img src="${esc(f.photo)}" alt=""></div>`:""}
+        <label class="btn btn-ghost btn-sm upload">${f.photo?"تغيير الصورة":"صورة من الزبونة (اختياري)"}<input type="file" accept="image/*" id="rv-photo"></label>
+        ${f.photo?`<button class="link" type="button" id="rv-nophoto">إزالة الصورة</button>`:""}</div>
+      <p class="err" id="rvErr" role="alert"></p>
+      <div class="toolbar"><button class="btn btn-primary" type="submit" id="rvSave">نشر الرأي</button><button class="btn btn-ghost" type="button" id="rvCancel">إلغاء</button></div>
+    </form>`:""}
+    <div class="chips" role="group">${Object.entries(REV_STATUS).map(([k,l])=>`<button class="chip" type="button" data-rs="${k}" aria-pressed="${k===ui.revStatus}">${l} <span class="num">(${by(k).length})</span></button>`).join("")}</div>
+    ${list.length?`<div class="rlist">${list.map(r=>`<div class="rrow ${r.status}">
+      <div style="display:grid;gap:.4rem;min-width:0">
+        <div>${FB.stars(r.rating)} <span class="num small">${r.rating}/5</span></div>
+        ${r.body?`<p>${esc(r.body)}</p>`:`<p class="muted small">(بدون نص)</p>`}
+        ${r.photo?`<img src="${esc(r.photo)}" alt="">`:""}
+        <div class="meta"><b>${esc(r.name)}</b>${r.wilaya_name?`<span>${esc(r.wilaya_name)}</span>`:""}<span>${r.product_id&&prodName(r.product_id)?`عن: ${esc(prodName(r.product_id))}`:"عن المتجر"}</span>
+          <span class="num">${new Date(r.created_at).toLocaleDateString("fr-FR")}</span><span>${r.verified?"مشترية مؤكدة":"أضفته أنت"}</span>
+          ${r.order_id&&D.orders.find(o=>o.id===r.order_id)?`<span>الطلب <span class="num">${esc(D.orders.find(o=>o.id===r.order_id).order_number)}</span></span>`:""}</div>
+      </div>
+      <div class="acts">
+        ${r.status!=="approved"?`<button class="btn btn-primary btn-sm" type="button" data-rset="approved" data-id="${r.id}">نشر</button>`:""}
+        ${r.status!=="hidden"?`<button class="btn btn-ghost btn-sm" type="button" data-rset="hidden" data-id="${r.id}">إخفاء</button>`:""}
+        <button class="btn btn-danger btn-sm" type="button" data-rdel="${r.id}">حذف</button>
+      </div></div>`).join("")}</div>`
+      : `<div class="box"><p class="muted">${ui.revStatus==="pending"?"لا توجد آراء تنتظر المراجعة.":ui.revStatus==="approved"?"لا توجد آراء منشورة بعد.":"لا توجد آراء مخفية."}</p></div>`}
+  </section>`;
+  const keep = ()=>{ if (!ui.revForm) return; Object.assign(ui.revForm, {name:$("#rv-name").value, wilaya_name:$("#rv-w").value, rating:+$("#rv-rating").value,
+    product_id:$("#rv-prod").value, body:$("#rv-body").value}); };
+  $("#addRev").onclick = ()=>{ ui.revForm ||= {name:"", wilaya_name:"", rating:5, product_id:"", body:"", photo:""}; renderReviews(); $("#rv-name").focus(); };
+  $("#main").onclick = async e=>{
+    const ch = e.target.closest("[data-rs]"); if (ch){ keep(); ui.revStatus = ch.dataset.rs; return renderReviews(); }
+    if (e.target.id==="rvCancel"){ ui.revForm = null; return renderReviews(); }
+    if (e.target.id==="rv-nophoto"){ keep(); ui.revForm.photo = ""; return renderReviews(); }
+    const st = e.target.closest("[data-rset]");
+    if (st && await act(st, async ()=>{ await FB_API.setReviewStatus(+st.dataset.id, st.dataset.rset); await reload(); }, st.dataset.rset==="approved" ? "نُشر الرأي في المتجر." : "أُخفي الرأي من المتجر.")) { keep(); render(); }
+    const del = e.target.closest("[data-rdel]");
+    if (del){
+      if (!del.classList.contains("armed")){ del.classList.add("armed"); del.textContent = "تأكيد الحذف"; return; }
+      if (await act(del, async ()=>{ await FB_API.deleteReview(+del.dataset.rdel); await reload(); }, "حُذف الرأي.")) { keep(); render(); }
+    }
+  };
+  $("#rv-photo")?.addEventListener("change", async e=>{
+    const file = e.target.files[0]; if (!file) return;
+    keep(); $("#rvErr").textContent = "جارٍ تجهيز الصورة ورفعها…"; $("#rvSave").disabled = true;
+    try { ui.revForm.photo = await FB_API.uploadImage(await shrink(file, FB_API.mode==="demo" ? 640 : 1200)); renderReviews(); }
+    catch { $("#rvErr").textContent = "تعذّر رفع الصورة. جرّب صورة بصيغة JPG أو PNG."; $("#rvSave").disabled = false; }
+  });
+  $("#revForm")?.addEventListener("submit", async e=>{
+    e.preventDefault(); keep();
+    const f = ui.revForm;
+    const err = f.name.trim().length < 2 ? "اكتب اسم الزبونة (حرفان على الأقل)." : !f.body.trim() && !f.photo ? "اكتب نص الرأي أو أضف صورته." : "";
+    if (err){ $("#rvErr").textContent = err; return; }
+    if (await act($("#rvSave"), async ()=>{ await FB_API.addReview(f); await reload(); }, "نُشر الرأي في المتجر.")){ ui.revForm = null; ui.revStatus = "approved"; render(); }
+  });
+}
+
+/* ================= shipping =================
+   One price row per wilaya, optional rows per commune that override it.
+   An empty price means "not set yet": the store shows that the price needs confirmation. Nothing is assumed. */
+const priceIn = (k, v, label) => `<input type="number" min="0" step="50" inputmode="numeric" data-k="${k}" value="${v ?? ""}" placeholder="—" aria-label="${esc(label)}">`;
+const availIn = (k, on, label) => `<label class="check"><input type="checkbox" data-k="${k}" ${on!==false?"checked":""}><span class="sr">${esc(label)}</span></label>`;
+function readRow(tr, w, scope){
+  const g = k=>tr.querySelector(`[data-k="${k}"]`), num = k=>g(k).value==="" ? null : Math.max(0, Math.round(+g(k).value));
+  return {wilaya_code:w, scope, home_price:num("home_price"), desk_price:num("desk_price"), home_available:g("home_available").checked, desk_available:g("desk_available").checked};
+}
+const isEmptyRate = r=>r.home_price==null && r.desk_price==null && r.home_available && r.desk_available;
+function renderShipping(){
+  const R = D.rates, set = FB.WILAYAS.filter(w=>{ const r=R[`${w[0]}:0`]; return r && (r.home_price!=null||r.desk_price!=null); }).length;
+  const overrides = w=>Object.keys(R).filter(k=>k.startsWith(w+":") && !k.endsWith(":0")).length;
+  $("#main").innerHTML = `<section class="panel">
+    <div class="panel-head"><h2>أسعار التوصيل</h2><input class="search" id="wq" type="search" placeholder="بحث عن ولاية بالاسم أو الرقم"></div>
+    <div class="banner"><span>محدَّد السعر في <b class="num">${set}</b> من 69 ولاية. الخانة الفارغة تعني أن السعر غير محدد: تقبل الطلبات وتظهر للزبونة عبارة «يحتاج إلى تأكيد». أزل علامة «متاح» إذا كانت الطريقة غير متوفرة في الولاية.</span></div>
+    ${ZR?`<div class="box" id="zrRatesBox"><h3>أسعار ZR Express من حسابك</h3>
+      <p class="small muted">يقرأ أسعار التوصيل المسجلة في حسابك عند ZR (من ولاية محلك إلى كل ولاية، للمنزل وللمكتب) ويملأ بها الجدول أسفله. لا يُحفظ شيء قبل أن تراجع الجدول وتضغط «حفظ أسعار الولايات». الولاية التي ليس لها سعر عند ZR تبقى كما هي.</p>
+      <div class="toolbar"><button class="btn btn-ghost" type="button" id="zrRates" ${ZR.demo||!ZR.has_key?"disabled":""}>استيراد الأسعار من ZR Express</button>
+        <span class="small muted">${ZR.demo?"في وضع التجربة لا يُتصل بـ ZR.":!ZR.has_key?"أدخل مفاتيح ZR أولاً في إعدادات الموقع.":""}</span></div>
+      <div id="zrRatesRes" role="status"></div></div>`:""}
+    <div class="box"><h3>ملء سريع لعدة ولايات</h3>
+      <div class="toolbar">
+        <div class="field"><label for="bh">إلى المنزل (دج)</label><input id="bh" type="number" min="0" step="50" inputmode="numeric"></div>
+        <div class="field"><label for="bd">إلى المكتب (دج)</label><input id="bd" type="number" min="0" step="50" inputmode="numeric"></div>
+        <div class="field"><label for="bz">على</label><select id="bz"><option value="all">كل الولايات</option>${[1,2,3,4,5].map(z=>`<option value="${z}">${FB.ZONES[z]}</option>`).join("")}</select></div>
+        <button class="btn btn-ghost" type="button" id="bulk" style="align-self:end">ملء الجدول</button>
+      </div>
+      <p class="small muted" style="margin-top:.5rem">يملأ الجدول فقط بالأسعار التي تكتبها. اضغط «حفظ أسعار الولايات» لتطبيقها على المتجر.</p>
+    </div>
+    <div class="table-scroll"><table>
+      <thead><tr><th>الرقم</th><th>الولاية</th><th>إلى المنزل (دج)</th><th>متاح</th><th>إلى المكتب (دج)</th><th>متاح</th><th>البلديات</th></tr></thead>
+      <tbody>${FB.WILAYAS.map(w=>{const r=R[`${w[0]}:0`]||{}, n=overrides(w[0]); return `<tr data-w="${w[0]}" data-z="${w[3]}" data-name="${esc(FB.fold(w[1]+" "+w[2]))}">
+        <td class="num">${String(w[0]).padStart(2,"0")}</td><td>${esc(w[1])}</td>
+        <td>${priceIn("home_price", r.home_price, w[1]+": المنزل")}</td><td>${availIn("home_available", r.home_available, w[1]+": المنزل متاح")}</td>
+        <td>${priceIn("desk_price", r.desk_price, w[1]+": المكتب")}</td><td>${availIn("desk_available", r.desk_available, w[1]+": المكتب متاح")}</td>
+        <td><button class="link" type="button" data-communes="${w[0]}">${n?`${n} استثناء`:"أسعار البلديات"}</button></td></tr>`}).join("")}</tbody>
+    </table></div>
+    <div class="savebar"><button class="btn btn-primary" type="button" id="saveShip">حفظ أسعار الولايات</button></div>
+    <div class="box" id="communeRates"><h3>أسعار خاصة ببلديات</h3><p class="muted small">اختر ولاية من الجدول («أسعار البلديات») لتحديد سعر مختلف لبعض بلدياتها. الخانة الفارغة تعني: نفس سعر الولاية.</p></div>
+    <div class="box" id="newWilayas"><h3>بلديات الولايات الجديدة (59 إلى 69)</h3>
+      <p class="muted small">قائمة البلديات المعتمدة في الموقع تتبع تقسيم 58 ولاية. لكل ولاية جديدة، اختر من بلديات ولايتها الأم ما أصبح تابعاً لها حسب الجريدة الرسمية. ما دامت الولاية الجديدة بلا بلديات، تكتب الزبونة اسم بلديتها بنفسها.</p>
+      <div class="toolbar" style="margin-top:.6rem"><div class="field"><label for="nw">الولاية الجديدة</label><select id="nw">${FB.WILAYAS.filter(w=>w[4]).map(w=>`<option value="${w[0]}">${w[0]} ${esc(w[1])} (من ${esc(FB.wilaya(w[4])[1])})</option>`).join("")}</select></div>
+        <button class="btn btn-ghost" type="button" id="nwOpen" style="align-self:end">عرض البلديات</button></div>
+      <div id="nwList"></div>
+    </div>
+  </section>`;
+  $("#wq").addEventListener("input", e=>{ const q=FB.fold(e.target.value); $$("tr[data-w]").forEach(tr=>tr.hidden = !!q && !tr.dataset.name.includes(q) && tr.dataset.w!==q && tr.dataset.w.padStart(2,"0")!==q); });
+  $("#zrRates")?.addEventListener("click", async e=>{
+    const btn = e.target, label = btn.textContent, out = $("#zrRatesRes"); btn.disabled = true; btn.textContent = "جارٍ القراءة من ZR…";
+    try {
+      const {rows, unknown, communes} = await FB_API.courierRates();
+      $$("#main tr[data-w]").forEach(tr=>tr.classList.remove("from-zr"));
+      let filled = 0;
+      for (const r of rows){
+        const tr = $(`#main tr[data-w="${r.code}"]`); if (!tr || (r.home == null && r.desk == null)) continue;
+        if (r.home != null){ tr.querySelector('[data-k="home_price"]').value = r.home; tr.querySelector('[data-k="home_available"]').checked = true; }
+        if (r.desk != null){ tr.querySelector('[data-k="desk_price"]').value = r.desk; tr.querySelector('[data-k="desk_available"]').checked = true; }
+        tr.classList.add("from-zr"); filled++;
+      }
+      const missing = FB.WILAYAS.filter(w=>!rows.some(r=>r.code===w[0] && (r.home!=null || r.desk!=null)));
+      out.innerHTML = filled ? `<p class="small">✓ مُلئت أسعار <b class="num">${filled}</b> ولاية من ZR (مظلّلة في الجدول). راجعها ثم اضغط <b>«حفظ أسعار الولايات»</b>.</p>
+        ${missing.length?`<p class="small muted">بلا سعر عند ZR (بقيت كما هي): ${missing.map(w=>`<span class="num">${w[0]}</span> ${esc(w[1])}`).join("، ")}</p>`:""}
+        ${communes?`<p class="small muted">في حسابك أيضاً <span class="num">${communes}</span> سعراً خاصاً ببلديات: لم تُستورد، أدخلها من «أسعار البلديات» إن احتجت.</p>`:""}
+        ${unknown.length?`<p class="small muted">لم أتعرف على: ${unknown.map(esc).join("، ")}</p>`:""}`
+        : `<p class="small err">لم تُرجع ZR أي سعر لولاية. تحقّق من قائمة أسعارك في حسابك عند ZR.</p>`;
+    } catch(err){ out.innerHTML = `<p class="small err">${esc(errText(err))}</p>`; }
+    finally { btn.disabled = false; btn.textContent = label; }
+  });
+  $("#bulk").onclick = ()=>{
+    const h=$("#bh").value, d=$("#bd").value, z=$("#bz").value;
+    if (h==="" && d===""){ toast("اكتب سعراً واحداً على الأقل.", true); return; }
+    $$("#main tbody tr[data-w]").forEach(tr=>{ if (z!=="all" && tr.dataset.z!==z) return; if(h!=="") tr.querySelector('[data-k="home_price"]').value=h; if(d!=="") tr.querySelector('[data-k="desk_price"]').value=d; });
+    toast("تم ملء الجدول. اضغط «حفظ أسعار الولايات» لتطبيقها.");
+  };
+  $("#saveShip").onclick = async e=>{
+    const rows = [], remove = [];
+    $$("#main tbody tr[data-w]").forEach(tr=>{
+      const w = +tr.dataset.w, r = readRow(tr, w, 0);
+      if (isEmptyRate(r)){ if (D.rates[`${w}:0`]) remove.push([w,0]); } else rows.push(r);
+    });
+    if (await act(e.target, async ()=>{ await FB_API.saveRates(rows, remove); await reload(); }, "تم حفظ أسعار التوصيل.")) renderShipping();
+  };
+  $("#main").onclick = e=>{ const b=e.target.closest("[data-communes]"); if (b) openCommuneRates(+b.dataset.communes); };
+  $("#nwOpen").onclick = ()=>openNewWilaya(+$("#nw").value);
+}
+async function openCommuneRates(w){
+  const box = $("#communeRates"), wl = FB.wilaya(w);
+  box.innerHTML = `<h3>أسعار خاصة ببلديات ${esc(wl[1])}</h3><p class="muted small">جارٍ التحميل…</p>`;
+  box.scrollIntoView({behavior:"smooth", block:"start"});
+  let list; try { list = await FB_API.communes(w); } catch(e){ box.innerHTML += `<p class="err">${esc(errText(e))}</p>`; return; }
+  const base = D.rates[`${w}:0`] || {};
+  box.innerHTML = `<h3>أسعار خاصة ببلديات ${esc(wl[1])}</h3>
+    <p class="muted small">سعر الولاية: المنزل ${base.home_price!=null?money(base.home_price):"غير محدد"}، المكتب ${base.desk_price!=null?money(base.desk_price):"غير محدد"}. اترك الخانات فارغة ليُطبَّق سعر الولاية.</p>
+    ${list.length?`<input class="search" id="cq" type="search" placeholder="بحث عن بلدية" style="margin-block:.6rem">
+    <div class="table-scroll"><table>
+      <thead><tr><th>البلدية</th><th>إلى المنزل (دج)</th><th>متاح</th><th>إلى المكتب (دج)</th><th>متاح</th></tr></thead>
+      <tbody>${list.map(c=>{const r=D.rates[`${w}:${c.id}`]||{}; return `<tr data-c="${c.id}" data-name="${esc(FB.fold(c.ar+" "+c.fr))}">
+        <td>${esc(c.ar)} <span class="small muted">${esc(c.fr)}</span></td>
+        <td>${priceIn("home_price", r.home_price, c.ar+": المنزل")}</td><td>${availIn("home_available", r.home_available, c.ar+": المنزل متاح")}</td>
+        <td>${priceIn("desk_price", r.desk_price, c.ar+": المكتب")}</td><td>${availIn("desk_available", r.desk_available, c.ar+": المكتب متاح")}</td></tr>`}).join("")}</tbody>
+    </table></div>
+    <div class="toolbar" style="margin-top:.8rem"><button class="btn btn-primary" type="button" id="saveCommunes">حفظ أسعار بلديات ${esc(wl[1])}</button></div>`
+    : `<p class="muted">لا توجد بلديات مسجّلة لهذه الولاية بعد. أضفها من قسم «بلديات الولايات الجديدة» أدناه.</p>`}`;
+  $("#cq")?.addEventListener("input", e=>{ const q=FB.fold(e.target.value); box.querySelectorAll("tr[data-c]").forEach(tr=>tr.hidden = !!q && !tr.dataset.name.includes(q)); });
+  $("#saveCommunes")?.addEventListener("click", async e=>{
+    const rows = [], remove = [];
+    box.querySelectorAll("tr[data-c]").forEach(tr=>{
+      const c = +tr.dataset.c, r = readRow(tr, w, c);
+      if (isEmptyRate(r)){ if (D.rates[`${w}:${c}`]) remove.push([w,c]); } else rows.push(r);
+    });
+    if (await act(e.target, async ()=>{ await FB_API.saveRates(rows, remove); await reload(); }, "تم حفظ أسعار البلديات.")){
+      const n = Object.keys(D.rates).filter(k=>k.startsWith(w+":") && !k.endsWith(":0")).length;
+      const b = $(`[data-communes="${w}"]`); if (b) b.textContent = n ? `${n} استثناء` : "أسعار البلديات";
+    }
+  });
+}
+async function openNewWilaya(w){
+  const wl = FB.wilaya(w), parent = FB.wilaya(wl[4]), box = $("#nwList");
+  box.innerHTML = `<p class="muted small">جارٍ التحميل…</p>`;
+  let mine, theirs;
+  try { [mine, theirs] = await Promise.all([FB_API.communes(w), FB_API.communes(parent[0])]); } catch(e){ box.innerHTML = `<p class="err">${esc(errText(e))}</p>`; return; }
+  const all = [...mine.map(c=>({...c, on:true})), ...theirs.map(c=>({...c, on:false}))].sort((a,b)=>a.fr.localeCompare(b.fr));
+  box.innerHTML = `<p class="small" style="margin-block:.6rem">علّم البلديات التابعة لولاية ${esc(wl[1])}. غير المعلَّمة تبقى في ولاية ${esc(parent[1])}.</p>
+    <div class="commune-picks">${all.map(c=>`<label class="check"><input type="checkbox" data-id="${c.id}" ${c.on?"checked":""}> ${esc(c.ar)} <span class="small muted">${esc(c.fr)}</span></label>`).join("")}</div>
+    <div class="toolbar" style="margin-top:.8rem"><button class="btn btn-primary" type="button" id="saveMoves">حفظ بلديات ${esc(wl[1])}</button></div>`;
+  $("#saveMoves").onclick = async e=>{
+    const boxes = [...box.querySelectorAll("input[data-id]")];
+    const toNew = boxes.filter(b=>b.checked && !mine.some(c=>c.id===+b.dataset.id)).map(b=>+b.dataset.id);
+    const back = boxes.filter(b=>!b.checked && mine.some(c=>c.id===+b.dataset.id)).map(b=>+b.dataset.id);
+    if (!toNew.length && !back.length){ toast("لم يتغير شيء."); return; }
+    if (await act(e.target, async ()=>{
+      if (toNew.length) await FB_API.moveCommunes(toNew, w);
+      if (back.length) await FB_API.moveCommunes(back, parent[0]);
+    }, `تم حفظ بلديات ${wl[1]}.`)) openNewWilaya(w);
+  };
+}
+
+/* ================= site settings ================= */
+function renderSite(){
+  const s = D.settings;
+  const pair = (key,label,val,area)=>`<div class="grid2">
+    <div class="field"><label for="${key}-ar">${label} (عربي)</label>${area?`<textarea id="${key}-ar">${esc(val?.ar)}</textarea>`:`<input id="${key}-ar" value="${esc(val?.ar)}">`}</div>
+    <div class="field"><label for="${key}-fr">${label} (فرنسي)</label>${area?`<textarea id="${key}-fr" dir="ltr">${esc(val?.fr)}</textarea>`:`<input id="${key}-fr" dir="ltr" value="${esc(val?.fr)}">`}</div></div>`;
+  const used = id=>D.products.filter(p=>p.category===id).length;
+  $("#main").innerHTML = `<section class="panel">
+    <div class="panel-head"><h2>إعدادات الموقع</h2></div>
+    <fieldset><legend>التواصل</legend>
+      <div class="grid2">
+        <div class="field"><label for="s-wa">رقم واتساب لاستقبال الطلبات (بالصيغة الدولية بدون +)</label><input id="s-wa" dir="ltr" inputmode="numeric" placeholder="213555123456" value="${esc(s.whatsapp)}"></div>
+        <div class="field"><label for="s-ph">الرقم كما يظهر في الموقع</label><input id="s-ph" dir="ltr" value="${esc(s.phone_display)}"></div>
+      </div>
+      ${pair("s-addr","العنوان",s.address)}
+      ${pair("s-hours","أوقات العمل",s.hours)}
+      <div class="field"><label for="s-map">رابط المحل في خرائط Google (تُعرض الخريطة في المتجر من هذا الرابط)</label><input id="s-map" dir="ltr" value="${esc(s.map_url)}"></div>
+      <div class="grid2">
+        <div class="field"><label for="s-ig">Instagram</label><input id="s-ig" dir="ltr" placeholder="https://instagram.com/..." value="${esc(s.socials.instagram)}"></div>
+        <div class="field"><label for="s-fb">Facebook</label><input id="s-fb" dir="ltr" placeholder="https://facebook.com/..." value="${esc(s.socials.facebook)}"></div>
+        <div class="field"><label for="s-tt">TikTok</label><input id="s-tt" dir="ltr" placeholder="https://tiktok.com/@..." value="${esc(s.socials.tiktok)}"></div>
+      </div>
+      <p class="small muted">اترك رابط الشبكة فارغاً لإخفاء أيقونتها.</p>
+    </fieldset>
+    <fieldset id="notifyBox"><legend>إشعار عند كل طلب جديد</legend>
+      <p class="muted small">جارٍ التحميل…</p>
+    </fieldset>
+    <fieldset id="zrBox"><legend>شركة التوصيل: ZR Express</legend>
+      <p class="muted small">جارٍ التحميل…</p>
+    </fieldset>
+    <fieldset><legend>التسويق: Pixel الإعلانات</legend>
+      <p class="small muted">لقياس نتائج إعلاناتك على فيسبوك وإنستغرام وتيك توك: من يشاهد القطع، ومن يضيف إلى السلة، ومن يطلب. اتركه فارغاً إن لم تكن تعلن.</p>
+      <div class="grid2">
+        <div class="field"><label for="s-fbpx">Meta Pixel ID (فيسبوك وإنستغرام): أرقام فقط</label><input id="s-fbpx" dir="ltr" inputmode="numeric" placeholder="123456789012345" value="${esc(s.pixels.facebook)}"></div>
+        <div class="field"><label for="s-ttpx">TikTok Pixel ID: حروف وأرقام</label><input id="s-ttpx" dir="ltr" autocapitalize="characters" spellcheck="false" placeholder="C1A2B3C4D5E6F7G8H9I0" value="${esc(s.pixels.tiktok)}"></div>
+      </div>
+      <p class="small muted">تجد Meta Pixel ID في Meta Events Manager ← مصادر البيانات، وTikTok Pixel ID في TikTok Ads Manager ← Assets ← Events.</p>
+    </fieldset>
+    <fieldset><legend>صفحة الدفع والتوصيل والاستبدال</legend>
+      <p class="small muted">تظهر في الصفحة <a href="policy.html" target="_blank" rel="noopener">policy.html</a>، ورابطها في أسفل كل صفحة وفي نافذة كل قطعة. ما دامت فارغة، تعرض الصفحة فقط ما يقوله الموقع أصلاً (الدفع عند الاستلام، التوصيل، «${esc(s.texts.pSwap?.ar||"")}»).</p>
+      <p class="small muted">التنسيق: سطر يبدأ بـ <b dir="ltr">##</b> يصبح عنواناً، وسطر يبدأ بـ <b dir="ltr">-</b> يصبح نقطة في قائمة.</p>
+      <div class="grid2">
+        <div class="field"><label for="s-pol-ar">النص بالعربية</label><textarea id="s-pol-ar" rows="14">${esc(s.policy.ar)}</textarea></div>
+        <div class="field"><label for="s-pol-fr">النص بالفرنسية (إن تُرك فارغاً يظهر النص العربي)</label><textarea id="s-pol-fr" dir="ltr" rows="14">${esc(s.policy.fr)}</textarea></div>
+      </div>
+      <div class="toolbar"><button class="btn btn-ghost btn-sm" type="button" id="polDraft">إدراج مسودة لأكملها</button>
+        <span class="small muted">تضع المسودة بين معقوفين [ ] ما يجب أن تقرره أنت (المدة، الشروط، من يدفع التوصيل). لا تُحفظ الصفحة وفيها معقوفان.</span></div>
+    </fieldset>
+    <fieldset><legend>أقسام المتجر</legend>
+      <div id="cats" style="display:grid;gap:.6rem">${s.categories.map((c,i)=>`<div class="cat-row" data-cat="${esc(c.id)}">
+        <div class="field"><label>بالعربية</label><input data-k="ar" value="${esc(c.ar)}"></div>
+        <div class="field"><label>بالفرنسية</label><input data-k="fr" dir="ltr" value="${esc(c.fr)}"></div>
+        <div class="toolbar"><button class="icon" type="button" data-cup="${i}" aria-label="تقديم" ${i===0?"disabled":""}>↑</button><button class="icon" type="button" data-cdel="${i}" aria-label="حذف القسم" title="${used(c.id)?`فيه ${used(c.id)} منتج`:"حذف"}" ${used(c.id)?"disabled":""}>✕</button></div>
+      </div>`).join("")}</div>
+      <button class="btn btn-ghost btn-sm" type="button" id="addCat" style="justify-self:start">إضافة قسم</button>
+      <p class="small muted">لا يمكن حذف قسم فيه منتجات. انقل منتجاته إلى قسم آخر أولاً.</p>
+    </fieldset>
+    <fieldset><legend>نصوص الموقع</legend>
+      ${Object.entries(FB.TEXT_LABELS).map(([k,l])=>pair("t-"+k,l,s.texts[k],/Sub|story[12]/.test(k))).join("")}
+      <button class="link" type="button" id="resetTexts" style="justify-self:start">إرجاع النصوص الأصلية</button>
+    </fieldset>
+    <div class="savebar"><button class="btn btn-primary" type="button" id="saveSite">حفظ الإعدادات</button></div>
+  </section>`;
+  const readCats = ()=>$$("#cats .cat-row").map(r=>({id:r.dataset.cat, ar:r.querySelector('[data-k="ar"]').value.trim(), fr:r.querySelector('[data-k="fr"]').value.trim()}));
+  const gather = ()=>{
+    const v = id=>$("#"+id).value.trim(), L = id=>({ar:v(id+"-ar"), fr:v(id+"-fr")});
+    return {...D.settings, whatsapp:v("s-wa").replace(/\D/g,""), phone_display:v("s-ph"), address:L("s-addr"), hours:L("s-hours"), map_url:v("s-map"),
+      socials:{instagram:v("s-ig"), facebook:v("s-fb"), tiktok:v("s-tt")}, categories:readCats(),
+      policy:{ar:$("#s-pol-ar").value.trim(), fr:$("#s-pol-fr").value.trim()},
+      pixels:{facebook:v("s-fbpx").replace(/\s/g,""), tiktok:v("s-ttpx").replace(/\s/g,"").toUpperCase()},
+      texts:Object.fromEntries(Object.keys(FB.TEXT_LABELS).map(k=>[k, L("t-"+k)]))};
+  };
+  $("#main").onclick = e=>{
+    if (e.target.id==="addCat"){ D.settings = gather(); D.settings.categories.push({id:"c-"+Date.now().toString(36), ar:"", fr:""}); renderSite(); $$("#cats .cat-row").pop().querySelector("input").focus(); }
+    const up = e.target.closest("[data-cup]"); if (up){ D.settings = gather(); const c=D.settings.categories, i=+up.dataset.cup; [c[i-1],c[i]]=[c[i],c[i-1]]; renderSite(); }
+    const del = e.target.closest("[data-cdel]"); if (del){ D.settings = gather(); D.settings.categories.splice(+del.dataset.cdel,1); renderSite(); }
+    if (e.target.id==="polDraft"){
+      const ar = $("#s-pol-ar"), fr = $("#s-pol-fr");
+      if ((ar.value.trim() || fr.value.trim()) && !e.target.classList.contains("armed")){ e.target.classList.add("armed"); e.target.textContent = "اضغط مرة أخرى لاستبدال النص الحالي بالمسودة"; return; }
+      ar.value = POLICY_DRAFT.ar; fr.value = POLICY_DRAFT.fr; e.target.classList.remove("armed"); e.target.textContent = "إدراج مسودة لأكملها";
+      ar.focus(); ar.setSelectionRange(ar.value.indexOf("["), ar.value.indexOf("]")+1);
+      toast("أكمل ما بين المعقوفين [ ] أو احذف سطره، ثم اضغط «حفظ الإعدادات».");
+    }
+    if (e.target.id==="resetTexts"){ D.settings = {...gather(), texts:clone(FB.TEXTS)}; renderSite(); toast("أُرجعت النصوص الأصلية. اضغط «حفظ الإعدادات» لتطبيقها."); }
+  };
+  renderNotify();
+  renderZr();
+  $("#saveSite").onclick = async e=>{
+    const s = gather();
+    if (s.whatsapp && !/^213\d{9}$/.test(s.whatsapp)){ toast("رقم واتساب يجب أن يكون مثل 213555123456.", true); $("#s-wa").focus(); return; }
+    if (s.categories.some(c=>!c.ar)){ toast("اكتب اسم كل قسم بالعربية.", true); return; }
+ const blank = [s.policy.ar, s.policy.fr].join("\n").match(/\[[^\]\n]*\]/);
+    if (blank){ toast(`في صفحة الاستبدال ما زال ${blank[0]} بلا قرار. أكمله أو احذف سطره.`, true); const el = s.policy.ar.includes(blank[0]) ? $("#s-pol-ar") : $("#s-pol-fr"); el.focus(); const i = el.value.indexOf(blank[0]); el.setSelectionRange(i, i+blank[0].length); return; }
+    if (s.pixels.facebook && !/^\d{10,20}$/.test(s.pixels.facebook)){ toast("Meta Pixel ID أرقام فقط (عادةً 15 أو 16 رقماً).", true); $("#s-fbpx").focus(); return; }
+    if (s.pixels.tiktok && !/^[A-Z0-9]{15,30}$/.test(s.pixels.tiktok)){ toast("TikTok Pixel ID حروف لاتينية وأرقام فقط (نحو 20 حرفاً).", true); $("#s-ttpx").focus(); return; }
+    s.categories.forEach(c=>{ if(!c.fr) c.fr=c.ar; });
+    if (await act(e.target, ()=>FB_API.saveSettings(s), "تم حفظ الإعدادات.")) D.settings = s;
+  };
+}
+
+// a starting point for the policy page: the owner decides every bracketed part
+const POLICY_DRAFT = {
+  ar: `## الدفع
+- الدفع نقداً عند الاستلام. لا يُدفع أي مبلغ عبر الموقع عند الطلب.
+
+## التوصيل
+- نوصل إلى 69 ولاية، إلى المنزل أو إلى مكتب شركة التوصيل.
+- مدة التوصيل المعتادة: [مثلاً من 2 إلى 5 أيام] حسب الولاية.
+- يظهر سعر التوصيل قبل تأكيد الطلب.
+- بعد الطلب نتصل بك لتأكيده، ويمكنك متابعته من صفحة «تتبع طلبي».
+
+## الاستبدال
+- يمكنك معاينة القطعة عند الاستلام قبل الدفع، وطلب استبدالها بمقاس أو لون آخر أو بقطعة أخرى إن لم تناسبك.
+- شروط الاستبدال: [مثلاً: القطعة غير ملبوسة وغير مغسولة، بملصقاتها وتغليفها].
+- مصاريف التوصيل عند الاستبدال: [على الزبونة / على المتجر].
+- لا يشمل الاستبدال: [مثلاً: القطع المخيطة حسب المقاس] (أو احذفي هذا السطر).
+
+## الإرجاع واسترداد المال
+- [اكتبي هل تقبلين الإرجاع واسترداد المال وبأي شروط، أو احذفي هذا القسم].
+
+## التواصل
+- للاستبدال أو لأي سؤال، راسلينا على واتساب مع رقم طلبك.`,
+  fr: `## Paiement
+- Paiement en espèces à la livraison. Rien n'est payé en ligne au moment de la commande.
+
+## Livraison
+- Livraison dans 69 wilayas, à domicile ou au bureau du transporteur.
+- Délai habituel : [par exemple 2 à 5 jours] selon la wilaya.
+- Le prix de livraison s'affiche avant de confirmer la commande.
+- Après la commande, nous vous appelons pour la confirmer ; suivez-la sur la page « Suivre ma commande ».
+
+## Échange
+- Vous pouvez vérifier la pièce à la livraison avant de payer et demander un échange (autre taille, couleur ou pièce) si elle ne convient pas.
+- Conditions : [par exemple : pièce non portée, non lavée, avec ses étiquettes et son emballage].
+- Frais de livraison de l'échange : [à la charge de la cliente / de la boutique].
+- Exclus de l'échange : [par exemple : les pièces faites sur mesure] (ou supprimez cette ligne).
+
+## Retour et remboursement
+- [Indiquez si vous acceptez les retours et remboursements, et à quelles conditions, ou supprimez cette partie].
+
+## Contact
+- Pour un échange ou toute question, écrivez-nous sur WhatsApp avec votre numéro de commande.`
+};
+
+/* ---------- new-order notifications: Telegram (sent by the database) and this browser ---------- */
+async function renderNotify(){
+  const box = $("#notifyBox"); if (!box) return;
+  let n; try { n = await FB_API.notifyGet(); } catch(e){
+    box.innerHTML = `<legend>إشعار عند كل طلب جديد</legend><p class="small">إعدادات الإشعار غير موجودة في قاعدة البيانات بعد. شغّل <b>supabase/setup.sql</b> مرة أخرى (آمن، لا يحذف شيئاً)، ثم أعد تحميل الصفحة.</p>`; return; }
+  const perm = "Notification" in window ? Notification.permission : "unsupported";
+  box.innerHTML = `<legend>إشعار عند كل طلب جديد</legend>
+    <h3 style="font-size:1rem">تيليغرام: رسالة على هاتفك فور وصول أي طلب</h3>
+    ${n.demo?`<p class="small muted">في وضع التجربة لا تُرسل رسائل. تعمل بعد ربط Supabase.</p>`:!n.pg_net?`<p class="small err">الإضافة pg_net غير مفعّلة في Supabase: فعّلها من Database ← Extensions ← pg_net، ثم أعد تحميل الصفحة.</p>`:""}
+    <ol class="small muted" style="margin:0;padding-inline-start:1.2rem;display:grid;gap:.25rem">
+      <li>في تيليغرام افتح <b dir="ltr">@BotFather</b> وأرسل <b dir="ltr">/newbot</b>، واختر اسماً للبوت. سيعطيك <b>رمز البوت</b> (Token).</li>
+      <li>افتح البوت الجديد واضغط <b dir="ltr">Start</b>، حتى يُسمح له بمراسلتك.</li>
+      <li>افتح <b dir="ltr">@userinfobot</b> واضغط Start: سيعطيك <b>رقمك</b> (Id).</li>
+      <li>الصق الرمز والرقم هنا، فعّل الإشعار، احفظ، ثم اضغط «رسالة تجربة».</li>
+    </ol>
+    <div class="grid2">
+      <div class="field"><label for="n-token">رمز البوت (Token)</label><input id="n-token" type="password" dir="ltr" autocomplete="off" spellcheck="false" placeholder="${n.has_token?"محفوظ. اتركه فارغاً للإبقاء عليه":"123456789:AA..."}"></div>
+      <div class="field"><label for="n-chat">رقمك في تيليغرام (Id)</label><input id="n-chat" dir="ltr" inputmode="numeric" value="${esc(n.chat||"")}" placeholder="123456789"></div>
+    </div>
+    <label class="check"><input type="checkbox" id="n-on" ${n.enabled?"checked":""}> إرسال رسالة عند كل طلب جديد</label>
+    <p class="small muted">الرسالة فيها رقم الطلب والاسم والهاتف والولاية والقطع والمجموع. رمز البوت يُحفظ في قاعدة البيانات ولا يظهر في الموقع، ولا يُعرض هنا بعد حفظه.</p>
+    <div class="toolbar"><button class="btn btn-primary btn-sm" type="button" id="n-save">حفظ إعدادات الإشعار</button><button class="btn btn-ghost btn-sm" type="button" id="n-test" ${n.demo||!n.pg_net?"disabled":""}>رسالة تجربة</button><span class="small" id="n-res" role="status"></span></div>
+    <h3 style="font-size:1rem;margin-top:.6rem">هذا المتصفح: صوت وإشعار ما دامت اللوحة مفتوحة</h3>
+    <div class="toolbar"><button class="btn btn-ghost btn-sm" type="button" id="n-browser" ${perm==="unsupported"||perm==="granted"?"disabled":""}>${perm==="granted"?"إشعار المتصفح مفعّل ✓":perm==="denied"?"إشعارات المتصفح مرفوضة: فعّلها من إعدادات المتصفح":perm==="unsupported"?"المتصفح لا يدعم الإشعارات":"تفعيل إشعار المتصفح"}</button>
+      <button class="btn btn-ghost btn-sm" type="button" id="n-beep">تجربة الصوت</button></div>`;
+  $("#n-save").onclick = async e=>{
+    const token = $("#n-token").value.trim(), chat = $("#n-chat").value.trim(), on = $("#n-on").checked;
+    if (token && !/^\d{5,15}:[A-Za-z0-9_-]{30,60}$/.test(token)){ toast("رمز البوت غير صحيح: انسخه كاملاً من BotFather (أرقام ثم : ثم حروف).", true); $("#n-token").focus(); return; }
+    if (chat && !/^-?\d{3,20}$/.test(chat)){ toast("رقم تيليغرام أرقام فقط، كما يعطيك @userinfobot.", true); $("#n-chat").focus(); return; }
+    if (on && (!chat || (!token && !n.has_token))){ toast("لتفعيل الإشعار أدخل رمز البوت ورقمك.", true); return; }
+    if (await act(e.target, ()=>FB_API.notifySave(token, chat, on), "تم حفظ إعدادات الإشعار.")) renderNotify();
+  };
+  $("#n-test").onclick = async e=>{
+    const res = $("#n-res"); e.target.disabled = true; res.textContent = "جارٍ الإرسال…";
+    try {
+      const id = await FB_API.notifyTest();
+      if (id == null){ res.textContent = "احفظ رمز البوت ورقمك أولاً."; return; }
+      let r = {pending:true};
+      for (let i = 0; i < 8 && r.pending; i++){ await new Promise(ok=>setTimeout(ok, 1000)); r = await FB_API.notifyResult(id); }
+      res.textContent = r.pending ? "أُرسلت، لكن لم يصل رد تيليغرام بعد. تحقّق من هاتفك."
+        : r.status === 200 ? "✓ وصلت الرسالة. تحقّق من تيليغرام."
+        : r.status === 401 || r.status === 404 ? "رمز البوت غير صحيح. انسخه من جديد من BotFather."
+        : r.status === 400 || r.status === 403 ? "الرقم غير صحيح، أو لم تضغط Start في البوت بعد."
+        : `لم تصل الرسالة (${r.status || r.error || "خطأ"}).`;
+    } catch(err){ res.textContent = String(err?.message||err).includes("pg_net") ? "فعّل pg_net في Supabase أولاً." : errText(err); }
+    finally { e.target.disabled = false; }
+  };
+  $("#n-browser").onclick = async ()=>{ try { await Notification.requestPermission(); } catch {} renderNotify(); };
+  $("#n-beep").onclick = ()=>beep();
+}
+// ZR Express keys: written here, kept in the database, never shown again
+const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+async function renderZr(){
+  const box = $("#zrBox"); if (!box) return;
+  let z; try { z = ZR = await FB_API.courierGet(); } catch(e){
+    box.innerHTML = `<legend>شركة التوصيل: ZR Express</legend><p class="small">الربط مع ZR غير موجود في قاعدة البيانات بعد. شغّل <b>supabase/setup.sql</b> مرة أخرى (آمن، لا يحذف شيئاً)، ثم أعد تحميل الصفحة.</p>`; return; }
+  const old = z.provider === "zr_old";
+  box.innerHTML = `<legend>شركة التوصيل: ZR Express</legend>
+    <p class="small">بعد ربط حسابك: في كل طلب زر <b>«إرسال إلى ZR Express»</b> يسجّل الطرد عندهم مباشرة، ويُحفظ رقم تتبعهم في الطلب. ثم تُقرأ حالة الطرد من ZR (في الطريق، خرج للتوصيل، سُلّم…) فتتحدث الطلبات وصفحة التتبع للزبونة.</p>
+    ${z.demo?`<p class="small muted">وضع التجربة: تُحفظ الإعدادات ولا يُتصل بـ ZR. الطرود تأخذ أرقاماً تبدأ بـ ZR-DEMO، وكل ضغطة على «تحديث حالات ZR» تقدّمها خطوة.</p>`:!z.pg_net?`<p class="small err">الإضافة pg_net غير مفعّلة في Supabase: فعّلها من Database ← Extensions ← pg_net، ثم أعد تحميل الصفحة.</p>`:""}
+    <div class="field"><span class="lbl">حسابك عند ZR على</span>
+      <label class="check"><input type="radio" name="zr-p" value="zr" ${old?"":"checked"}> منصة ZR الحالية (zrexpress.app): مفتاح API ورقم الحساب Tenant ID</label>
+      <label class="check"><input type="radio" name="zr-p" value="zr_old" ${old?"checked":""}> منصة ZR القديمة (procolis): Token و Key</label></div>
+    <p class="small muted" id="zr-where">${old?"تجدهما في حسابك القديم على ZR، قسم API، أو اطلبهما من ممثّلك في ZR.":"تجدهما في لوحة ZR Express: API Rest ← Token API. للمفتاح مدة صلاحية (حتى سنة): جدّده قبل انتهائها."}</p>
+    <div class="grid2">
+      <div class="field"><label for="zr-key" id="zr-key-l">${old?"Key":"مفتاح API (X-Api-Key)"}</label><input id="zr-key" type="password" dir="ltr" autocomplete="off" spellcheck="false" placeholder="${z.has_key?"محفوظ. اتركه فارغاً للإبقاء عليه":""}"></div>
+      <div class="field"><label for="zr-tenant" id="zr-tenant-l">${old?"Token":"رقم الحساب (Tenant ID)"}</label><input id="zr-tenant" type="password" dir="ltr" autocomplete="off" spellcheck="false" placeholder="${z.has_tenant?"محفوظ. اتركه فارغاً للإبقاء عليه":old?"":"xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"}"></div>
+    </div>
+    <label class="check"><input type="checkbox" id="zr-on" ${z.enabled?"checked":""}> تفعيل زر «إرسال إلى ZR Express» في الطلبات وقراءة حالات الطرود</label>
+    <p class="small muted">المفاتيح تُحفظ في قاعدة البيانات ولا تظهر في الموقع، ولا تُعرض هنا بعد حفظها. ${z.demo?"":z.auto?"تُقرأ حالات الطرود تلقائياً كل 30 دقيقة، وعند فتح الطلبات.":"تُقرأ حالات الطرود عند فتح الطلبات وبزر «تحديث حالات ZR». للتحديث التلقائي كل 30 دقيقة فعّل pg_cron في Supabase (Database ← Extensions) ثم شغّل setup.sql مرة أخرى."}</p>
+    <div class="toolbar"><button class="btn btn-primary btn-sm" type="button" id="zr-save">حفظ إعدادات ZR</button><button class="btn btn-ghost btn-sm" type="button" id="zr-test" ${z.demo||!z.pg_net?"disabled":""}>اختبار الاتصال</button><span class="small" id="zr-res" role="status"></span></div>`;
+  box.querySelectorAll('[name="zr-p"]').forEach(r=>r.onchange = ()=>{
+    const o = r.value === "zr_old";
+    $("#zr-key-l").textContent = o ? "Key" : "مفتاح API (X-Api-Key)";
+    $("#zr-tenant-l").textContent = o ? "Token" : "رقم الحساب (Tenant ID)";
+    $("#zr-where").textContent = o ? "تجدهما في حسابك القديم على ZR، قسم API، أو اطلبهما من ممثّلك في ZR." : "تجدهما في لوحة ZR Express: API Rest ← Token API. للمفتاح مدة صلاحية (حتى سنة): جدّده قبل انتهائها.";
+  });
+  $("#zr-save").onclick = async e=>{
+    const provider = box.querySelector('[name="zr-p"]:checked').value, key = $("#zr-key").value.trim(), tenant = $("#zr-tenant").value.trim(), on = $("#zr-on").checked;
+    const changed = provider !== z.provider;
+    if (key && !/^[A-Za-z0-9._~+/=-]{8,255}$/.test(key)){ toast("المفتاح غير صحيح: انسخه كاملاً كما يظهر في ZR، دون مسافات.", true); $("#zr-key").focus(); return; }
+    if (tenant && provider === "zr" && !UUID_RE.test(tenant)){ toast("رقم الحساب (Tenant ID) يكون بهذا الشكل: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx.", true); $("#zr-tenant").focus(); return; }
+    if (tenant && !/^[A-Za-z0-9._~+/=-]{4,255}$/.test(tenant)){ toast("الـ Token غير صحيح: انسخه كاملاً دون مسافات.", true); $("#zr-tenant").focus(); return; }
+    if (on && ((!key && (!z.has_key || changed)) || (!tenant && (!z.has_tenant || changed)))){ toast(changed ? "عند تغيير المنصة أدخل المفتاحين من جديد." : "للتفعيل أدخل المفتاحين.", true); return; }
+    if (await act(e.target, ()=>FB_API.courierSave(provider, key, tenant, on), "تم حفظ إعدادات ZR Express.")) renderZr();
+  };
+  $("#zr-test").onclick = async e=>{
+    const res = $("#zr-res"); e.target.disabled = true; res.textContent = "جارٍ الاتصال بـ ZR…";
+    try {
+      const b = await FB_API.courierTest();
+      res.textContent = old && b?.Statut && b.Statut !== "Accès activé" ? `ZR ردّت: ${b.Statut}` : "✓ ZR قبلت المفاتيح.";
+    } catch(err){ res.textContent = errText(err); }
+    finally { e.target.disabled = false; }
+  };
+}
+// a short two-note chime (no sound file needed)
+function beep(){
+  try {
+    const a = new (window.AudioContext || window.webkitAudioContext)(), t = a.currentTime;
+    [[880, 0], [1320, .18]].forEach(([f, d])=>{ const o = a.createOscillator(), g = a.createGain(); o.frequency.value = f; o.type = "sine";
+      g.gain.setValueAtTime(0, t + d); g.gain.linearRampToValueAtTime(.25, t + d + .02); g.gain.exponentialRampToValueAtTime(.001, t + d + .45);
+      o.connect(g).connect(a.destination); o.start(t + d); o.stop(t + d + .5); });
+  } catch {}
+}
+// a new order while the dashboard is open: chime, toast, browser notification, title count, fresh list
+let unseen = 0; const baseTitle = document.title;
+function listenForOrders(){
+  FB_API.onNewOrder(async o=>{
+    beep(); unseen++; document.title = `(${unseen}) طلب جديد – ${baseTitle}`;
+    toast(`طلب جديد ${o?.order_number || ""} من ${o?.first_name || ""} ${o?.last_name || ""}`.trim());
+    try { if ("Notification" in window && Notification.permission === "granted" && document.hidden) new Notification("طلب جديد في Flame Boutique34", {body: `${o?.order_number || ""} · ${o?.first_name || ""} ${o?.last_name || ""} · ${o?.wilaya_name || ""}`, tag: "fb34-order"}); } catch {}
+    try { await reload(); if (["overview","orders"].includes(tab) && !$("#editor").open) render(); } catch {}
+  }).catch(()=>{});
+  document.addEventListener("visibilitychange", ()=>{ if (!document.hidden){ unseen = 0; document.title = baseTitle; } });
+}
+
+/* ================= account ================= */
+function renderAccount(){
+  $("#main").innerHTML = `<section class="panel">
+    <div class="panel-head"><h2>الحساب</h2></div>
+    <form class="box" id="pwForm" style="display:grid;gap:.8rem;max-width:460px">
+      <h3>تغيير كلمة المرور</h3>
+      <div class="field"><label for="np1">كلمة المرور الجديدة (6 أحرف على الأقل)</label><input id="np1" type="password" autocomplete="new-password" minlength="6"></div>
+      <div class="field"><label for="np2">أعد كتابتها</label><input id="np2" type="password" autocomplete="new-password"></div>
+      <p class="err" id="pwErr" role="alert"></p>
+      <button class="btn btn-primary" type="submit" style="justify-self:start">تغيير كلمة المرور</button>
+    </form>
+    ${FB_API.mode==="demo"?`<div class="box" style="display:grid;gap:.8rem;max-width:460px"><h3>بيانات التجربة</h3>
+      <p class="muted">تمسح كل تعديلاتك في وضع التجربة وتعيد المنتجات والطلبات التجريبية.</p>
+      <button class="btn btn-danger" type="button" id="resetDemo" style="justify-self:start">إعادة بيانات التجربة</button></div>`:""}
+  </section>`;
+  $("#pwForm").onsubmit = async e=>{
+    e.preventDefault();
+    const a=$("#np1").value, b=$("#np2").value;
+    $("#pwErr").textContent = a.length<6 ? "كلمة المرور قصيرة. استعمل 6 أحرف على الأقل." : a!==b ? "الكلمتان غير متطابقتين." : "";
+    if ($("#pwErr").textContent) return;
+    if (await act(e.submitter, ()=>FB_API.changePassword(a), "تم تغيير كلمة المرور.")) e.target.reset();
+  };
+  $("#resetDemo")?.addEventListener("click", async e=>{
+    const b=e.currentTarget;
+    if (!b.classList.contains("armed")){ b.classList.add("armed"); b.textContent="اضغط مرة أخرى للتأكيد"; return; }
+    await FB_API.resetDemo(); await reload(); toast("أُعيدت بيانات التجربة."); render();
+  });
+}
+
+/* ---------- boot ---------- */
+FB_API.hasSession().then(ok=>ok?start():($("#login").hidden=false, $("#pw").focus())).catch(()=>{ $("#login").hidden=false; });
+</script>
+</body>
+</html>

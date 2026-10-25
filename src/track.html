@@ -1,0 +1,238 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#EADCC6">
+<style>:root{padding-block:env(safe-area-inset-top,0px) env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<script>(function(){try{var th=JSON.parse(localStorage.getItem("fb34-theme")),lg=JSON.parse(localStorage.getItem("fb34-lang")),r=document.documentElement;if(th==="dark"||th==="light")r.dataset.theme=th;if(lg==="fr"){r.lang="fr";r.dir="ltr"}}catch(e){}})()</script>
+<title>تتبع طلبي – Flame Boutique34</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500&family=Marcellus&family=Noto+Naskh+Arabic:wght@400;600&family=Reem+Kufi:wght@500;600&display=swap">
+<link rel="stylesheet" href="site.css">
+<style>
+main{min-height:60vh}
+.track{display:grid;gap:1.6rem;max-width:760px}
+.track h1{font-size:var(--step-3)}
+.track-form{display:grid;grid-template-columns:1fr 1fr auto;gap:.8rem;align-items:end;padding:1.2rem;border:1px solid var(--line);border-radius:16px;background:var(--surface)}
+.track-form .btn{min-width:150px}
+@media (max-width:680px){.track-form{grid-template-columns:1fr}}
+.notfound{padding:1rem 1.2rem;border-radius:12px;background:var(--surface);border:1px solid var(--line)}
+.result{display:grid;gap:1.4rem;padding:clamp(1rem,3vw,1.6rem);border:1px solid var(--line);border-radius:18px;background:var(--surface)}
+.result-head{display:flex;flex-wrap:wrap;justify-content:space-between;gap:.6rem 1.4rem;align-items:start}
+.result-head .now{font-family:var(--display);font-size:var(--step-2);line-height:1.25}
+.meta{display:grid;gap:.15rem;font-size:.9rem;color:var(--muted)}
+.meta b{color:var(--ink);font-weight:500}
+/* progress: one dot per step; a dot is filled only when that step was really recorded */
+.steps{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(7,1fr);position:relative}
+.steps::before,.steps .fill{content:"";position:absolute;top:13px;inset-inline-start:calc(100%/14);height:3px;border-radius:3px;background:var(--line)}
+.steps::before{inset-inline-end:calc(100%/14)}
+.steps .fill{background:var(--mulberry);width:calc(100% * 6 / 7 * var(--f));transition:width .8s var(--ease),height .8s var(--ease)}
+.steps li{position:relative;display:grid;justify-items:center;gap:.35rem;text-align:center;font-size:.78rem;color:var(--muted);padding-inline:2px}
+.steps .dot{width:28px;height:28px;border-radius:50%;background:var(--surface);border:2px solid var(--line);display:grid;place-items:center;z-index:1}
+.steps .done .dot{background:var(--mulberry);border-color:var(--mulberry)}
+.steps .done .dot::after{content:"";width:10px;height:6px;border-left:2px solid var(--on-mulberry);border-bottom:2px solid var(--on-mulberry);transform:translateY(-1px) rotate(-45deg)}
+.steps .current .dot{box-shadow:0 0 0 5px color-mix(in oklab,var(--mulberry) 22%,transparent)}
+.steps .current{color:var(--ink);font-weight:500}
+.steps time{font-size:.72rem;font-variant-numeric:tabular-nums;direction:ltr}
+@media (max-width:620px){
+  .steps{grid-template-columns:1fr;gap:.9rem}
+  .steps::before,.steps .fill{top:14px;bottom:14px;inset-inline-start:13px;width:3px;height:auto}
+  .steps::before{inset-inline-end:auto}
+  .steps .fill{height:calc((100% - 28px) * var(--f));width:3px;bottom:auto}
+  .steps li{grid-template-columns:28px 1fr auto;justify-items:start;text-align:start;align-items:center;gap:.7rem}
+}
+.ended{padding:.8rem 1rem;border-radius:12px;font-weight:500}
+.courier{padding:.8rem 1rem;border:1px solid var(--line);border-radius:12px;background:var(--surface);display:grid;gap:.35rem}
+.courier h2{margin:0;font-size:1rem}.courier p{margin:0}.now-c{font-weight:600}.now-c time{font-weight:400;font-size:.85rem;color:var(--muted)}
+.ended.cancelled{background:color-mix(in oklab,var(--muted) 14%,var(--surface))}
+.ended.failed{background:color-mix(in oklab,var(--danger) 12%,var(--surface));color:var(--danger)}
+.history{list-style:none;margin:0;padding:0;display:grid;gap:.4rem;font-size:.9rem}
+.history li{display:flex;justify-content:space-between;gap:1rem;border-bottom:1px dashed var(--line);padding-bottom:.35rem}
+.history time{color:var(--muted);font-variant-numeric:tabular-nums;direction:ltr;white-space:nowrap}
+.items{display:grid;gap:.35rem;font-size:.92rem}
+.row{display:flex;justify-content:space-between;gap:1rem}
+.sum{display:grid;gap:.3rem;padding-top:.6rem;border-top:1px solid var(--line)}
+.sum .total{font-weight:500;font-size:var(--step-1)}
+.result h2{font-size:1.05rem;font-family:var(--body);font-weight:600}
+.review-box{display:grid;gap:1rem;padding:clamp(1rem,3vw,1.6rem);border:1px solid var(--line);border-radius:18px;background:var(--surface)}
+.review-box h2{font-size:var(--step-1)}
+.review-box .btn{justify-self:start}
+.thanks{display:flex;align-items:center;gap:.7rem;padding:1rem 1.2rem;border-radius:14px;background:color-mix(in oklab,var(--success) 10%,var(--surface))}
+.thanks .check-mark{width:40px;height:40px;flex:none}
+</style>
+</head>
+<body>
+<main class="section">
+  <div class="wrap track">
+    <div>
+      <h1 data-t="title"></h1>
+      <p class="muted" data-t="intro"></p>
+    </div>
+    <form class="track-form" id="trackForm" novalidate>
+      <div class="field"><label for="tCode" data-t="code"></label><input id="tCode" name="code" dir="ltr" autocapitalize="characters" spellcheck="false" placeholder="FLM-XXXXXXXX" maxlength="20"><p class="err" id="eCode"></p></div>
+      <div class="field"><label for="tPhone" data-t="phone"></label><input id="tPhone" name="phone" type="tel" inputmode="tel" dir="ltr" placeholder="05 XX XX XX XX"><p class="err" id="ePhone"></p></div>
+      <button class="btn btn-primary" type="submit" id="tBtn" data-t="go"></button>
+    </form>
+    <div id="out" aria-live="polite"></div>
+  </div>
+</main>
+
+<script src="assets/config.js"></script>
+<script src="locations.js"></script>
+<script src="shared.js"></script>
+<script src="api.js"></script>
+<script src="ui.js"></script>
+<script>
+const T = {
+ ar:{courierAt:"عند شركة التوصيل",courierNo:"رقم التتبع عند",courierHint:"اذكري هذا الرقم إن اتصلتِ بشركة التوصيل.",courierWhen:"آخر تحديث",
+  revTitle:"كيف وجدتِ طلبك؟",revIntro:"رأيك يساعد زبونات أخريات على الاختيار. يظهر في المتجر بعد مراجعته.",
+  revPiece:"القطعة التي تقيّمينها",revShop:"الطلب كله والمتجر",revStars:"تقييمك",revBody:"رأيك",revBodyPh:"القماش، المقاس، الجودة، التوصيل…",
+  revName:"الاسم الذي يظهر مع رأيك",revNameHint:"اتركيه فارغاً ليظهر اسمك الأول وأول حرف من لقبك.",optional:"اختياري",revSend:"إرسال رأيي",
+  revPick:"اختاري عدد النجوم.",revThanks:"شكراً لك! وصلنا رأيك، وسيظهر في المتجر بعد مراجعته.",revDone:"شكراً لك، وصلنا رأيك في هذا الطلب.",
+  revErr:"تعذّر إرسال رأيك. تحقّقي من الاتصال ثم أعيدي المحاولة.",star:n=>n===1?"نجمة واحدة":n===2?"نجمتان":`${n} نجوم`,
+  title:"تتبع طلبي",intro:"أدخلي رقم التتبع الذي ظهر لك بعد تأكيد الطلب، ورقم الهاتف الذي استعملتِه عند الطلب.",
+  code:"رقم التتبع",phone:"رقم الهاتف المستعمل عند الطلب",go:"تتبع الطلب",searching:"جارٍ البحث…",
+  eCode:"اكتبي رقم التتبع كما ظهر لك، مثل FLM-ABCD2345.",ePhone:"اكتبي رقم الهاتف: 10 أرقام يبدأ بـ 05 أو 06 أو 07.",
+  notFound:"لم نجد طلباً بهذه المعلومات. تحقّقي من رقم التتبع ورقم الهاتف المستعمل عند الطلب، ثم أعيدي المحاولة.",
+  netErr:"تعذّر الاتصال بالمتجر. تحقّقي من الاتصال ثم أعيدي المحاولة.",
+  order:"رقم الطلب",tracking:"رقم التتبع",placed:"تاريخ الطلب",updated:"آخر تحديث",current:"الحالة الحالية",
+  history:"سجل التحديثات",items:"المنتجات",subtotal:"سعر المنتجات",shipping:"التوصيل",total:"المجموع",totalNoShip:"المجموع دون التوصيل",
+  pending:"يحتاج إلى تأكيد",home:"إلى المنزل",desk:"إلى مكتب شركة التوصيل",oneSize:"مقاس موحد",cur:"دج"},
+ fr:{courierAt:"Chez le transporteur",courierNo:"N° de suivi",courierHint:"Indiquez ce numéro si vous contactez le transporteur.",courierWhen:"Mis à jour",
+  revTitle:"Comment avez-vous trouvé votre commande ?",revIntro:"Votre avis aide d'autres clientes à choisir. Il apparaît sur la boutique après vérification.",
+  revPiece:"La pièce que vous notez",revShop:"Toute la commande et la boutique",revStars:"Votre note",revBody:"Votre avis",revBodyPh:"Tissu, taille, qualité, livraison…",
+  revName:"Nom affiché avec votre avis",revNameHint:"Laissez vide pour afficher votre prénom et l'initiale de votre nom.",optional:"facultatif",revSend:"Envoyer mon avis",
+  revPick:"Choisissez le nombre d'étoiles.",revThanks:"Merci ! Nous avons reçu votre avis ; il apparaîtra après vérification.",revDone:"Merci, nous avons reçu votre avis sur cette commande.",
+  revErr:"L'avis n'a pas pu être envoyé. Vérifiez la connexion puis réessayez.",star:n=>n===1?"1 étoile":`${n} étoiles`,
+  title:"Suivre ma commande",intro:"Entrez le numéro de suivi affiché après la confirmation, et le téléphone utilisé pour la commande.",
+  code:"Numéro de suivi",phone:"Téléphone utilisé pour la commande",go:"Suivre la commande",searching:"Recherche…",
+  eCode:"Écrivez le numéro de suivi tel qu'affiché, par exemple FLM-ABCD2345.",ePhone:"Écrivez le téléphone : 10 chiffres commençant par 05, 06 ou 07.",
+  notFound:"Aucune commande ne correspond à ces informations. Vérifiez le numéro de suivi et le téléphone utilisé, puis réessayez.",
+  netErr:"Impossible de joindre la boutique. Vérifiez la connexion puis réessayez.",
+  order:"N° de commande",tracking:"N° de suivi",placed:"Commandée le",updated:"Dernière mise à jour",current:"Statut actuel",
+  history:"Historique",items:"Articles",subtotal:"Articles",shipping:"Livraison",total:"Total",totalNoShip:"Total hors livraison",
+  pending:"À confirmer",home:"À domicile",desk:"Au bureau du transporteur",oneSize:"Taille unique",cur:"DA"}
+};
+const UI = FBUI, $ = s=>document.querySelector(s), esc = FB.esc, t = k=>T[UI.lang][k];
+const fmt = n=>FB.money(n,t("cur"));
+const when = iso=>{ const d=new Date(iso), p=n=>String(n).padStart(2,"0"); return `${p(d.getDate())}/${p(d.getMonth()+1)}/${d.getFullYear()} ${p(d.getHours())}:${p(d.getMinutes())}`; };
+const label = s=>FB.STATUSES[s]?.[UI.lang] || s;
+let last = null, lastPhone = "", sent = false;
+
+UI.chrome("track");
+function applyTexts(){
+  document.querySelectorAll("[data-t]").forEach(el=>el.textContent=t(el.dataset.t));
+  document.title = `${t("title")} – Flame Boutique34`;
+  if (last) show(last);
+}
+$("#langBtn").onclick = ()=>{ UI.setLang(UI.lang==="ar"?"fr":"ar"); applyTexts(); };
+FB_API.loadCatalog().then(d=>UI.setSocial(d.settings)).catch(()=>UI.setSocial(FB.mergeSettings(null)));
+
+function show(o){
+  last = o;
+  const recorded = {}; o.history.forEach(h=>{ recorded[h.status] = h.at; });  // latest time per status
+  const ended = FB.RELEASES.includes(o.status);
+  // furthest step really reached: the current one, or for a cancelled/failed order the last step recorded before it
+  const reached = Math.max(...FB.STEPS.map((s,i)=>recorded[s] || s===o.status ? i : -1));
+  const fill = reached<=0 ? 0 : reached/(FB.STEPS.length-1);
+  const steps = FB.STEPS.map((s,i)=>{
+    const cur = !ended && s===o.status, done = !!recorded[s];
+    return `<li class="${done?"done":""} ${cur?"current":""}" ${cur?'aria-current="step"':""}><span class="dot"></span><span>${esc(label(s))}</span>${recorded[s]?`<time>${when(recorded[s])}</time>`:""}</li>`;
+  }).join("");
+  const items = o.items.map(i=>`<div class="row"><span>${esc(i.name?.[UI.lang]||i.name?.ar||"")} <span class="muted">(${esc(i.color?.[UI.lang]||i.color?.ar||"")}، ${esc(i.size==="TU"?t("oneSize"):i.size)}) ×${i.qty}</span></span></div>`).join("");
+  $("#out").innerHTML = `<article class="result">
+    <div class="result-head">
+      <div><span class="muted" style="font-size:.9rem">${t("current")}</span><div class="now">${esc(label(o.status))}</div></div>
+      <div class="meta">
+        <span>${t("order")}: <b class="ltr">${esc(o.order_number)}</b></span>
+        <span>${t("tracking")}: <b class="ltr">${esc(o.tracking_code)}</b></span>
+        <span>${t("placed")}: <b class="ltr">${when(o.created_at)}</b></span>
+        <span>${t("updated")}: <b class="ltr">${when(o.updated_at)}</b></span>
+      </div>
+    </div>
+    ${ended?`<p class="ended ${o.status}">${esc(label(o.status))}${recorded[o.status]?` · <span class="ltr">${when(recorded[o.status])}</span>`:""}</p>`:""}
+    <ol class="steps" style="--f:${fill.toFixed(4)}"><li class="fill" aria-hidden="true"></li>${steps}</ol>
+    ${o.courier && !ended && o.status !== "delivered" ? courierHTML(o.courier) : ""}
+    <section><h2>${t("history")}</h2><ul class="history">${o.history.map(h=>`<li><span>${esc(label(h.status))}</span><time>${when(h.at)}</time></li>`).reverse().join("")}</ul></section>
+    <section class="items"><h2>${t("items")}</h2>${items}
+      <div class="sum">
+        <div class="row"><span>${t("subtotal")}</span><span class="price">${fmt(o.subtotal)}</span></div>
+        <div class="row"><span>${t("shipping")} (${t(o.delivery)})</span><span class="price">${o.shipping_pending?t("pending"):fmt(o.shipping)}</span></div>
+        <div class="row total"><span>${o.shipping_pending?t("totalNoShip"):t("total")}</span><span class="price">${fmt(o.total)}</span></div>
+      </div></section>
+  </article>${o.status==="delivered" ? reviewHTML(o) : ""}`;
+}
+// where the parcel is at the delivery company (read from ZR by the shop; the customer never talks to ZR from here)
+function courierHTML(c){
+  const stg = FB.COURIER_STAGES[c.stage] || FB.COURIER_STAGES.other;
+  const text = c.stage && c.stage !== "other" ? stg[UI.lang] : (c.label || stg[UI.lang]);
+  return `<section class="courier"><h2>${t("courierAt")}: ${esc(c.name || "")}</h2>
+    <p class="now-c" dir="auto">${esc(text)}${c.at?` <time>· ${t("courierWhen")} <span class="ltr">${when(c.at)}</span></time>`:""}</p>
+    <p class="muted">${t("courierNo")} ${esc(c.name || "")}: <b class="ltr" style="user-select:all">${esc(c.tracking)}</b><br><small>${t("courierHint")}</small></p></section>`;
+}
+const tick = `<svg class="check-mark" viewBox="0 0 84 84" aria-hidden="true"><circle cx="42" cy="42" r="38"/><path d="M26 43l11 11 21-23"/></svg>`;
+// a delivered order can be reviewed once; the server checks the code, the phone and the status again
+function reviewHTML(o){
+  if (sent) return `<p class="thanks" role="status">${tick}<span>${t("revThanks")}</span></p>`;
+  if (o.reviewed) return `<p class="thanks">${tick}<span>${t("revDone")}</span></p>`;
+  const pieces = [...new Map(o.items.filter(i=>i.product_id).map(i=>[i.product_id, i])).values()];
+  return `<form class="review-box" id="revForm" novalidate>
+    <div><h2>${t("revTitle")}</h2><p class="muted">${t("revIntro")}</p></div>
+    ${pieces.length?`<div class="field"><label for="rPiece">${t("revPiece")}</label><select id="rPiece">
+      ${pieces.map(i=>`<option value="${esc(i.product_id)}">${esc(i.name?.[UI.lang]||i.name?.ar||"")}</option>`).join("")}<option value="">${t("revShop")}</option></select></div>`:""}
+    <fieldset class="field" style="border:0;padding:0;margin:0"><legend>${t("revStars")}</legend>
+      <div class="rate-pick">${[5,4,3,2,1].map(n=>`<input type="radio" name="rating" id="r${n}" value="${n}"><label for="r${n}" title="${t("star")(n)}"><span aria-hidden="true">★</span><span class="sr">${t("star")(n)}</span></label>`).join("")}</div>
+      <p class="err" id="eRating"></p></fieldset>
+    <div class="field"><label for="rBody">${t("revBody")} <span class="opt-tag">(${t("optional")})</span></label><textarea id="rBody" maxlength="600" placeholder="${t("revBodyPh")}"></textarea></div>
+    <div class="field"><label for="rName">${t("revName")} <span class="opt-tag">(${t("optional")})</span></label><input id="rName" maxlength="40"><p class="hint">${t("revNameHint")}</p></div>
+    <p class="err" id="eRev" role="alert"></p>
+    <button class="btn btn-primary" type="submit" id="rBtn">${t("revSend")}</button>
+  </form>`;
+}
+document.addEventListener("change", e=>{ if (e.target.name==="rating") $("#eRating").textContent = ""; });
+document.addEventListener("submit", async e=>{
+  if (e.target.id!=="revForm") return;
+  e.preventDefault();
+  const rating = +(new FormData(e.target).get("rating")||0);
+  $("#eRating").textContent = rating ? "" : t("revPick");
+  if (!rating){ $("#r5").focus(); return; }
+  const btn = $("#rBtn"); btn.disabled = true; btn.innerHTML = `<span class="spin" aria-hidden="true"></span>${t("revSend")}`; $("#eRev").textContent = "";
+  try {
+    await FB_API.submitReview(last.tracking_code, lastPhone, {product_id:$("#rPiece")?.value||"", rating, body:$("#rBody").value.trim(), name:$("#rName").value.trim()});
+    sent = true; show(last);
+  } catch(err){
+    if (String(err?.message||err).includes("already_reviewed")){ last.reviewed = true; show(last); return; }
+    $("#eRev").textContent = t("revErr"); btn.disabled = false; btn.textContent = t("revSend");
+  }
+});
+
+$("#trackForm").addEventListener("submit", async e=>{
+  e.preventDefault();
+  const code = $("#tCode").value.trim().toUpperCase(), phone = $("#tPhone").value;
+  const okCode = /^FLM-[A-Z0-9]{8}$/.test(code), okPhone = FB.validPhone(phone);
+  $("#eCode").textContent = okCode ? "" : t("eCode"); $("#tCode").setAttribute("aria-invalid", !okCode);
+  $("#ePhone").textContent = okPhone ? "" : t("ePhone"); $("#tPhone").setAttribute("aria-invalid", !okPhone);
+  if (!okCode){ $("#tCode").focus(); return; }
+  if (!okPhone){ $("#tPhone").focus(); return; }
+  const btn = $("#tBtn"); btn.disabled = true; btn.innerHTML = `<span class="spin" aria-hidden="true"></span>${t("searching")}`;
+  try {
+    const o = await FB_API.trackOrder(code, phone);
+    sent = false; lastPhone = phone;
+    if (o) show(o); else { last = null; $("#out").innerHTML = `<p class="notfound" role="alert">${t("notFound")}</p>`; }
+  } catch { last = null; $("#out").innerHTML = `<p class="notfound" role="alert">${t("netErr")}</p>`; }
+  finally { btn.disabled = false; btn.textContent = t("go"); }
+});
+
+// a link from the order confirmation carries the tracking code: track.html#FLM-XXXXXXXX
+const h = decodeURIComponent(location.hash.slice(1)).toUpperCase();
+if (/^FLM-[A-Z0-9]{8}$/.test(h)){ $("#tCode").value = h; }
+applyTexts();
+(h ? $("#tPhone") : $("#tCode")).focus({preventScroll:true});
+if ("requestIdleCallback" in window) requestIdleCallback(()=>UI.ripple()); else setTimeout(()=>UI.ripple(), 600);
+</script>
+</body>
+</html>
