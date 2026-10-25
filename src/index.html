@@ -621,7 +621,7 @@ const T = {
   eLimitIp:"وصلنا عدد كبير من الطلبات من هذه الشبكة. حاولي بعد قليل، أو راسلينا على واتساب.",
   eBlocked:"تعذّر تسجيل الطلب من هذا الرقم. راسلينا على واتساب وسنساعدك.",
   retry:"إعادة المحاولة",okTitle:"تم استلام طلبك بنجاح!",okText:"سيتم الاتصال بك لإتمام طلبك وتأكيد تفاصيل التوصيل.",
-  orderNo:"رقم الطلب",trackNo:"رقم التتبع",copyTrack:"نسخ رقم التتبع",copiedTrack:"تم نسخ رقم التتبع",copyFail:"تعذّر النسخ التلقائي. حدّدي الرقم وانسخيه يدوياً.",
+  orderNo:"رقم الطلب",trackNo:"رقم التتبع",copyTrack:"نسخ رقم التتبع",copiedTrack:"تم نسخ رقم التتبع",copyFail:"تعذّر النسخ التلقائي. حدّدي الرقم وانسخيه يدوياً.",receipt:"وصل الدفع (طباعة / حفظ PDF)",
   trackMine:"تتبع طلبي",backShop:"العودة إلى المتجر",keepCode:"احتفظي برقم التتبع ورقم هاتفك لمتابعة طلبك.",cur:"دج",
   revTitle:"آراء زبوناتنا",revSub:"ما كتبته زبوناتنا بعد استلام طلباتهن.",revN:n=>n===1?"رأي واحد":n===2?"رأيان":n<=10?`${n} آراء`:`${n} رأياً`,
   rackTitle:"من رفوف المحل",rackHover:"مرّري على القطعة لتلتفت إليك، واضغطي لتقرّبيها.",rackSwipe:"اسحبي الرف، واضغطي على القطعة لتقرّبيها.",
@@ -660,7 +660,7 @@ const T = {
   eLimitIp:"Nous avons reçu beaucoup de commandes depuis ce réseau. Réessayez plus tard ou écrivez-nous sur WhatsApp.",
   eBlocked:"La commande n'a pas pu être enregistrée depuis ce numéro. Écrivez-nous sur WhatsApp, nous vous aiderons.",
   retry:"Réessayer",okTitle:"Votre commande a bien été reçue !",okText:"Nous vous appellerons pour finaliser votre commande et confirmer la livraison.",
-  orderNo:"N° de commande",trackNo:"N° de suivi",copyTrack:"Copier le n° de suivi",copiedTrack:"Numéro de suivi copié",copyFail:"La copie automatique a échoué. Sélectionnez le numéro pour le copier.",
+  orderNo:"N° de commande",trackNo:"N° de suivi",copyTrack:"Copier le n° de suivi",copiedTrack:"Numéro de suivi copié",copyFail:"La copie automatique a échoué. Sélectionnez le numéro pour le copier.",receipt:"Reçu de commande (imprimer / PDF)",
   trackMine:"Suivre ma commande",backShop:"Retour à la boutique",keepCode:"Gardez le n° de suivi et votre téléphone pour suivre la commande.",cur:"DA",
   revTitle:"Avis de nos clientes",revSub:"Ce que nos clientes ont écrit après avoir reçu leur commande.",revN:n=>n===1?"1 avis":`${n} avis`,
   rackTitle:"Sur les portants de la boutique",rackHover:"Survolez une pièce pour qu'elle se tourne vers vous, cliquez pour l'approcher.",rackSwipe:"Faites glisser le portant, touchez une pièce pour l'approcher.",
@@ -1489,6 +1489,7 @@ function renderDone(){
     </div>
   </div>`;
   $("#coFoot").innerHTML = `<button class="btn btn-primary btn-block" type="button" id="copyTrack">${UI.icon("i-copy")}${t("copyTrack")}</button>
+    <button class="btn btn-ghost btn-block" type="button" id="receiptBtn">${UI.icon("i-print")}${t("receipt")}</button>
     <div class="done-actions"><a class="btn btn-ghost" href="track.html#${encodeURIComponent(r.tracking_code)}">${t("trackMine")}</a>
     <button class="btn btn-ghost" type="button" id="backShop">${t("backShop")}</button></div>`;
   $("#copyTrack").onclick = async ()=>{
@@ -1496,7 +1497,24 @@ function renderDone(){
     if (ok) UI.toast(t("copiedTrack"));
     else { getSelection().selectAllChildren($("#trackCode")); UI.toast(t("copyFail")); }
   };
+  $("#receiptBtn").onclick = ()=>FB.printReceipt(receiptData(), UI.lang);
   $("#backShop").onclick = closeCheckout;
+}
+// turn the just-placed order into the shape the shared receipt builder expects
+function receiptData(){
+  const r = co.result, d = draft(), w = FB.wilaya(d.wilaya);
+  const ig = (S.socials?.instagram||"").replace(/[?#].*$/,"").replace(/\/+$/,"").split("/").pop();
+  return {
+    number:r.order_number, tracking:r.tracking_code, date:new Date(),
+    customer:{name:`${d.first_name||""} ${d.last_name||""}`.trim(), phone:FB.normPhone(d.phone)},
+    delivery:{method:d.delivery,
+      wilaya:w?`${String(w[0]).padStart(2,"0")} ${UI.lang==="ar"?w[1]:w[2]}`:"",
+      commune:d.commune_label||d.commune_name||"",
+      address:d.delivery==="home"?(d.address||""):""},
+    lines:coItems().map(l=>{ const p=byId(l.id); return {name:nm(p?.name), variant:[nm(p?.colors?.[l.color]), sizeLabel(l.size)].filter(Boolean).join("، "), qty:l.qty, unit:p?p.price:null}; }),
+    subtotal:r.subtotal, shipping:r.shipping, shipping_pending:r.shipping_pending, total:r.total,
+    shop:{phone:S.phone_display, address:(S.address?.[UI.lang]||S.address?.ar||""), instagram:ig, site:location.host}
+  };
 }
 
 /* ---------- search and sort ---------- */

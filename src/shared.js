@@ -171,6 +171,128 @@ window.FB = (() => {
       : `## الدفع\n- ${tx("pCod")}. لا يُدفع أي مبلغ عبر الموقع عند الطلب.\n## التوصيل\n- ${tx("pShip")}.\n- يظهر سعر التوصيل إلى ولايتك وبلديتك قبل تأكيد الطلب. إن لم يكن محدداً بعد، نبلغك به عند الاتصال بك قبل الإرسال.\n- بعد الطلب نتصل بك لتأكيده، ويمكنك متابعته من صفحة «تتبع طلبي».\n## الاستبدال\n- ${tx("pSwap")}.\n- للاستبدال أو لأي سؤال، راسلينا على واتساب مع رقم طلبك.`;
   }
 
+  /* ---------- customer payment receipt (وصل الدفع) ----------
+     A printable / save-as-PDF receipt, fully self-contained (carries its own <style>),
+     so it looks the same on the store, the tracking page and the dashboard, in any theme,
+     and prints on clean white paper. Nothing is ever invented: a price shown is a price given.
+     o: {number, tracking, date, customer:{name, phone},
+         delivery:{method:"home"|"desk", wilaya, commune, address},
+         lines:[{name, variant, qty, unit}],   // unit may be null (price shown only when known)
+         subtotal, shipping, shipping_pending, total,
+         shop:{name, phone, address, instagram, site}} */
+  function receiptLabels(lang){
+    return lang === "fr" ? {
+      title:"Reçu de commande", order:"N° de commande", tracking:"N° de suivi", date:"Date",
+      customer:"Cliente", phone:"Téléphone", deliverTo:"Livraison", home:"À domicile",
+      desk:"Au bureau du transporteur", address:"Adresse", product:"Article", qty:"Qté",
+      unit:"Prix unité", lineTotal:"Total", subtotal:"Articles", shipping:"Livraison",
+      total:"Montant à payer", totalNoShip:"Total hors livraison", pending:"À confirmer",
+      cod:"Paiement à la livraison", thanks:"Merci pour votre confiance",
+      kept:"Conservez ce reçu pour suivre votre commande.", cur:"DA"
+    } : {
+      title:"وصل استلام الطلب", order:"رقم الطلب", tracking:"رقم التتبع", date:"التاريخ",
+      customer:"الزبونة", phone:"الهاتف", deliverTo:"التوصيل", home:"إلى المنزل",
+      desk:"إلى مكتب شركة التوصيل", address:"العنوان", product:"القطعة", qty:"الكمية",
+      unit:"سعر القطعة", lineTotal:"المجموع", subtotal:"سعر المنتجات", shipping:"التوصيل",
+      total:"المبلغ المطلوب", totalNoShip:"المجموع دون التوصيل", pending:"يحتاج إلى تأكيد",
+      cod:"الدفع عند الاستلام", thanks:"شكراً لثقتك بنا",
+      kept:"احتفظي بهذا الوصل لمتابعة طلبك.", cur:"دج"
+    };
+  }
+  const RECEIPT_CSS = `.fb-receipt{display:none}
+@media print{html.fb-printing,body.fb-printing{background:#fff!important}
+body.fb-printing>*:not(.fb-receipt){display:none!important}
+body.fb-printing .fb-receipt{display:block!important}
+@page{size:A4;margin:14mm}}
+.fbr-doc{box-sizing:border-box;max-width:190mm;margin:0 auto;padding:8mm;color:#24190F;background:#fff;font-family:"Noto Naskh Arabic","Jost",system-ui,sans-serif;font-size:13px;line-height:1.7;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.fbr-doc *{box-sizing:border-box;background-color:transparent;box-shadow:none;border:0;margin:0;position:static;float:none}
+.fbr-ltr{direction:ltr;unicode-bidi:isolate;font-variant-numeric:tabular-nums}
+.fbr-num{font-variant-numeric:tabular-nums}
+.fbr-dim{color:#6B563F}
+.fbr-head{display:flex;justify-content:space-between;gap:16px;align-items:flex-start;flex-wrap:wrap;padding-bottom:10px;border-bottom:2px solid #A27A48;margin-bottom:14px}
+.fbr-brand{display:flex;align-items:center;gap:10px}
+.fbr-mark{width:34px;height:40px;flex:none}
+.fbr-name{font-family:"Marcellus",Georgia,serif;font-size:21px;letter-spacing:.14em;direction:ltr;line-height:1}
+.fbr-sub{font-size:13px;color:#6B563F;margin-top:3px}
+.fbr-contact{font-size:12px;color:#6B563F;text-align:end;display:grid;gap:2px}
+.fbr-meta{width:100%;border-collapse:collapse;margin-bottom:10px}
+.fbr-meta th{text-align:start;font-weight:400;color:#6B563F;padding:2px 0;width:38%;vertical-align:top}
+.fbr-meta td{padding:2px 0;vertical-align:top}
+.fbr-items{width:100%;border-collapse:collapse;margin:10px 0 2px}
+.fbr-items thead th{background:#F4EAD9;color:#24190F;font-weight:500;padding:7px 8px;border-bottom:1px solid #D9C7A8;text-align:start}
+.fbr-items tbody td{padding:7px 8px;border-bottom:1px solid #ECE0CC;vertical-align:top}
+.fbr-items .fbr-c{text-align:center}
+.fbr-items .fbr-e{text-align:end;white-space:nowrap}
+.fbr-it{width:100%}
+.fbr-sum{width:100%;max-width:300px;margin-inline-start:auto;border-collapse:collapse;margin-top:10px}
+.fbr-sum td{padding:4px 0}
+.fbr-sum td.fbr-e{text-align:end;white-space:nowrap}
+.fbr-grand td{border-top:2px solid #A27A48;padding-top:8px;font-size:16px;font-weight:600}
+.fbr-cod{margin-top:14px;padding:8px 12px;border:1px dashed #A27A48;border-radius:8px;text-align:center}
+.fbr-foot{margin-top:16px;padding-top:10px;border-top:1px solid #D9C7A8;text-align:center;display:grid;gap:3px}
+.fbr-thanks{font-family:"Marcellus",Georgia,serif;font-size:15px}`;
+
+  function receiptHTML(o, lang = "ar"){
+    const x = receiptLabels(lang), rtl = lang !== "fr", m = n => money(n, x.cur);
+    const d = o.date instanceof Date ? o.date : new Date(o.date || Date.now());
+    const p = n => String(n).padStart(2, "0");
+    const date = `${p(d.getDate())}/${p(d.getMonth() + 1)}/${d.getFullYear()} ${p(d.getHours())}:${p(d.getMinutes())}`;
+    const lines = o.lines || [], hasUnit = lines.some(l => l.unit != null);
+    const ltr = s => `<span class="fbr-ltr">${esc(s)}</span>`;
+    const flame = `<svg class="fbr-mark" viewBox="0 0 30 36" aria-hidden="true"><path fill="none" stroke="#24190F" stroke-width="1.3" d="M2 35V14a13 13 0 0 1 26 0v21"/><path fill="#A27A48" d="M15 12c2 3.5 5.5 5.5 5 10a5 5 0 0 1-10 0c-.3-3.3 2.6-4.6 3.2-7 .6 1.5 1.2 2 1.8 2.4.4-1.6.3-3.3 0-5.4Z"/></svg>`;
+    const shop = o.shop || {}, deliv = o.delivery || {};
+    const row = (dt, dd) => dd ? `<tr><th>${esc(dt)}</th><td>${dd}</td></tr>` : "";
+    const method = deliv.method === "desk" ? x.desk : x.home;
+    const place = [deliv.wilaya, deliv.commune].filter(Boolean).join("، ");
+    const itemRows = lines.map(l => {
+      const variant = l.variant ? ` <span class="fbr-dim">(${esc(l.variant)})</span>` : "";
+      const cells = hasUnit ? `<td class="fbr-e fbr-num">${l.unit != null ? m(l.unit) : "—"}</td><td class="fbr-e fbr-num">${l.unit != null ? m(l.unit * l.qty) : "—"}</td>` : "";
+      return `<tr><td class="fbr-it">${esc(l.name)}${variant}</td><td class="fbr-c fbr-num">${esc(String(l.qty))}</td>${cells}</tr>`;
+    }).join("");
+    return `<style>${RECEIPT_CSS}</style>
+<div class="fbr-doc" dir="${rtl ? "rtl" : "ltr"}" lang="${lang}">
+  <div class="fbr-head">
+    <div class="fbr-brand">${flame}<div><div class="fbr-name">FLAME BOUTIQUE 34</div><div class="fbr-sub">${esc(x.title)}</div></div></div>
+    <div class="fbr-contact">
+      ${shop.phone ? `<div>${esc(x.phone)}: ${ltr(shop.phone)}</div>` : ""}
+      ${shop.address ? `<div>${esc(shop.address)}</div>` : ""}
+      ${shop.instagram ? `<div class="fbr-ltr">@${esc(String(shop.instagram).replace(/^@/, ""))}</div>` : ""}
+    </div>
+  </div>
+  <table class="fbr-meta"><tbody>
+    ${row(x.order, `<b class="fbr-ltr">${esc(o.number || "")}</b>`)}
+    ${row(x.tracking, `<b class="fbr-ltr">${esc(o.tracking || "")}</b>`)}
+    ${row(x.date, `<span class="fbr-ltr">${date}</span>`)}
+  </tbody></table>
+  <table class="fbr-meta"><tbody>
+    ${row(x.customer, esc(o.customer?.name || ""))}
+    ${o.customer?.phone ? row(x.phone, ltr(o.customer.phone)) : ""}
+    ${row(x.deliverTo, esc(method) + (place ? ` — ${esc(place)}` : ""))}
+    ${deliv.address ? row(x.address, esc(deliv.address)) : ""}
+  </tbody></table>
+  <table class="fbr-items"><thead><tr><th class="fbr-it">${esc(x.product)}</th><th class="fbr-c">${esc(x.qty)}</th>${hasUnit ? `<th class="fbr-e">${esc(x.unit)}</th><th class="fbr-e">${esc(x.lineTotal)}</th>` : ""}</tr></thead><tbody>${itemRows}</tbody></table>
+  <table class="fbr-sum"><tbody>
+    <tr><td>${esc(x.subtotal)}</td><td class="fbr-e fbr-num">${m(o.subtotal)}</td></tr>
+    <tr><td>${esc(x.shipping)}</td><td class="fbr-e fbr-num">${o.shipping_pending ? esc(x.pending) : m(o.shipping)}</td></tr>
+    <tr class="fbr-grand"><td>${esc(o.shipping_pending ? x.totalNoShip : x.total)}</td><td class="fbr-e fbr-num">${m(o.total)}</td></tr>
+  </tbody></table>
+  <div class="fbr-cod">${esc(x.cod)}</div>
+  <div class="fbr-foot"><div class="fbr-thanks">${esc(x.thanks)}</div><div class="fbr-dim">${esc(x.kept)}</div>${shop.site ? `<div class="fbr-ltr fbr-dim">${esc(shop.site)}</div>` : ""}</div>
+</div>`;
+  }
+
+  // Build the receipt in a hidden page element and open the print dialog (prints the receipt only;
+  // the browser's "Save as PDF" turns it into a file the customer can keep or the owner can send).
+  function printReceipt(o, lang = "ar"){
+    let el = document.getElementById("fbReceipt");
+    if (!el){ el = document.createElement("div"); el.id = "fbReceipt"; el.className = "fb-receipt"; document.body.appendChild(el); }
+    el.innerHTML = receiptHTML(o, lang);
+    const done = () => { document.body.classList.remove("fb-printing"); window.removeEventListener("afterprint", done); };
+    window.addEventListener("afterprint", done);
+    document.body.classList.add("fb-printing");
+    setTimeout(() => { try { window.print(); } catch(e){ done(); } }, 60);  // let fonts/layout settle
+  }
+
   return {policyHTML, policyFallback, ratingOf, stars, WILAYAS, ZONES, DEFAULT_SETTINGS, TEXTS, TEXT_LABELS, TYPES, STATUSES, STEPS, RELEASES, COURIER_STAGES,
-    garment, gallery, media, tint, esc, money, wilaya, stockOf, soldOut, mergeSettings, normPhone, validPhone, rateFor, fold, mapPoint};
+    garment, gallery, media, tint, esc, money, wilaya, stockOf, soldOut, mergeSettings, normPhone, validPhone, rateFor, fold, mapPoint, receiptHTML, printReceipt};
 })();

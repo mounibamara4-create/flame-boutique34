@@ -101,7 +101,7 @@ const T = {
   netErr:"تعذّر الاتصال بالمتجر. تحقّقي من الاتصال ثم أعيدي المحاولة.",
   order:"رقم الطلب",tracking:"رقم التتبع",placed:"تاريخ الطلب",updated:"آخر تحديث",current:"الحالة الحالية",
   history:"سجل التحديثات",items:"المنتجات",subtotal:"سعر المنتجات",shipping:"التوصيل",total:"المجموع",totalNoShip:"المجموع دون التوصيل",
-  pending:"يحتاج إلى تأكيد",home:"إلى المنزل",desk:"إلى مكتب شركة التوصيل",oneSize:"مقاس موحد",cur:"دج"},
+  pending:"يحتاج إلى تأكيد",home:"إلى المنزل",desk:"إلى مكتب شركة التوصيل",oneSize:"مقاس موحد",receipt:"وصل الدفع (طباعة / حفظ PDF)",cur:"دج"},
  fr:{courierAt:"Chez le transporteur",courierNo:"N° de suivi",courierHint:"Indiquez ce numéro si vous contactez le transporteur.",courierWhen:"Mis à jour",
   revTitle:"Comment avez-vous trouvé votre commande ?",revIntro:"Votre avis aide d'autres clientes à choisir. Il apparaît sur la boutique après vérification.",
   revPiece:"La pièce que vous notez",revShop:"Toute la commande et la boutique",revStars:"Votre note",revBody:"Votre avis",revBodyPh:"Tissu, taille, qualité, livraison…",
@@ -115,13 +115,13 @@ const T = {
   netErr:"Impossible de joindre la boutique. Vérifiez la connexion puis réessayez.",
   order:"N° de commande",tracking:"N° de suivi",placed:"Commandée le",updated:"Dernière mise à jour",current:"Statut actuel",
   history:"Historique",items:"Articles",subtotal:"Articles",shipping:"Livraison",total:"Total",totalNoShip:"Total hors livraison",
-  pending:"À confirmer",home:"À domicile",desk:"Au bureau du transporteur",oneSize:"Taille unique",cur:"DA"}
+  pending:"À confirmer",home:"À domicile",desk:"Au bureau du transporteur",oneSize:"Taille unique",receipt:"Reçu (imprimer / PDF)",cur:"DA"}
 };
 const UI = FBUI, $ = s=>document.querySelector(s), esc = FB.esc, t = k=>T[UI.lang][k];
 const fmt = n=>FB.money(n,t("cur"));
 const when = iso=>{ const d=new Date(iso), p=n=>String(n).padStart(2,"0"); return `${p(d.getDate())}/${p(d.getMonth()+1)}/${d.getFullYear()} ${p(d.getHours())}:${p(d.getMinutes())}`; };
 const label = s=>FB.STATUSES[s]?.[UI.lang] || s;
-let last = null, lastPhone = "", sent = false;
+let last = null, lastPhone = "", sent = false, shop = FB.mergeSettings(null);
 
 UI.chrome("track");
 function applyTexts(){
@@ -130,7 +130,7 @@ function applyTexts(){
   if (last) show(last);
 }
 $("#langBtn").onclick = ()=>{ UI.setLang(UI.lang==="ar"?"fr":"ar"); applyTexts(); };
-FB_API.loadCatalog().then(d=>UI.setSocial(d.settings)).catch(()=>UI.setSocial(FB.mergeSettings(null)));
+FB_API.loadCatalog().then(d=>{ shop = d.settings; UI.setSocial(d.settings); }).catch(()=>UI.setSocial(shop));
 
 function show(o){
   last = o;
@@ -163,8 +163,26 @@ function show(o){
         <div class="row"><span>${t("subtotal")}</span><span class="price">${fmt(o.subtotal)}</span></div>
         <div class="row"><span>${t("shipping")} (${t(o.delivery)})</span><span class="price">${o.shipping_pending?t("pending"):fmt(o.shipping)}</span></div>
         <div class="row total"><span>${o.shipping_pending?t("totalNoShip"):t("total")}</span><span class="price">${fmt(o.total)}</span></div>
-      </div></section>
+      </div>
+      <button class="btn btn-ghost" type="button" id="tReceipt" style="justify-self:start;margin-top:.4rem"><svg aria-hidden="true" style="width:1.1em;height:1.1em;vertical-align:-.2em;margin-inline-end:.35em"><use href="#i-print"/></svg>${t("receipt")}</button>
+    </section>
   </article>${o.status==="delivered" ? reviewHTML(o) : ""}`;
+  const rb = $("#tReceipt"); if (rb) rb.onclick = ()=>FB.printReceipt(trackReceipt(o), UI.lang);
+}
+// the customer's own receipt, built from what the tracking page already shows
+function trackReceipt(o){
+  const name = `${o.first_name||""} ${o.last_name||""}`.trim();
+  const ig = (shop.socials?.instagram||"").replace(/[?#].*$/,"").replace(/\/+$/,"").split("/").pop();
+  return {
+    number:o.order_number, tracking:o.tracking_code, date:o.created_at,
+    customer:{name, phone:FB.normPhone(lastPhone||"")},
+    delivery:{method:o.delivery, wilaya:o.wilaya_name||"", commune:o.commune_name||"", address:o.delivery==="home"?(o.address||""):""},
+    lines:o.items.map(i=>({name:i.name?.[UI.lang]||i.name?.ar||"",
+      variant:[i.color?.[UI.lang]||i.color?.ar||"", i.size==="TU"?t("oneSize"):i.size].filter(Boolean).join("، "),
+      qty:i.qty, unit:i.unit_price ?? null})),
+    subtotal:o.subtotal, shipping:o.shipping, shipping_pending:o.shipping_pending, total:o.total,
+    shop:{phone:shop.phone_display, address:(shop.address?.[UI.lang]||shop.address?.ar||""), instagram:ig, site:location.host}
+  };
 }
 // where the parcel is at the delivery company (read from ZR by the shop; the customer never talks to ZR from here)
 function courierHTML(c){

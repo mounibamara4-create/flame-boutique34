@@ -943,11 +943,12 @@ begin
   return jsonb_build_object(
     'order_number', o.order_number, 'tracking_code', o.tracking_code, 'status', o.status,
     'created_at', o.created_at, 'updated_at', o.updated_at,
-    'delivery', o.delivery, 'wilaya_name', o.wilaya_name, 'commune_name', o.commune_name,
+    'first_name', o.first_name, 'last_name', o.last_name,
+    'delivery', o.delivery, 'wilaya_name', o.wilaya_name, 'commune_name', o.commune_name, 'address', o.address,
     'subtotal', o.subtotal, 'shipping', o.shipping, 'shipping_pending', o.shipping_pending, 'total', o.total,
     'history', coalesce((select jsonb_agg(jsonb_build_object('status', h.status, 'at', h.created_at) order by h.created_at, h.id)
                            from order_status_history h where h.order_id = o.id), '[]'::jsonb),
-    'items', coalesce((select jsonb_agg(jsonb_build_object('product_id', i.product_id, 'name', i.name, 'size', i.size, 'color', i.color, 'qty', i.qty) order by i.id)
+    'items', coalesce((select jsonb_agg(jsonb_build_object('product_id', i.product_id, 'name', i.name, 'size', i.size, 'color', i.color, 'qty', i.qty, 'unit_price', i.unit_price) order by i.id)
                          from order_items i where i.order_id = o.id), '[]'::jsonb),
     'reviewed', exists (select 1 from reviews r where r.order_id = o.id),
     'courier', case when o.courier_tracking is null then null else jsonb_build_object('name', 'ZR Express', 'tracking', o.courier_tracking,

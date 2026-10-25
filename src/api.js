@@ -460,10 +460,11 @@ window.FB_API = (() => {
       const o = readDb().orders.find(o => o.tracking_code === String(code||"").trim().toUpperCase() && o.phone === FB.normPhone(phone));
       if (!o) return null;
       return {order_number:o.order_number, tracking_code:o.tracking_code, status:o.status, created_at:o.created_at, updated_at:o.updated_at,
-        delivery:o.delivery, wilaya_name:o.wilaya_name, commune_name:o.commune_name, subtotal:o.subtotal, shipping:o.shipping,
+        first_name:o.first_name, last_name:o.last_name,
+        delivery:o.delivery, wilaya_name:o.wilaya_name, commune_name:o.commune_name, address:o.address, subtotal:o.subtotal, shipping:o.shipping,
         shipping_pending:o.shipping_pending, total:o.total,
         history:o.order_status_history.map(h => ({status:h.status, at:h.created_at})),
-        items:o.order_items.map(i => ({product_id:i.product_id, name:i.name, size:i.size, color:i.color, qty:i.qty})),
+        items:o.order_items.map(i => ({product_id:i.product_id, name:i.name, size:i.size, color:i.color, qty:i.qty, unit_price:i.unit_price})),
         reviewed:readDb().reviews.some(r => r.order_id === o.id),
         courier: o.courier_tracking ? {name: "ZR Express", tracking: o.courier_tracking, stage: o.courier_stage, label: o.courier_label, at: o.courier_at} : null};
     },

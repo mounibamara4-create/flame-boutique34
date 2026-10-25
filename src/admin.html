@@ -257,6 +257,7 @@ tr.from-zr td{background:color-mix(in oklab,#2f6b3a 10%,transparent)}
 <body>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
   <symbol id="i-flame" viewBox="0 0 30 36"><path fill="none" stroke="currentColor" stroke-width="1.3" d="M2 35V14a13 13 0 0 1 26 0v21"/><path style="fill:var(--ember)" d="M15 12c2 3.5 5.5 5.5 5 10a5 5 0 0 1-10 0c-.3-3.3 2.6-4.6 3.2-7 .6 1.5 1.2 2 1.8 2.4.4-1.6.3-3.3 0-5.4Z"/></symbol>
+  <symbol id="i-print" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.6" d="M7 8V4h10v4M7 18H5a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-2M7 15h10v5H7z"/><circle cx="17.5" cy="12" r="1" fill="currentColor"/></symbol>
 </svg>
 
 <section class="login" id="login" hidden>
@@ -654,6 +655,8 @@ function orderHTML(o){
         <ul class="items small muted"><li><span>سعر المنتجات</span><span class="num">${money(o.subtotal)}</span></li><li><span>التوصيل</span><span class="num">${o.shipping_pending?"يحتاج تأكيد":money(o.shipping)}</span></li></ul>
         <ul class="items"><li><b>${o.shipping_pending?"المجموع دون التوصيل":"المجموع النهائي"}</b><b class="num">${money(o.total)}</b></li><li class="small muted"><span>الربح التقريبي</span><span class="num">${money(o.subtotal-o.cost_total)}</span></li></ul>
         ${o.shipping_pending?`<div class="field"><label for="sh-${o.id}">سعر التوصيل المتفق عليه (دج)</label><div class="toolbar"><input id="sh-${o.id}" type="number" min="0" step="50" inputmode="numeric" style="max-width:140px"><button class="btn btn-ghost btn-sm" type="button" data-ship="${o.id}">حفظ السعر</button></div></div>`:""}
+        <button class="btn btn-ghost btn-sm" type="button" data-receipt="${o.id}"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" style="vertical-align:-3px"><use href="#i-print"/></svg> طباعة وصل الزبونة</button>
+        <p class="small muted">وصل بلغة الزبونة، يُطبع أو يُحفظ PDF لإرفاقه بالطرد أو إرساله على واتساب.</p>
       </div>
       <div style="display:grid;gap:.7rem;align-content:start">
         ${zrBlock(o)}
@@ -746,9 +749,27 @@ document.addEventListener("click", async e=>{
     return;
   }
 });
+// a customer receipt built from the order record, in the customer's own language
+function orderReceipt(o){
+  const lang = o.lang === "fr" ? "fr" : "ar", s = D.settings || {};
+  const loc = v => (v && typeof v === "object") ? (v[lang] || v.ar || "") : (v || "");
+  const tu = lang === "fr" ? "Taille unique" : "مقاس موحد";
+  const ig = (s.socials?.instagram||"").replace(/[?#].*$/,"").replace(/\/+$/,"").split("/").pop();
+  return {
+    number:o.order_number, tracking:o.tracking_code, date:o.created_at,
+    customer:{name:fullName(o), phone:FB.normPhone(o.phone)},
+    delivery:{method:o.delivery, wilaya:`${String(o.wilaya_code).padStart(2,"0")} ${o.wilaya_name||""}`.trim(),
+      commune:o.commune_name||"", address:o.delivery==="home"?(o.address||""):""},
+    lines:(o.order_items||[]).map(l=>({name:loc(l.name)||l.product_id,
+      variant:[loc(l.color), l.size==="TU"?tu:l.size].filter(Boolean).join("، "), qty:l.qty, unit:l.unit_price})),
+    subtotal:o.subtotal, shipping:o.shipping, shipping_pending:o.shipping_pending, total:o.total,
+    shop:{phone:s.phone_display, address:(s.address?.[lang]||s.address?.ar||""), instagram:ig, site:location.host}
+  };
+}
 document.addEventListener("click", async e=>{
   const st = e.target.closest("[data-status]"), nb = e.target.closest("[data-note]"), sb = e.target.closest("[data-ship]");
-  const bl = e.target.closest("[data-block]"), ub = e.target.closest("[data-unblock]");
+  const bl = e.target.closest("[data-block]"), ub = e.target.closest("[data-unblock]"), rc = e.target.closest("[data-receipt]");
+  if (rc){ const o = D.orders.find(x=>x.id===+rc.dataset.receipt); if (o) FB.printReceipt(orderReceipt(o), o.lang==="fr"?"fr":"ar"); return; }
   if (bl){
     if (!bl.classList.contains("armed")){ bl.classList.add("armed"); bl.textContent = "اضغط مرة أخرى للتأكيد"; return; }
     const o = D.orders.find(x=>x.id===+bl.dataset.block);
