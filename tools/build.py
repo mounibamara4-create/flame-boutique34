@@ -25,10 +25,6 @@ def style(match):
     css = (src / f"{match.group(1)}.css").read_text(encoding="utf-8")
     return f"<style>/* src/{match.group(1)}.css, inlined by tools/build.py */\n{css}</style>"
 
-import json
-film = json.loads((root / "assets" / "film" / "film.json").read_text())  # written by tools/make_film.sh
-film_frames, film_pframes = film["frames"], film["pframes"]
-
 if dist.exists():
     shutil.rmtree(dist)
 (dist / "assets").mkdir(parents=True)
@@ -39,17 +35,14 @@ for page in ("index.html", "track.html", "policy.html", "admin.html", "404.html"
     html = re.sub(r'<link rel="stylesheet" href="(site)\.css">', style, html)
     note = "<!-- Generated from src/" + page + " by tools/build.py. Edit src/, then rebuild. -->"
     html = html.replace("<!doctype html>", "<!doctype html>\n" + note, 1)
-    html = html.replace("__FILM_FRAMES__", str(film_frames)).replace("__FILM_PFRAMES__", str(film_pframes))
     html = html.replace("__SITE__", SITE)
     (dist / page).write_text(html, encoding="utf-8")
     print("built", page, len(html) // 1024, "KB")
 
-# the home page film is a picture sequence made from the boutique video (assets/intro.mp4, kept as the source,
-# not published) by tools/make_film.sh
+# intro-poster images are the welcome splash shown once on the home page (src/index.html, #splash)
 for f in ("config.js", "intro-poster.jpg", "intro-poster-p.jpg"):
     shutil.copy2(root / "assets" / f, dist / "assets" / f)
 shutil.copytree(root / "assets" / "vendor", dist / "assets" / "vendor")
-shutil.copytree(root / "assets" / "film", dist / "assets" / "film")
 
 # Inline scripts and styles are part of every page, hence 'unsafe-inline'. Outside sources: Supabase (data,
 # sign-in, photos) and Google Fonts. The Supabase script itself is served from assets/vendor/.
@@ -87,9 +80,6 @@ CSP = "; ".join([
   Cache-Control: no-cache
 
 /assets/intro*
-  Cache-Control: public, max-age=2592000
-
-/assets/film/*
   Cache-Control: public, max-age=2592000
 
 /assets/vendor/*
