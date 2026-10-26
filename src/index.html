@@ -36,17 +36,13 @@
 .splash.in{opacity:1}
 .splash.out{opacity:0;pointer-events:none}
 .splash img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
-.splash-in{position:relative;z-index:1;width:100%;height:100%;display:grid;align-content:center;justify-items:center;gap:.5rem;text-align:center;color:#F4EAD9;padding:1.5rem;
-  background:radial-gradient(ellipse at center,rgba(25,19,13,.55),rgba(25,19,13,.25) 55%,rgba(25,19,13,.1))}
-.splash-mark{width:54px;height:64px;color:#F4EAD9}
-.splash-flame{fill:var(--ember,#A27A48)}
-.splash-name{font-family:"Marcellus",Georgia,serif;font-size:clamp(1.4rem,6vw,2.6rem);letter-spacing:.18em;margin:.2rem 0 0;line-height:1.1}
-.splash-hint{font-size:.85rem;opacity:.82;letter-spacing:.04em;margin-top:.7rem}
-.splash.in .splash-in>*{animation:splashUp .8s var(--ease,ease) both}
-.splash.in .splash-name{animation-delay:.1s}
-.splash.in .splash-hint{animation-delay:.28s}
+/* the welcome image already shows the boutique's own wall sign, so only a gentle "enter" hint sits over it */
+.splash-in{position:relative;z-index:1;width:100%;height:100%;display:grid;align-content:end;justify-items:center;text-align:center;color:#F4EAD9;padding:0 1.5rem 2.2rem;
+  background:linear-gradient(to top,rgba(25,19,13,.6),rgba(25,19,13,.1) 22%,transparent 42%)}
+.splash-hint{font-size:.92rem;letter-spacing:.06em;padding:.5rem 1.1rem;border-radius:999px;background:rgba(25,19,13,.4);border:1px solid rgba(244,234,217,.3);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px)}
+.splash.in .splash-hint{animation:splashUp .8s var(--ease,ease) both;animation-delay:.3s}
 @keyframes splashUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
-@media (prefers-reduced-motion:reduce){.splash{transition-duration:.2s}.splash.in .splash-in>*{animation:none}}
+@media (prefers-reduced-motion:reduce){.splash{transition-duration:.2s}.splash.in .splash-hint{animation:none}}
 
 /* ---------- brand lines, shown in the store after the intro ---------- */
 .brand-lines{padding-block:clamp(2rem,6vw,3.6rem) clamp(.6rem,2vw,1rem);text-align:center}
@@ -419,13 +415,8 @@ summary{cursor:pointer;color:var(--ink)}
   <!-- a one-time welcome image: shown once per visitor (kept in the browser), then never again.
        It fades away on its own after a moment, or on a tap/scroll, and the store is underneath. -->
   <div class="splash" id="splash" aria-hidden="true" hidden>
-    <picture><source media="(orientation: portrait)" srcset="assets/intro-poster-p.jpg"><img src="assets/intro-poster.jpg" alt="" fetchpriority="high"></picture>
+    <picture><source media="(orientation: portrait)" srcset="assets/intro-poster-p.jpg"><img src="assets/intro-poster.jpg" alt="Flame Boutique 34" fetchpriority="high"></picture>
     <div class="splash-in">
-      <svg class="splash-mark" viewBox="0 0 30 36" aria-hidden="true">
-        <path fill="none" stroke="currentColor" stroke-width="1.3" d="M2 35V14a13 13 0 0 1 26 0v21"/>
-        <path class="splash-flame" d="M15 12c2 3.5 5.5 5.5 5 10a5 5 0 0 1-10 0c-.3-3.3 2.6-4.6 3.2-7 .6 1.5 1.2 2 1.8 2.4.4-1.6.3-3.3 0-5.4Z"/>
-      </svg>
-      <p class="splash-name">FLAME BOUTIQUE 34</p>
       <span class="splash-hint" data-i18n="welcomeHint"></span>
     </div>
   </div>

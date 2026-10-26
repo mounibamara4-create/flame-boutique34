@@ -57,7 +57,7 @@ try {
 
   // the welcome splash: shown once per visitor, then never again
   const s = await ctx.newPage(); await s.goto(BASE); await s.waitForTimeout(700);
-  ok(await s.locator('#splash').isVisible() && (await s.locator('.splash-name').textContent()).includes('FLAME'), 'first visit: the welcome image is shown');
+  ok(await s.locator('#splash').isVisible() && await s.evaluate(() => { const i = document.querySelector('#splash img'); return !!i && i.complete && i.naturalWidth > 0; }), 'first visit: the welcome image is shown and loaded');
   await s.waitForTimeout(3400);  // it fades away on its own after ~3s
   ok(await s.evaluate(() => !document.querySelector('#splash')), 'the welcome image disappears on its own, leaving the store');
   await s.goto(BASE); await s.waitForTimeout(800);
