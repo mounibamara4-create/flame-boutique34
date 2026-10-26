@@ -55,6 +55,12 @@
 .brand-lines.reveal>.wrap>*{opacity:1;animation:lift .9s var(--ease) both}
 .brand-lines.reveal .brand-rule{animation-delay:.12s}.brand-lines.reveal .brand-quote{animation-delay:.24s}.brand-lines.reveal .brand-note{animation-delay:.38s}
 @media (prefers-reduced-motion:reduce){.brand-lines>.wrap>*{opacity:1}.brand-lines.reveal>.wrap>*{animation:none}}
+/* the social links and shop location, moved above the brand name: blend into the light hero, centered */
+.social-bar.in-hero{background:transparent;color:var(--muted);width:100%}
+.social-bar.in-hero .wrap{min-height:0;padding:0;justify-content:center}
+.social-bar.in-hero .soc{color:var(--muted)}
+.social-bar.in-hero a.soc:hover{background:color-mix(in oklab,var(--ember) 18%,transparent);color:var(--ink)}
+.social-bar.in-hero .soc-map{border-inline-start-color:var(--line)}
 @media (max-width:520px){.brand-name{letter-spacing:.14em;padding-inline-start:.14em;font-size:clamp(1.15rem,6.4vw,1.7rem)}}
 
 /* ---------- the rack: pieces hanging side-on on a brass rail; one turns to face you, and comes forward on a tap ----------
@@ -706,6 +712,11 @@ function stockState(p){
 }
 
 UI.chrome("store");
+// the social links and shop location are shown above the brand name (not as a strip at the very top of the page)
+(function(){
+  const social = document.querySelector("body > .social-bar"), wrap = document.querySelector("#brandLines .wrap");
+  if (social && wrap){ social.classList.add("in-hero"); const w = social.querySelector(".wrap"); if (w) w.style.justifyContent = "center"; wrap.prepend(social); }
+})();
 
 /* ---------- shop ---------- */
 function renderFilters(){
@@ -1607,6 +1618,7 @@ function showMap(){
   if (force){ try { history.replaceState(null, "", location.pathname + location.search); } catch {} }
   else if (welcomed || location.hash){ el.remove(); return; }
   const calm = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  remember();   // mark it seen the moment it shows, so it never shows again even if she leaves before it fades
   el.hidden = false;
   requestAnimationFrame(()=>el.classList.add("in"));
   let done = false;
