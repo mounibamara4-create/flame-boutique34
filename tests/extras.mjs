@@ -55,11 +55,13 @@ try {
   ok(fr.startsWith('Bonjour Lina') && fr.includes('Khimar georgette') && fr.includes('DA'), 'French-speaking customer gets the message in French');
   await a.screenshot({path: OUT + 'extras-orders.png', fullPage: false});
 
-  // the welcome image: shown on every visit to the home page; a deep link (#cart/#p-) skips it
+  // the welcome image: shown on every visit; it STAYS until the visitor taps; a deep link (#cart/#p-) skips it
   const s = await ctx.newPage(); await s.goto(BASE); await s.waitForTimeout(700);
   ok(await s.locator('#splash').isVisible() && await s.evaluate(() => { const i = document.querySelector('#splash img'); return !!i && i.complete && i.naturalWidth > 0; }), 'first visit: the welcome image is shown and loaded');
-  await s.waitForTimeout(3400);  // it fades away on its own after ~3s
-  ok(await s.evaluate(() => !document.querySelector('#splash')), 'the welcome image disappears on its own, leaving the store');
+  await s.waitForTimeout(3500);  // it must NOT disappear on its own
+  ok(await s.locator('#splash').isVisible(), 'the welcome image stays on screen (does not disappear on its own)');
+  await s.locator('#splash').click(); await s.waitForTimeout(1000);
+  ok(await s.evaluate(() => !document.querySelector('#splash')), 'a tap on the welcome image enters the store');
   await s.goto(BASE); await s.waitForTimeout(700);
   ok(await s.locator('#splash').isVisible(), 'coming back to the home page: the welcome image is shown again (every visit)');
   const dl = await ctx.newPage(); await dl.goto(BASE + '#cart'); await dl.waitForTimeout(600);

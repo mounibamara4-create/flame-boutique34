@@ -1602,13 +1602,12 @@ function showMap(){
 }
 
 /* ---------- splash: the welcome image ----------
-   Shown on every visit to the home page. It fades in over the store, then fades away on its own after ~3
-   seconds, or on a tap / scroll / key. A real deep link (#cart, #p-<id>) skips it and goes straight in. */
+   Shown on every visit to the home page and it STAYS until the visitor taps/presses to enter (it does not
+   disappear on its own). A real deep link (#cart, #p-<id>) skips it and goes straight in. */
 (function splash(){
   const el = $("#splash"); if (!el) return;
   if (/^#(cart|p-)/.test(location.hash)){ el.remove(); return; }   // a deep link to the cart or a product: no splash
   if (location.hash){ try { history.replaceState(null, "", location.pathname + location.search); } catch {} }
-  const calm = matchMedia("(prefers-reduced-motion: reduce)").matches;
   el.hidden = false;
   requestAnimationFrame(()=>el.classList.add("in"));
   let done = false;
@@ -1618,13 +1617,10 @@ function showMap(){
     const bye = ()=>el.remove();
     el.addEventListener("transitionend", bye, {once:true});
     setTimeout(bye, 800);   // in case transitionend does not fire
-    removeEventListener("wheel", enter); removeEventListener("touchmove", enter); removeEventListener("keydown", onKey);
+    removeEventListener("keydown", onKey);
   }
   function onKey(e){ if (e.key === "Escape" || e.key === "Enter" || e.key === " ") enter(); }
-  setTimeout(enter, calm ? 1400 : 3000);   // disappears on its own after ~3 seconds
-  el.addEventListener("click", enter);      // a tap enters right away
-  addEventListener("wheel", enter, {passive:true});
-  addEventListener("touchmove", enter, {passive:true});
+  el.addEventListener("click", enter);   // the visitor taps/presses to enter; nothing dismisses it on its own
   addEventListener("keydown", onKey);
 })();
 // the brand lines appear as they come into view
