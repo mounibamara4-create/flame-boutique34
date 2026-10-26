@@ -8,7 +8,7 @@ const DEMO_CONFIG = r => r.fulfill({contentType: 'text/javascript', body: 'windo
 const b = await chromium.launch();
 try {
   const ctx = await b.newContext({viewport: {width: 1280, height: 860}});
-  await ctx.addInitScript(() => { try { localStorage.setItem('fb34-welcomed','1'); } catch {} });
+  await ctx.addInitScript(() => { addEventListener('DOMContentLoaded', () => { const s = document.getElementById('splash'); if (s) s.remove(); }); });
   await ctx.route('**/assets/config.js', DEMO_CONFIG);
   // pixel scripts: the request only reaches here if the page's CSP allows it; answer with an empty script
   const pixelHits = [];

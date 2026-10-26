@@ -56,7 +56,7 @@ async function handle(route){
 
 const b = await chromium.launch(); const errs = [];
 const ctx = await b.newContext({viewport: {width: 1280, height: 860}});
-await ctx.addInitScript(() => { try { localStorage.setItem('fb34-welcomed','1'); } catch {} });
+await ctx.addInitScript(() => { addEventListener('DOMContentLoaded', () => { const s = document.getElementById('splash'); if (s) s.remove(); }); });
 await ctx.route('**/assets/config.js', r => r.fulfill({contentType: 'text/javascript', body: `window.FB_CONFIG={SUPABASE_URL:"${SB}",SUPABASE_ANON_KEY:"sb_publishable_testkey123",ADMIN_EMAIL:"owner@x.dz"}`}));
 await ctx.route(SB + '/**', handle);
 // live updates (WebSocket) cannot be stood in for here, so their connection errors are expected
@@ -123,7 +123,7 @@ try {
   await a.screenshot({path: (process.env.OUT || '/tmp') + '/notify-live.png', fullPage: true});
   // config without ADMIN_EMAIL: the owner types the email at sign-in
   const ctx2 = await b.newContext();
-  await ctx2.addInitScript(() => { try { localStorage.setItem('fb34-welcomed','1'); } catch {} });
+  await ctx2.addInitScript(() => { addEventListener('DOMContentLoaded', () => { const s = document.getElementById('splash'); if (s) s.remove(); }); });
   await ctx2.route('**/assets/config.js', r => r.fulfill({contentType: 'text/javascript', body: `window.FB_CONFIG={SUPABASE_URL:"${SB}",SUPABASE_ANON_KEY:"sb_publishable_testkey123",ADMIN_EMAIL:""}`}));
   await ctx2.route(SB + '/**', handle);
   const a2 = await ctx2.newPage(); await a2.goto(BASE + 'admin.html'); await a2.waitForTimeout(1500);

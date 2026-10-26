@@ -55,17 +55,15 @@ try {
   ok(fr.startsWith('Bonjour Lina') && fr.includes('Khimar georgette') && fr.includes('DA'), 'French-speaking customer gets the message in French');
   await a.screenshot({path: OUT + 'extras-orders.png', fullPage: false});
 
-  // the welcome splash: shown once per visitor, then never again
+  // the welcome image: shown on every visit to the home page; a deep link (#cart/#p-) skips it
   const s = await ctx.newPage(); await s.goto(BASE); await s.waitForTimeout(700);
   ok(await s.locator('#splash').isVisible() && await s.evaluate(() => { const i = document.querySelector('#splash img'); return !!i && i.complete && i.naturalWidth > 0; }), 'first visit: the welcome image is shown and loaded');
   await s.waitForTimeout(3400);  // it fades away on its own after ~3s
   ok(await s.evaluate(() => !document.querySelector('#splash')), 'the welcome image disappears on its own, leaving the store');
-  await s.goto(BASE); await s.waitForTimeout(800);
-  ok(await s.evaluate(() => !document.querySelector('#splash')), 'coming back: the welcome image never shows again');
-  const fresh2 = await b.newContext({viewport: {width: 1280, height: 900}});
-  await fresh2.route('**/assets/config.js', DEMO_CONFIG);
-  const fresh = await fresh2.newPage(); await fresh.goto(BASE); await fresh.waitForTimeout(700);
-  ok(await fresh.locator('#splash').isVisible(), 'a brand-new visitor (clean browser) sees the welcome image once');
+  await s.goto(BASE); await s.waitForTimeout(700);
+  ok(await s.locator('#splash').isVisible(), 'coming back to the home page: the welcome image is shown again (every visit)');
+  const dl = await ctx.newPage(); await dl.goto(BASE + '#cart'); await dl.waitForTimeout(600);
+  ok(await dl.evaluate(() => !document.querySelector('#splash')), 'a deep link (#cart) skips the welcome image and goes straight in');
 } finally { await b.close(); }
 ok(errs.length === 0, 'no page errors ' + errs.join(' | '));
 console.log(results.join('\n'));

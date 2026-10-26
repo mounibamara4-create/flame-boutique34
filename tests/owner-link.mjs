@@ -9,7 +9,7 @@ const b = await chromium.launch();
 try {
   for (const [label, opts] of [['desktop', {viewport: {width: 1280, height: 860}}], ['phone', {viewport: {width: 390, height: 844}, isMobile: true, hasTouch: true}]]) {
     const ctx = await b.newContext(opts);
-    await ctx.addInitScript(() => { try { localStorage.setItem('fb34-welcomed','1'); } catch {} });
+    await ctx.addInitScript(() => { addEventListener('DOMContentLoaded', () => { const s = document.getElementById('splash'); if (s) s.remove(); }); });
     // the real config (live mode); Supabase itself is not reachable from the test machine, so its calls are answered empty
     await ctx.route(/supabase\.co/, r => r.fulfill({status: 200, contentType: 'application/json', body: '[]'}));
     const p = await ctx.newPage(); p.on('pageerror', e => errs.push(label + ' ' + e.message));

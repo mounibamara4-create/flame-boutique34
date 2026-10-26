@@ -1601,30 +1601,19 @@ function showMap(){
   io.observe(box);
 }
 
-/* ---------- splash: a one-time welcome image ----------
-   Shown once per visitor (a flag kept in the browser). It fades in over the store, then fades away on its
-   own after ~3 seconds, or on a tap / scroll / key, and is removed. A returning visitor never sees it. */
+/* ---------- splash: the welcome image ----------
+   Shown on every visit to the home page. It fades in over the store, then fades away on its own after ~3
+   seconds, or on a tap / scroll / key. A real deep link (#cart, #p-<id>) skips it and goes straight in. */
 (function splash(){
   const el = $("#splash"); if (!el) return;
-  const KEY = "fb34-welcomed";
-  // remembered in two places, so it still works when a browser blocks one of them (private mode, strict privacy)
-  const remember = () => { try { localStorage.setItem(KEY, "1"); } catch {} try { document.cookie = KEY + "=1; max-age=31536000; path=/; SameSite=Lax"; } catch {} };
-  let welcomed = false;
-  try { welcomed = localStorage.getItem(KEY) === "1"; } catch {}
-  if (!welcomed) welcomed = document.cookie.split("; ").includes(KEY + "=1");
-  // "#welcome" always shows the welcome image (a preview link for the owner); the hash is then cleared so it
-  // does not count as a deep link. Otherwise a returning visitor, or a real deep link (#cart, #p-<id>), skips it.
-  const force = location.hash === "#welcome";
-  if (force){ try { history.replaceState(null, "", location.pathname + location.search); } catch {} }
-  else if (welcomed || location.hash){ el.remove(); return; }
+  if (/^#(cart|p-)/.test(location.hash)){ el.remove(); return; }   // a deep link to the cart or a product: no splash
+  if (location.hash){ try { history.replaceState(null, "", location.pathname + location.search); } catch {} }
   const calm = matchMedia("(prefers-reduced-motion: reduce)").matches;
-  remember();   // mark it seen the moment it shows, so it never shows again even if she leaves before it fades
   el.hidden = false;
   requestAnimationFrame(()=>el.classList.add("in"));
   let done = false;
   function enter(){
     if (done) return; done = true;
-    remember();
     el.classList.remove("in"); el.classList.add("out");
     const bye = ()=>el.remove();
     el.addEventListener("transitionend", bye, {once:true});

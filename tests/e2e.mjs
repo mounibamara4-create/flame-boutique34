@@ -8,7 +8,7 @@ const results = []; const errs = [];
 const ok = (c, m) => { results.push((c ? 'PASS ' : 'FAIL ') + m); };
 const b = await chromium.launch();
 const ctx = await b.newContext({viewport: {width: 1280, height: 860}, permissions: ['clipboard-read', 'clipboard-write']});
-await ctx.addInitScript(() => { try { localStorage.setItem('fb34-welcomed','1'); } catch {} });
+await ctx.addInitScript(() => { addEventListener('DOMContentLoaded', () => { const s = document.getElementById('splash'); if (s) s.remove(); }); });
 const DEMO_CONFIG = r => r.fulfill({contentType: 'text/javascript', body: 'window.FB_CONFIG={DEMO_PASSWORD_SHA256:"cd782a4fb4e7c57fcab4debf1a47b4e4052d9dd02cdd1fade914b9d7fbeb8221"}'});  // this test runs the site in demo mode
 await ctx.route('**/assets/config.js', DEMO_CONFIG);
 ctx.on('page', p => { p.on('pageerror', e => errs.push(p.url() + ' ' + e.message)); p.on('console', m => { if (m.type() === 'error') errs.push(p.url() + ' console ' + m.text()); }); });
@@ -201,7 +201,7 @@ ok(await p.getAttribute('#socialBar a[aria-label="Instagram"]', 'href') === 'htt
 
 // ---------- 12: phone ----------
 const m = await b.newContext({viewport: {width: 390, height: 844}, isMobile: true, hasTouch: true});
-await m.addInitScript(() => { try { localStorage.setItem('fb34-welcomed','1'); } catch {} });
+await m.addInitScript(() => { addEventListener('DOMContentLoaded', () => { const s = document.getElementById('splash'); if (s) s.remove(); }); });
 await m.route('**/assets/config.js', DEMO_CONFIG);
 const mp = await m.newPage(); mp.on('pageerror', e => errs.push('mobile ' + e.message));
 await mp.goto(BASE + 'index.html'); await mp.waitForTimeout(1200);

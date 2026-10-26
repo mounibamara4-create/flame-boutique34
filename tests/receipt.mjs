@@ -10,7 +10,7 @@ const stubPrint = `window.__printed = 0; window.print = () => { window.__printed
 const b = await chromium.launch();
 try {
   const ctx = await b.newContext({viewport: {width: 1280, height: 900}});
-  await ctx.addInitScript(() => { try { localStorage.setItem('fb34-welcomed','1'); } catch {} });
+  await ctx.addInitScript(() => { addEventListener('DOMContentLoaded', () => { const s = document.getElementById('splash'); if (s) s.remove(); }); });
   await ctx.route('**/assets/config.js', DEMO_CONFIG);
   await ctx.addInitScript(stubPrint);
   ctx.on('page', p => p.on('pageerror', e => errs.push(p.url() + ' ' + e.message)));

@@ -22,7 +22,7 @@ async function handle(route){
 const b = await chromium.launch();
 async function ctxWith(opts = {}){
   const ctx = await b.newContext({viewport: {width: 1280, height: 860}, ...opts});
-  await ctx.addInitScript(() => { try { localStorage.setItem('fb34-welcomed','1'); } catch {} });
+  await ctx.addInitScript(() => { addEventListener('DOMContentLoaded', () => { const s = document.getElementById('splash'); if (s) s.remove(); }); });
   await ctx.route('**/assets/config.js', r => r.fulfill({contentType: 'text/javascript', body: `window.FB_CONFIG={SUPABASE_URL:"${SB}",SUPABASE_ANON_KEY:"sb_publishable_testkey123"}`}));
   await ctx.route(SB + '/**', handle);
   ctx.on('page', p => p.on('pageerror', e => errs.push(e.message)));
