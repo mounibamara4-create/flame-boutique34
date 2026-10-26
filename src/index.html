@@ -406,6 +406,22 @@ summary{cursor:pointer;color:var(--ink)}
 .done .ids{display:grid;gap:.6rem;width:100%;text-align:start}
 .done-actions{display:grid;grid-template-columns:1fr 1fr;gap:.6rem;width:100%}
 @media (max-width:480px){.done-actions,.buy-row{grid-template-columns:1fr}}
+/* size guide */
+.sg-legend{display:flex;align-items:baseline;justify-content:space-between;gap:.6rem}
+.sg-link{font:inherit;font-size:.82rem;color:var(--mulberry);background:none;border:0;padding:0;cursor:pointer;text-decoration:underline;text-underline-offset:3px}
+.sg-link:hover{color:var(--ember)}
+.sizeguide{border:0;border-radius:18px;padding:clamp(1.1rem,3vw,1.6rem);max-width:min(560px,94vw);width:100%;background:var(--surface);color:var(--ink);box-shadow:0 30px 60px rgba(40,25,10,.35)}
+.sizeguide::backdrop{background:color-mix(in oklab,var(--linen) 55%,transparent);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+.sizeguide h2{margin:0 2rem .4rem 0;font-size:var(--step-1)}
+.sg-intro{margin:.2rem 0 1rem;font-size:.92rem;line-height:1.7}
+.sg-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--line);border-radius:12px}
+.sg-table{width:100%;border-collapse:collapse;font-size:.92rem;min-width:360px}
+.sg-table th,.sg-table td{padding:.6rem .5rem;text-align:center;border-bottom:1px solid var(--line);white-space:nowrap;font-variant-numeric:tabular-nums}
+.sg-table tr:last-child th,.sg-table tr:last-child td{border-bottom:0}
+.sg-table thead th{background:color-mix(in oklab,var(--ember) 16%,var(--surface));font-weight:600}
+.sg-table tbody th{font-weight:700}
+.sg-table tbody tr:nth-child(even){background:color-mix(in oklab,var(--ember) 7%,transparent)}
+.sg-note{margin:1rem 0 0;line-height:1.7}
 </style>
 </head>
 <body>
@@ -528,7 +544,7 @@ summary{cursor:pointer;color:var(--ink)}
       <p class="quick-desc" id="qDesc"></p>
       <p class="stock" id="qStock"></p>
       <fieldset><legend data-i18n="color"></legend><div class="opts" id="qColors"></div></fieldset>
-      <fieldset><legend data-i18n="size"></legend><div class="opts" id="qSizes"></div><p class="err" id="qErr" role="alert"></p><p class="hint" id="qLeft" aria-live="polite"></p></fieldset>
+      <fieldset><legend class="sg-legend"><span data-i18n="size"></span><button type="button" class="sg-link" id="qSizeGuide" hidden data-i18n="sizeGuide"></button></legend><div class="opts" id="qSizes"></div><p class="err" id="qErr" role="alert"></p><p class="hint" id="qLeft" aria-live="polite"></p></fieldset>
       <div class="row">
         <span data-i18n="qty"></span>
         <div class="qty"><button type="button" id="qMinus" data-i18n-label="less">−</button><output id="qQty">1</output><button type="button" id="qPlus" data-i18n-label="more">+</button></div>
@@ -542,6 +558,15 @@ summary{cursor:pointer;color:var(--ink)}
       <section class="q-more" id="qMore" hidden></section>
     </div>
   </form>
+</dialog>
+
+<!-- size guide, edited by the owner from the dashboard -->
+<dialog class="sizeguide" id="sizeGuide" aria-labelledby="sgTitle">
+  <button class="icon-btn close-x" type="button" data-close><svg aria-hidden="true"><use href="#i-x"/></svg><span class="sr" data-i18n="close"></span></button>
+  <h2 id="sgTitle" data-i18n="sizeGuide"></h2>
+  <p class="sg-intro muted" id="sgIntro"></p>
+  <div class="sg-scroll"><table class="sg-table" id="sgTable"></table></div>
+  <p class="sg-note hint" id="sgNote"></p>
 </dialog>
 
 <!-- a piece from the rack, brought forward -->
@@ -594,7 +619,10 @@ summary{cursor:pointer;color:var(--ink)}
 const T = {
  ar:{heroCta:"تصفّحي المجموعة",trackCta:"تتبع طلبي",visitTitle:"زورينا في المحل",addrTitle:"العنوان",hoursTitle:"أوقات العمل",contactTitle:"الهاتف وواتساب",waChat:"راسلينا على واتساب",
   openMap:"افتحي الخريطة",copy:"نسخ",copied:"تم نسخ الرقم",close:"إغلاق",color:"اللون",size:"المقاس",sizeGuide:"دليل المقاسات (بالسنتيمتر)",
-  sgBust:"محيط الصدر",sgHeight:"الطول",qty:"الكمية",less:"إنقاص الكمية",more:"زيادة الكمية",oneSize:"مقاس موحد",all:"الكل",
+  sgBust:"محيط الصدر",sgHeight:"الطول",sgSize:"المقاس",sgFr:"المقاس الفرنسي",sgWaist:"محيط الخصر",sgHips:"محيط الورك",
+  sgIntro:"قيسي بشريط القياس فوق ملابس خفيفة: محيط الصدر عند أوسع نقطة، محيط الخصر عند أضيق نقطة، ومحيط الورك عند أوسع نقطة. اختاري المقاس الأقرب لقياساتك.",
+  sgNote:"القياسات بالسنتيمتر وهي إرشادية تقريبية وقد تختلف قليلاً حسب القطعة. إن كنتِ بين مقاسين أو غير متأكدة، راسلينا على واتساب ونساعدك.",
+  qty:"الكمية",less:"إنقاص الكمية",more:"زيادة الكمية",oneSize:"مقاس موحد",all:"الكل",
   buyNow:"اطلبي الآن",addToCart:"أضيفي إلى السلة",added:"أُضيفت إلى السلة",best:"الأكثر طلباً",new:"جديد",sizes:"المقاسات",
   inStock:"متوفر",low:"كمية محدودة",soldOut:"نفدت الكمية",left:n=>`بقي ${n} فقط من هذا المقاس`,pickSize:"اختاري المقاس أولاً.",
   colorsN:n=>n>1?`${n} ألوان`:"لون واحد",off:p=>`تخفيض ${p}%`,
@@ -633,7 +661,10 @@ const T = {
   verified:"مشترية مؤكدة",more:"قد يعجبك أيضاً",policyLink:"الدفع والتوصيل والاستبدال",revOf:"آراء هذه القطعة",revFor:"عن:",outOf:"من 5"},
  fr:{heroCta:"Voir la collection",trackCta:"Suivre ma commande",visitTitle:"Nous rendre visite",addrTitle:"Adresse",hoursTitle:"Horaires",contactTitle:"Téléphone et WhatsApp",waChat:"Écrivez-nous sur WhatsApp",
   openMap:"Ouvrir la carte",copy:"Copier",copied:"Numéro copié",close:"Fermer",color:"Couleur",size:"Taille",sizeGuide:"Guide des tailles (en cm)",
-  sgBust:"Tour de poitrine",sgHeight:"Hauteur",qty:"Quantité",less:"Diminuer",more:"Augmenter",oneSize:"Taille unique",all:"Tout",
+  sgBust:"Tour de poitrine",sgHeight:"Hauteur",sgSize:"Taille",sgFr:"Taille FR",sgWaist:"Tour de taille",sgHips:"Tour de hanches",
+  sgIntro:"Mesurez avec un mètre ruban sur des vêtements légers : le tour de poitrine au point le plus fort, le tour de taille au point le plus fin, le tour de hanches au point le plus fort. Choisissez la taille la plus proche de vos mesures.",
+  sgNote:"Mesures en centimètres, indicatives et approximatives ; elles peuvent varier légèrement selon la pièce. En cas de doute ou entre deux tailles, écrivez-nous sur WhatsApp.",
+  qty:"Quantité",less:"Diminuer",more:"Augmenter",oneSize:"Taille unique",all:"Tout",
   buyNow:"Commander maintenant",addToCart:"Ajouter au panier",added:"Ajouté au panier",best:"Le plus demandé",new:"Nouveau",sizes:"Tailles",
   inStock:"Disponible",low:"Stock limité",soldOut:"Épuisé",left:n=>`Plus que ${n} dans cette taille`,pickSize:"Choisissez d'abord une taille.",
   colorsN:n=>n>1?`${n} couleurs`:"1 couleur",off:p=>`-${p} %`,
@@ -996,6 +1027,8 @@ function openProduct(id, focusBtn){
   const pre = prev.size && avail.includes(prev.size) ? prev.size : avail.length===1 ? avail[0] : null;
   $("#qSizes").innerHTML = p.sizes.map(s=>{const none=FB.stockOf(p,s)===0;
     return `<label class="opt"><input type="radio" name="size" value="${esc(s)}" ${s===pre?"checked":""} ${none?"disabled":""}><span>${esc(sizeLabel(s))}</span></label>`}).join("");
+  // the size-guide link shows only for garments with real sizes (not one-size pieces), and when the owner keeps it on
+  $("#qSizeGuide").hidden = !(S.size_guide_on!==false && Array.isArray(S.size_guide) && S.size_guide.length && p.sizes.some(s=>s!=="TU"));
   $("#qErr").textContent = ""; showLeft();
   $("#qQty").value = qty;
   $("#qBuy").disabled = $("#qAdd").disabled = out;
@@ -1007,6 +1040,14 @@ function openProduct(id, focusBtn){
 function related(p){
   const score = x=>(x.category===p.category ? 1000 : 0) + FB.ratingOf(REVIEWS,x.id).avg*10 - x.sort/1000;
   return PRODUCTS.filter(x=>x.id!==p.id && !FB.soldOut(x)).sort((a,b)=>score(b)-score(a)).slice(0,4);
+}
+$("#qSizeGuide").addEventListener("click", ()=>{ renderSizeGuide(); UI.openDialog($("#sizeGuide")); });
+function renderSizeGuide(){
+  $("#sgIntro").textContent = t("sgIntro");
+  $("#sgNote").textContent = t("sgNote");
+  const rows = (S.size_guide||[]).filter(r=>r && (r.label||r.fr||r.bust));
+  $("#sgTable").innerHTML = `<thead><tr><th>${t("sgSize")}</th><th>${t("sgFr")}</th><th>${t("sgBust")}</th><th>${t("sgWaist")}</th><th>${t("sgHips")}</th></tr></thead>
+    <tbody>${rows.map(r=>`<tr><th scope="row">${esc(r.label||"")}</th><td>${esc(r.fr||"—")}</td><td>${esc(r.bust||"—")}</td><td>${esc(r.waist||"—")}</td><td>${esc(r.hips||"—")}</td></tr>`).join("")}</tbody>`;
 }
 $("#qMore").addEventListener("click", e=>{ const b=e.target.closest("[data-more]"); if (b) openProduct(b.dataset.more); });
 $("#qRate").onclick = ()=>$("#qReviews").scrollIntoView({behavior:"smooth", block:"start"});

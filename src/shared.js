@@ -32,7 +32,16 @@ window.FB = (() => {
     racks:[],               // racks made by the owner: [{id, name:{ar,fr}, items:[product ids], active}]; none = one automatic rack
     racks_on:true,          // false hides every rack  // ad pixel IDs, entered by the owner; empty = nothing loads
     categories:[{id:"abaya",ar:"عبايات",fr:"Abayas"},{id:"caftan",ar:"جلابيات وقفاطين",fr:"Djellabas & caftans"},{id:"dress",ar:"فساتين سهرة",fr:"Robes de soirée"},
-      {id:"set",ar:"أطقم وتنانير",fr:"Ensembles & jupes"},{id:"hijab",ar:"حجابات",fr:"Hijabs & foulards"}]
+      {id:"set",ar:"أطقم وتنانير",fr:"Ensembles & jupes"},{id:"hijab",ar:"حجابات",fr:"Hijabs & foulards"}],
+    // size guide shown in the product window; the owner edits these to match her own garments (cm)
+    size_guide_on:true,
+    size_guide:[
+      {label:"S",   fr:"36 – 38", bust:"84 – 88",   waist:"64 – 68",  hips:"90 – 94"},
+      {label:"M",   fr:"40 – 42", bust:"92 – 96",   waist:"72 – 76",  hips:"98 – 102"},
+      {label:"L",   fr:"44 – 46", bust:"100 – 104", waist:"80 – 84",  hips:"106 – 110"},
+      {label:"XL",  fr:"48 – 50", bust:"108 – 114", waist:"88 – 94",  hips:"114 – 120"},
+      {label:"XXL", fr:"52 – 54", bust:"118 – 124", waist:"98 – 104", hips:"124 – 130"}
+    ]
   };
 
 
@@ -113,6 +122,7 @@ window.FB = (() => {
     s.pixels = {...DEFAULT_SETTINGS.pixels, ...(rest.pixels||{})};
     s.policy = {...DEFAULT_SETTINGS.policy, ...(rest.policy||{})};
     s.racks = Array.isArray(rest.racks) ? rest.racks : [];
+    s.size_guide = Array.isArray(rest.size_guide) ? rest.size_guide : DEFAULT_SETTINGS.size_guide;
     return s;
   }
 

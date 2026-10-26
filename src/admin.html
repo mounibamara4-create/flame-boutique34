@@ -1327,6 +1327,12 @@ async function openNewWilaya(w){
 }
 
 /* ================= site settings ================= */
+function sgRowHTML(r, i){
+  const f = (k,label,ltr)=>`<div class="field"><label>${label}</label><input data-sg="${k}" ${ltr?'dir="ltr"':""} value="${esc(r?.[k]||"")}"></div>`;
+  return `<div class="sg-row" style="display:grid;grid-template-columns:repeat(5,1fr) auto;gap:.5rem;align-items:end">
+    ${f("label","المقاس")}${f("fr","فرنسي",1)}${f("bust","الصدر",1)}${f("waist","الخصر",1)}${f("hips","الورك",1)}
+    <button class="icon" type="button" data-sgdel="${i}" aria-label="حذف الصف">✕</button></div>`;
+}
 function renderSite(){
   const s = D.settings;
   const pair = (key,label,val,area)=>`<div class="grid2">
@@ -1383,6 +1389,12 @@ function renderSite(){
       <button class="btn btn-ghost btn-sm" type="button" id="addCat" style="justify-self:start">إضافة قسم</button>
       <p class="small muted">لا يمكن حذف قسم فيه منتجات. انقل منتجاته إلى قسم آخر أولاً.</p>
     </fieldset>
+    <fieldset><legend>دليل المقاسات</legend>
+      <label class="check" style="margin-bottom:.6rem"><input type="checkbox" id="sg-on" ${s.size_guide_on!==false?"checked":""}> عرض دليل المقاسات في نافذة كل قطعة لها مقاسات (S، M، L…)</label>
+      <p class="small muted">القياسات بالسنتيمتر. ضع قياسات قطعك الحقيقية حتى تختار الزبونة مقاسها بثقة. اترك أي خانة فارغة لتظهر «—». القطع ذات المقاس الموحد لا يظهر لها الدليل.</p>
+      <div id="sgRows" style="display:grid;gap:.6rem">${(s.size_guide||[]).map((r,i)=>sgRowHTML(r,i)).join("")}</div>
+      <button class="btn btn-ghost btn-sm" type="button" id="sgAdd" style="justify-self:start">إضافة مقاس</button>
+    </fieldset>
     <fieldset><legend>نصوص الموقع</legend>
       ${Object.entries(FB.TEXT_LABELS).map(([k,l])=>pair("t-"+k,l,s.texts[k],/Sub|story[12]/.test(k))).join("")}
       <button class="link" type="button" id="resetTexts" style="justify-self:start">إرجاع النصوص الأصلية</button>
@@ -1390,10 +1402,13 @@ function renderSite(){
     <div class="savebar"><button class="btn btn-primary" type="button" id="saveSite">حفظ الإعدادات</button></div>
   </section>`;
   const readCats = ()=>$$("#cats .cat-row").map(r=>({id:r.dataset.cat, ar:r.querySelector('[data-k="ar"]').value.trim(), fr:r.querySelector('[data-k="fr"]').value.trim()}));
+  const readSizeGuide = ()=>$$("#sgRows .sg-row").map(r=>Object.fromEntries(["label","fr","bust","waist","hips"]
+      .map(k=>[k, r.querySelector(`[data-sg="${k}"]`).value.trim()]))).filter(r=>r.label||r.fr||r.bust||r.waist||r.hips);
   const gather = ()=>{
     const v = id=>$("#"+id).value.trim(), L = id=>({ar:v(id+"-ar"), fr:v(id+"-fr")});
     return {...D.settings, whatsapp:v("s-wa").replace(/\D/g,""), phone_display:v("s-ph"), address:L("s-addr"), hours:L("s-hours"), map_url:v("s-map"),
       socials:{instagram:v("s-ig"), facebook:v("s-fb"), tiktok:v("s-tt")}, categories:readCats(),
+      size_guide_on:$("#sg-on").checked, size_guide:readSizeGuide(),
       policy:{ar:$("#s-pol-ar").value.trim(), fr:$("#s-pol-fr").value.trim()},
       pixels:{facebook:v("s-fbpx").replace(/\s/g,""), tiktok:v("s-ttpx").replace(/\s/g,"").toUpperCase()},
       texts:Object.fromEntries(Object.keys(FB.TEXT_LABELS).map(k=>[k, L("t-"+k)]))};
@@ -1402,6 +1417,8 @@ function renderSite(){
     if (e.target.id==="addCat"){ D.settings = gather(); D.settings.categories.push({id:"c-"+Date.now().toString(36), ar:"", fr:""}); renderSite(); $$("#cats .cat-row").pop().querySelector("input").focus(); }
     const up = e.target.closest("[data-cup]"); if (up){ D.settings = gather(); const c=D.settings.categories, i=+up.dataset.cup; [c[i-1],c[i]]=[c[i],c[i-1]]; renderSite(); }
     const del = e.target.closest("[data-cdel]"); if (del){ D.settings = gather(); D.settings.categories.splice(+del.dataset.cdel,1); renderSite(); }
+    if (e.target.id==="sgAdd"){ D.settings = gather(); (D.settings.size_guide ||= []).push({label:"",fr:"",bust:"",waist:"",hips:""}); renderSite(); $$("#sgRows .sg-row").pop().querySelector("input").focus(); }
+    const sgd = e.target.closest("[data-sgdel]"); if (sgd){ D.settings = gather(); D.settings.size_guide.splice(+sgd.dataset.sgdel,1); renderSite(); }
     if (e.target.id==="polDraft"){
       const ar = $("#s-pol-ar"), fr = $("#s-pol-fr");
       if ((ar.value.trim() || fr.value.trim()) && !e.target.classList.contains("armed")){ e.target.classList.add("armed"); e.target.textContent = "اضغط مرة أخرى لاستبدال النص الحالي بالمسودة"; return; }
