@@ -29,44 +29,24 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500&family=Marcellus&family=Noto+Naskh+Arabic:wght@400;600&family=Reem+Kufi:wght@500;600&display=swap">
 <link rel="stylesheet" href="site.css">
 <style>
-/* ---------- film: the boutique video, moved forward by scrolling ----------
-   The section is several screens tall; its video stays pinned on screen while the visitor scrolls through it,
-   and the scroll position decides which moment of the video is shown. At its end the store follows. */
-.film{position:relative;display:block;height:340vh;background:#19130D;cursor:pointer}
-/* phones held upright: a slightly longer scroll so the upright video passes smoothly, but short enough to reach the store quickly */
-@media (orientation:portrait){.film{height:430vh}}
-.film-pin{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden}
-.film-pin canvas,.film-pin img{position:absolute;inset:0;width:100%;height:100%;display:block}
-/* portrait screens: behind the whole picture, the same picture enlarged and blurred fills the screen (nothing on top of it) */
-.film-pin .film-bg{inset:-8%;width:116%;height:116%;filter:blur(24px) brightness(.6) saturate(1.1);transform:translateZ(0)}
-@media (orientation:landscape){.film-pin .film-bg{display:none}}
-/* the picture shown matches the screen (upright video on an upright phone): it fills the screen, no blurred copy */
-.film-pin.fill .film-bg{display:none}
-/* social links and the shop location, right under the film */
-.social-bar.under-film .wrap{justify-content:center!important;min-height:56px;padding-block:.4rem}
-.social-bar.under-film .soc{width:42px;height:42px}
-.social-bar.under-film .soc-map{width:auto;font-size:.9rem}
-.film-pin img{object-fit:cover;object-position:center}
-.film:focus-visible{outline:3px solid var(--ember);outline-offset:-3px}
-/* a clear "skip" hint so a first-time visitor can jump straight to the store */
-.film-skip{position:absolute;left:50%;bottom:max(1.1rem,env(safe-area-inset-bottom));transform:translateX(-50%);z-index:3;
-  display:inline-flex;align-items:center;gap:.4rem;padding:.5rem 1.1rem;border-radius:999px;
-  background:rgba(25,19,13,.5);color:#F4EAD9;border:1px solid rgba(244,234,217,.45);
-  font-family:var(--body);font-size:.9rem;letter-spacing:.02em;white-space:nowrap;
-  -webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);pointer-events:none;
-  animation:skipPulse 2.4s ease-in-out infinite}
-@keyframes skipPulse{0%,100%{opacity:.8;transform:translateX(-50%) translateY(0)}50%{opacity:1;transform:translateX(-50%) translateY(3px)}}
-@media (prefers-reduced-motion:reduce){.film-skip{animation:none}}
-html.calm .film-skip{animation:none}
-/* fewer movements wanted: one still screen instead of the scrolling film */
-html.calm .film{height:100vh;height:100svh}
-/* bars, cart and WhatsApp stay out of the way while the film fills the screen, and slide in on the first scroll */
-.topbar{position:fixed;inset:0 0 auto;z-index:30;transform:translateY(-105%);opacity:0;pointer-events:none;transition:transform .55s var(--ease),opacity .35s ease}
-.topbar.show,.topbar:focus-within{transform:none;opacity:1;pointer-events:auto}
-.topbar .site-header{position:static}
-.fab{transition:opacity .35s ease,transform .35s var(--ease)}
-html.at-film .fab{opacity:0;transform:scale(.7);pointer-events:none}
-@media (prefers-reduced-motion:reduce){.topbar{transition:none}}
+/* ---------- splash: a one-time welcome image over the store ----------
+   Shown once per visitor (a flag in the browser), then never again. It fades in, then fades away on its own
+   after ~3s, or on a tap/scroll, revealing the store underneath. */
+.splash{position:fixed;inset:0;z-index:1000;background:#19130D;display:grid;place-items:center;overflow:hidden;opacity:0;transition:opacity .6s ease}
+.splash.in{opacity:1}
+.splash.out{opacity:0;pointer-events:none}
+.splash img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.splash-in{position:relative;z-index:1;width:100%;height:100%;display:grid;align-content:center;justify-items:center;gap:.5rem;text-align:center;color:#F4EAD9;padding:1.5rem;
+  background:radial-gradient(ellipse at center,rgba(25,19,13,.55),rgba(25,19,13,.25) 55%,rgba(25,19,13,.1))}
+.splash-mark{width:54px;height:64px;color:#F4EAD9}
+.splash-flame{fill:var(--ember,#A27A48)}
+.splash-name{font-family:"Marcellus",Georgia,serif;font-size:clamp(1.4rem,6vw,2.6rem);letter-spacing:.18em;margin:.2rem 0 0;line-height:1.1}
+.splash-hint{font-size:.85rem;opacity:.82;letter-spacing:.04em;margin-top:.7rem}
+.splash.in .splash-in>*{animation:splashUp .8s var(--ease,ease) both}
+.splash.in .splash-name{animation-delay:.1s}
+.splash.in .splash-hint{animation-delay:.28s}
+@keyframes splashUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.splash{transition-duration:.2s}.splash.in .splash-in>*{animation:none}}
 
 /* ---------- brand lines, shown in the store after the intro ---------- */
 .brand-lines{padding-block:clamp(2rem,6vw,3.6rem) clamp(.6rem,2vw,1rem);text-align:center}
@@ -436,19 +416,19 @@ summary{cursor:pointer;color:var(--ink)}
 </head>
 <body>
 <main id="top">
-  <!-- the boutique video, alone on screen, moved forward by scrolling (no sound, no controls, nothing on top).
-       It is drawn from a sequence of pictures (tools/make_film.sh), which behaves the same on every device:
-       the upright video on upright screens (phones), the wide video on wide screens (computers).
-       At its end the store follows. A tap glides to the store. -->
-  <a class="film" id="film" href="#brandLines" aria-label="Flame Boutique34">
-    <div class="film-pin">
-      <img class="film-bg" src="assets/intro-poster.jpg" alt="" aria-hidden="true" width="1280" height="720">
-      <canvas class="film-bg" id="filmBg" aria-hidden="true"></canvas>
-      <picture><source media="(orientation: portrait)" srcset="assets/intro-poster-p.jpg"><img class="film-poster" src="assets/intro-poster.jpg" alt="" aria-hidden="true" fetchpriority="high" width="1280" height="720"></picture>
-      <canvas id="filmCanvas" aria-hidden="true"></canvas>
-      <span class="film-skip" data-i18n="skipIntro" aria-hidden="true"></span>
+  <!-- a one-time welcome image: shown once per visitor (kept in the browser), then never again.
+       It fades away on its own after a moment, or on a tap/scroll, and the store is underneath. -->
+  <div class="splash" id="splash" aria-hidden="true" hidden>
+    <picture><source media="(orientation: portrait)" srcset="assets/intro-poster-p.jpg"><img src="assets/intro-poster.jpg" alt="" fetchpriority="high"></picture>
+    <div class="splash-in">
+      <svg class="splash-mark" viewBox="0 0 30 36" aria-hidden="true">
+        <path fill="none" stroke="currentColor" stroke-width="1.3" d="M2 35V14a13 13 0 0 1 26 0v21"/>
+        <path class="splash-flame" d="M15 12c2 3.5 5.5 5.5 5 10a5 5 0 0 1-10 0c-.3-3.3 2.6-4.6 3.2-7 .6 1.5 1.2 2 1.8 2.4.4-1.6.3-3.3 0-5.4Z"/>
+      </svg>
+      <p class="splash-name">FLAME BOUTIQUE 34</p>
+      <span class="splash-hint" data-i18n="welcomeHint"></span>
     </div>
-  </a>
+  </div>
 
   <section class="brand-lines" id="brandLines" aria-label="FLAME BOUTIQUE 34">
     <div class="wrap">
@@ -628,7 +608,7 @@ summary{cursor:pointer;color:var(--ink)}
 <script>
 /* Interface strings. Hero, feature and size-tip texts come from the dashboard (settings.texts). */
 const T = {
- ar:{skipIntro:"تخطّي المقدّمة ⌄",heroCta:"تصفّحي المجموعة",trackCta:"تتبع طلبي",visitTitle:"زورينا في المحل",addrTitle:"العنوان",hoursTitle:"أوقات العمل",contactTitle:"الهاتف وواتساب",waChat:"راسلينا على واتساب",
+ ar:{welcomeHint:"اضغطي للدخول",heroCta:"تصفّحي المجموعة",trackCta:"تتبع طلبي",visitTitle:"زورينا في المحل",addrTitle:"العنوان",hoursTitle:"أوقات العمل",contactTitle:"الهاتف وواتساب",waChat:"راسلينا على واتساب",
   openMap:"افتحي الخريطة",copy:"نسخ",copied:"تم نسخ الرقم",close:"إغلاق",color:"اللون",size:"المقاس",sizeGuide:"دليل المقاسات (بالسنتيمتر)",
   sgBust:"محيط الصدر",sgHeight:"الطول",sgSize:"المقاس",sgFr:"المقاس الفرنسي",sgWaist:"محيط الخصر",sgHips:"محيط الورك",
   sgIntro:"قيسي بشريط القياس فوق ملابس خفيفة: محيط الصدر عند أوسع نقطة، محيط الخصر عند أضيق نقطة، ومحيط الورك عند أوسع نقطة. اختاري المقاس الأقرب لقياساتك.",
@@ -670,7 +650,7 @@ const T = {
   piecesN:n=>n===1?"قطعة واحدة":n===2?"قطعتان":n<=10?`${n} قطع`:`${n} قطعة`,noResult:q=>`لا توجد قطعة تطابق «${q}». جرّبي كلمة أخرى أو اسم اللون أو القسم.`,
   inAll:"البحث في كل الأقسام",
   verified:"مشترية مؤكدة",more:"قد يعجبك أيضاً",policyLink:"الدفع والتوصيل والاستبدال",revOf:"آراء هذه القطعة",revFor:"عن:",outOf:"من 5"},
- fr:{skipIntro:"Passer l'intro ⌄",heroCta:"Voir la collection",trackCta:"Suivre ma commande",visitTitle:"Nous rendre visite",addrTitle:"Adresse",hoursTitle:"Horaires",contactTitle:"Téléphone et WhatsApp",waChat:"Écrivez-nous sur WhatsApp",
+ fr:{welcomeHint:"Touchez pour entrer",heroCta:"Voir la collection",trackCta:"Suivre ma commande",visitTitle:"Nous rendre visite",addrTitle:"Adresse",hoursTitle:"Horaires",contactTitle:"Téléphone et WhatsApp",waChat:"Écrivez-nous sur WhatsApp",
   openMap:"Ouvrir la carte",copy:"Copier",copied:"Numéro copié",close:"Fermer",color:"Couleur",size:"Taille",sizeGuide:"Guide des tailles (en cm)",
   sgBust:"Tour de poitrine",sgHeight:"Hauteur",sgSize:"Taille",sgFr:"Taille FR",sgWaist:"Tour de taille",sgHips:"Tour de hanches",
   sgIntro:"Mesurez avec un mètre ruban sur des vêtements légers : le tour de poitrine au point le plus fort, le tour de taille au point le plus fin, le tour de hanches au point le plus fort. Choisissez la taille la plus proche de vos mesures.",
@@ -968,7 +948,6 @@ function applyTexts(){
   $("#mapLink").href = UI.safeUrl(S.map_url) || "#visit";
   $("#mapLink").hidden = !UI.safeUrl(S.map_url);
   showMap();
-  $("#film").setAttribute("aria-label", t("heroCta"));
   UI.setSocial(S);
   renderFilters(); renderTools(); renderGrid(); renderDrawer(); renderReviews(); renderRack();
   if ($("#checkout").open) renderCheckout();
@@ -1620,175 +1599,34 @@ function showMap(){
   io.observe(box);
 }
 
-/* ---------- film moved by scrolling ----------
-   The scroll position inside the film section picks the picture to show (eased, so it glides).
-   Pictures load in passes, coarse first (every 16th, then every 8th...), so the film can be scrolled
-   from the first seconds; until a picture has arrived, the nearest loaded one is shown.
-   The bars, cart and WhatsApp appear once the film is over (or as soon as they get keyboard focus). */
-(function film(){
-  const root = document.documentElement, box = $("#film"), cv = $("#filmCanvas");
-  const calm = matchMedia("(prefers-reduced-motion: reduce)").matches || navigator.connection?.saveData;
-  root.classList.toggle("calm", !!calm);
-  // the top bars (demo note, header) move into one fixed bar; the social links and shop location go right under the film
-  const bar = document.createElement("div"); bar.className = "topbar"; bar.id = "topbar";
-  document.querySelectorAll("body > .demo-bar, body > .site-header").forEach(el=>bar.append(el));
-  document.body.prepend(bar);
-  const social = document.querySelector("body > .social-bar");
-  if (social){ social.classList.add("under-film"); box.after(social); }
-  let vpH = innerHeight;
-  const measureVp = ()=>{ const pn = box.querySelector(".film-pin"); vpH = (pn && pn.clientHeight) || innerHeight; };
-  measureVp();
-  const progress = ()=>{ const r = box.getBoundingClientRect(), run = box.offsetHeight - vpH; return run > 0 ? Math.min(1, Math.max(0, -r.top / run)) : (r.top < 0 ? 1 : 0); };
-  const filmEnd = ()=>box.offsetTop + box.offsetHeight - vpH;
-  // once the film has been watched to the end (or skipped), a return to the home page in the same visit
-  // starts at the shop; scrolling up plays the film again
-  const SEEN = "fb34-film-seen", seen = ()=>{ try { sessionStorage.setItem(SEEN, "1"); } catch {} };
-  const bars = ()=>{ const shown = calm ? scrollY > 24 : progress() >= .985; bar.classList.toggle("show", shown); root.classList.toggle("at-film", !shown); if (shown && !calm) seen(); };
-  let back = false; try { back = sessionStorage.getItem(SEEN) === "1"; } catch {}
-  if (back && !location.hash && scrollY < 10){ scrollTo({top: filmEnd() + 2, behavior: "instant"}); }
-  addEventListener("scroll", bars, {passive:true}); addEventListener("resize", ()=>{ measureVp(); bars(); }); bars();
-  box.addEventListener("click", e=>{ e.preventDefault(); seen(); scrollTo({top: filmEnd() + 2, behavior: calm ? "auto" : "smooth"}); });
-  if (calm || !cv.getContext){ cv.remove(); return; }  // the first picture stays as a still
-
-  const ctx = cv.getContext("2d"), bg = $("#filmBg"), bctx = bg.getContext("2d"), pin = box.querySelector(".film-pin");
-  // three picture sets: "p" upright (phones held upright), "l" wide and large (computers), "s" wide and small
-  const SETS = {l: __FILM_FRAMES__, s: __FILM_FRAMES__, p: __FILM_PFRAMES__};
-  const big = Math.max(screen.width, screen.height, innerWidth, innerHeight) > 1100;
-  let ext = "webp", started = false;
-  const upright = ()=>innerHeight > innerWidth;
-  const wanted = ()=>upright() ? "p" : (big && ext === "webp" ? "l" : "s");   // JPG exists for "p" and "s"
-  const sets = {};
-  function set(name){
-    if (sets[name]) return sets[name];
-    const n = SETS[name], order = [0], seen = new Set(order);
-    // loading order: 0, then every 16th, every 8th, 4th, 2nd, then the rest
-    for (const step of [16,8,4,2,1]) for (let i = 0; i < n; i += step) if (!seen.has(i)){ seen.add(i); order.push(i); }
-    return sets[name] = {name, n, order, pics: new Array(n), loaded: new Uint8Array(n), next: 0, busy: 0, count: 0,
-      blobs: new Array(n), ready: new Uint8Array(n), small: new Array(n), decoding: new Uint8Array(n)};
+/* ---------- splash: a one-time welcome image ----------
+   Shown once per visitor (a flag kept in the browser). It fades in over the store, then fades away on its
+   own after ~3 seconds, or on a tap / scroll / key, and is removed. A returning visitor never sees it. */
+(function splash(){
+  const el = $("#splash"); if (!el) return;
+  const KEY = "fb34-welcomed";
+  let welcomed = false; try { welcomed = localStorage.getItem(KEY) === "1"; } catch {}
+  // a returning visitor, or anyone arriving on a deep link (#cart, #p-<id>), goes straight to the store
+  if (welcomed || location.hash){ el.remove(); return; }
+  const calm = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  el.hidden = false;
+  requestAnimationFrame(()=>el.classList.add("in"));
+  let done = false;
+  function enter(){
+    if (done) return; done = true;
+    try { localStorage.setItem(KEY, "1"); } catch {}
+    el.classList.remove("in"); el.classList.add("out");
+    const bye = ()=>el.remove();
+    el.addEventListener("transitionend", bye, {once:true});
+    setTimeout(bye, 800);   // in case transitionend does not fire
+    removeEventListener("wheel", enter); removeEventListener("touchmove", enter); removeEventListener("keydown", onKey);
   }
-  // Pictures are kept compressed (a few MB for the whole film) and only the ones around the current position are
-  // decoded, ahead of time and off the main thread (createImageBitmap). Decoding a picture at the moment it is drawn,
-  // or keeping all 200 decoded (hundreds of MB), is what made phones stutter. Every 16th picture also stays decoded
-  // at a small size, so a fast flick always has something close to show.
-  let BITMAP = "createImageBitmap" in window && "fetch" in window;
-  const NEAR = 8, FAR = 12;
-  let decodes = 0, center = 0;
-  // c: where the scroll is heading (the film eases towards it), so the pictures there are ready when it arrives
-  function keep(S, c){
-    if (!BITMAP) return;
-    center = c;
-    for (let i = 0; i < S.n; i++){   // let go of full pictures that are now far away
-      if (S.pics[i] && Math.abs(i - c) > FAR && Math.abs(i - Math.round(shown * (S.n - 1))) > 2){ S.pics[i].close?.(); S.pics[i] = null; S.ready[i] = S.small[i] ? 2 : 0; }
-    }
-    const want = [];
-    for (let d = 0; d <= NEAR; d++){ if (c + d < S.n) want.push(c + d); if (d && c - d >= 0) want.push(c - d); }
-    for (const i of want){
-      if (decodes >= 3) break;
-      if (!S.blobs[i] || S.pics[i] || S.decoding[i]) continue;
-      S.decoding[i] = 1; decodes++;
-      createImageBitmap(S.blobs[i]).then(bm=>{
-        if (Math.abs(i - center) > FAR){ bm.close(); return; }
-        S.pics[i] = bm; S.ready[i] = 1; drawn = ""; needDraw = true;
-      }, ()=>{}).finally(()=>{ S.decoding[i] = 0; decodes--; });
-    }
-  }
-  // the first picture and the coarse pass load at once; the rest waits for the page's own load, so the page
-  // is not held "loading" by the film on a slow connection
-  let gateOpen = document.readyState === "complete";
-  if (!gateOpen) addEventListener("load", ()=>{ gateOpen = true; pump(); }, {once:true});
-  let active = null, shown = 0, drawn = "", sized = "", needDraw = true, lastIdx = -1;
-  function pump(){
-    if (!started) return;
-    const S = active = set(wanted());
-    const limit = gateOpen ? S.order.length : 1 + Math.ceil(S.n / 16);
-    while (S.busy < 6 && S.next < limit){
-      const i = S.order[S.next++], url = `assets/film/${S.name}/${String(i+1).padStart(3,"0")}.${ext}`; S.busy++;
-      const viaImage = ()=>{   // the plain way, used when pictures cannot be fetched and decoded ahead
-        const im = new Image(); im.decoding = "async";
-        im.onload = ()=>{ S.pics[i] = im; S.ready[i] = 1; got(); };
-        im.onerror = ()=>{ S.busy--; pump(); };
-        im.src = url;
-      };
-      const got = ()=>{ S.busy--; S.loaded[i] = 1; S.count++; if (S === active){ cv.dataset.loaded = String(S.count); if (i === 0) cv.dataset.ready = "1"; } drawn = ""; needDraw = true; pump(); };
-      if (BITMAP){
-        fetch(url).then(r=>r.ok ? r.blob() : Promise.reject(r.status)).then(async bl=>{
-          S.blobs[i] = bl;
-          // the first picture and every 16th: a small copy that always stays decoded
-          if (i % 16 === 0 || i === S.n - 1){
-            const small = await createImageBitmap(bl, {resizeWidth: Math.max(160, Math.round(cv.clientWidth * .6)), resizeQuality: "low"}).catch(()=>null);
-            if (small){ S.small[i] = small; if (!S.ready[i]) S.ready[i] = 2; }
-          }
-          got(); keep(S, Math.round(progress() * (S.n - 1)));
-        }).catch(()=>{ BITMAP = false; viaImage(); });
-      } else viaImage();
-    }
-  }
-  // WebP check (a 1x1 picture); old browsers get the JPG pictures
-  const probe = new Image();
-  probe.onload = ()=>{ if (!probe.width) ext = "jpg"; started = true; pump(); };
-  probe.onerror = ()=>{ ext = "jpg"; started = true; pump(); };
-  probe.src = "data:image/webp;base64,UklGRiIAAABXRUJQVlA4IBYAAAAwAQCdASoBAAEADsD+JaQAA3AAAAAA";
-  // the phone is turned: switch to the set that fits, keep showing the other one until it arrives
-  addEventListener("resize", ()=>{ needDraw = true; lastIdx = -1; if (started && active && wanted() !== active.name) pump(); });
-
-  function fit(){
-    // 1.5 pixels per screen point at most: the pictures themselves are 720 px wide on phones, so more adds no detail,
-    // only work (a 2x or 3x canvas was a main cause of stutter on phones)
-    const w = cv.clientWidth, h = cv.clientHeight, k = Math.min(devicePixelRatio || 1, 1.5), key = `${w}x${h}@${k}`;
-    if (key !== sized){ sized = key; cv.width = Math.round(w * k); cv.height = Math.round(h * k); drawn = ""; }
-  }
-  // closest picture ready to draw: a full one within reach first, else the closest small one
-  const nearest = (S, i)=>{
-    for (let d = 0; d <= FAR; d++){ if (i-d >= 0 && S.ready[i-d] === 1) return i-d; if (i+d < S.n && S.ready[i+d] === 1) return i+d; }
-    for (let d = 0; d < S.n; d++){ if (i-d >= 0 && S.ready[i-d]) return i-d; if (i+d < S.n && S.ready[i+d]) return i+d; }
-    return -1;
-  };
-  // picture for the current progress: from the wanted set, else from any set already loaded
-  function pick(p){
-    for (const S of [active, ...Object.values(sets).filter(x=>x !== active)]){
-      if (!S || !S.count) continue;
-      const i = nearest(S, Math.round(p * (S.n - 1)));
-      if (i >= 0) return [S, i];
-    }
-    return null;
-  }
-  function draw(S, i){
-    const src = S.pics[i] || S.small[i], W = cv.width, H = cv.height;
-    // a full picture or its small copy: only the shape matters for the sizes below
-    const im = {naturalWidth: src.naturalWidth || src.width, naturalHeight: src.naturalHeight || src.height};
-    // the picture's shape matches the screen: fill it (cover). Otherwise (wide picture on an upright screen, while
-    // the upright set is still on its way): the whole picture over a blurred copy that fills the screen.
-    const match = (im.naturalHeight > im.naturalWidth) === (H > W);
-    const s = match ? Math.max(W / im.naturalWidth, H / im.naturalHeight) : Math.min(W / im.naturalWidth, H / im.naturalHeight);
-    const dw = im.naturalWidth * s, dh = im.naturalHeight * s;
-    pin.classList.toggle("fill", match);
-    if (!match){
-      // the blurred copy is drawn small (the blur hides the detail) and stretched by CSS: cheap on any phone
-      const bw = 72, bh = Math.round(bw * bg.clientHeight / Math.max(1, bg.clientWidth)), c = Math.max(bw / im.naturalWidth, bh / im.naturalHeight);
-      if (bg.width !== bw || bg.height !== bh){ bg.width = bw; bg.height = bh; }
-      bctx.drawImage(src, (bw - im.naturalWidth * c) / 2, (bh - im.naturalHeight * c) / 2, im.naturalWidth * c, im.naturalHeight * c);
-      ctx.clearRect(0, 0, W, H);
-    }   // when it fills the screen the picture covers every pixel: nothing to clear
-    ctx.drawImage(src, (W - dw) / 2, (H - dh) / 2, dw, dh);
-    drawn = S.name + i + S.ready[i]; cv.dataset.frame = String(i); cv.dataset.set = S.name; cv.dataset.last = String(S.n - 1);
-  }
-  (function tick(){
-    const r = box.getBoundingClientRect();
-    if (r.bottom > 0 && r.top < innerHeight){   // only while the film is on screen
-      // the frame is locked straight to the scroll position — no easing, so it never lags behind the finger
-      const target = shown = progress();
-      const idx = active ? Math.round(target * (active.n - 1)) : 0;
-      // nothing to do while the frame is unchanged (e.g. a slow scroll between two frames): keeps the loop idle and the scroll smooth
-      if (idx !== lastIdx || needDraw){
-        lastIdx = idx; needDraw = false;
-        fit();
-        if (active) keep(active, idx);
-        const hit = pick(shown);
-        if (hit && hit[0].name + hit[1] + hit[0].ready[hit[1]] !== drawn) draw(hit[0], hit[1]);
-      }
-    }
-    requestAnimationFrame(tick);
-  })();
+  function onKey(e){ if (e.key === "Escape" || e.key === "Enter" || e.key === " ") enter(); }
+  setTimeout(enter, calm ? 1400 : 3000);   // disappears on its own after ~3 seconds
+  el.addEventListener("click", enter);      // a tap enters right away
+  addEventListener("wheel", enter, {passive:true});
+  addEventListener("touchmove", enter, {passive:true});
+  addEventListener("keydown", onKey);
 })();
 // the brand lines appear as they come into view
 (function(){

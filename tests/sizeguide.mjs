@@ -8,6 +8,7 @@ const DEMO_CONFIG = r => r.fulfill({contentType: 'text/javascript', body: 'windo
 const b = await chromium.launch();
 try {
   const ctx = await b.newContext({viewport: {width: 1280, height: 900}});
+  await ctx.addInitScript(() => { try { localStorage.setItem('fb34-welcomed','1'); } catch {} });
   await ctx.route('**/assets/config.js', DEMO_CONFIG);
   ctx.on('page', p => p.on('pageerror', e => errs.push(p.url() + ' ' + e.message)));
 

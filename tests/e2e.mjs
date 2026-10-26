@@ -8,6 +8,7 @@ const results = []; const errs = [];
 const ok = (c, m) => { results.push((c ? 'PASS ' : 'FAIL ') + m); };
 const b = await chromium.launch();
 const ctx = await b.newContext({viewport: {width: 1280, height: 860}, permissions: ['clipboard-read', 'clipboard-write']});
+await ctx.addInitScript(() => { try { localStorage.setItem('fb34-welcomed','1'); } catch {} });
 const DEMO_CONFIG = r => r.fulfill({contentType: 'text/javascript', body: 'window.FB_CONFIG={DEMO_PASSWORD_SHA256:"cd782a4fb4e7c57fcab4debf1a47b4e4052d9dd02cdd1fade914b9d7fbeb8221"}'});  // this test runs the site in demo mode
 await ctx.route('**/assets/config.js', DEMO_CONFIG);
 ctx.on('page', p => { p.on('pageerror', e => errs.push(p.url() + ' ' + e.message)); p.on('console', m => { if (m.type() === 'error') errs.push(p.url() + ' console ' + m.text()); }); });
@@ -183,14 +184,13 @@ await p.reload(); await p.waitForTimeout(1500);
 ok(dark === 'dark' && await p.evaluate(() => document.documentElement.dataset.theme) === 'dark', 'dark mode chosen and remembered after reload');
 await shot(p, '9-dark');
 await p.evaluate(() => scrollTo(0, 0)); await p.waitForTimeout(600);
-await p.waitForTimeout(1500);  // the video eases back to its start
-const topState = await p.evaluate(() => ({frame: +document.querySelector('#filmCanvas').dataset.frame, bar: document.querySelector('#topbar').classList.contains('show')}));
-ok(topState.frame === 0 && !topState.bar, `top of the page: boutique film at its first picture, bars hidden (tests/film.mjs covers the scrolling)`);
+// a returning visitor (welcomed flag seeded on the context): no one-time splash, the store and header show at once
+const topState = await p.evaluate(() => ({splash: !document.querySelector('#splash'), header: !!document.querySelector('.site-header') && document.querySelector('.site-header').offsetHeight > 0}));
+ok(topState.splash && topState.header, 'top of the page: the welcome splash does not show for a returning visitor; the store and header are visible');
 // the page background is a still CSS marble texture: no canvas, no animation (kinder to the battery than the old water)
 const bg = await p.evaluate(() => { const a = getComputedStyle(document.body, '::after'); return {noCanvas: !document.querySelector('#ripple'), grain: a.backgroundImage, page: getComputedStyle(document.body).backgroundImage, raf: typeof FBUI.ripple === 'function' && FBUI.ripple() === undefined}; });
 ok(bg.noCanvas && bg.grain.includes('svg') && bg.page.includes('gradient') && bg.raf, 'background is a still CSS texture (marble grain + soft depth), no water canvas, nothing to animate');
-await p.evaluate(() => scrollTo({top: 0, behavior: 'instant'})); await p.waitForTimeout(800);
-await p.evaluate(() => { const f = document.querySelector('#film'); scrollTo({top: f.offsetTop + f.offsetHeight, behavior: 'instant'}); }); await p.waitForTimeout(700);  // the bar appears once the film is over
+await p.evaluate(() => scrollTo({top: 0, behavior: 'instant'})); await p.waitForTimeout(400);
 await p.click('#themeBtn');
 
 // ---------- admin social links appear in the store ----------
@@ -201,6 +201,7 @@ ok(await p.getAttribute('#socialBar a[aria-label="Instagram"]', 'href') === 'htt
 
 // ---------- 12: phone ----------
 const m = await b.newContext({viewport: {width: 390, height: 844}, isMobile: true, hasTouch: true});
+await m.addInitScript(() => { try { localStorage.setItem('fb34-welcomed','1'); } catch {} });
 await m.route('**/assets/config.js', DEMO_CONFIG);
 const mp = await m.newPage(); mp.on('pageerror', e => errs.push('mobile ' + e.message));
 await mp.goto(BASE + 'index.html'); await mp.waitForTimeout(1200);

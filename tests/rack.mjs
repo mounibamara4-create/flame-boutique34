@@ -47,6 +47,7 @@ const hoverPiece = async (p, id) => {
 const turn = (p, id) => p.$eval(`[data-rack="${id}"] .turn`, g => { const m = new DOMMatrix(getComputedStyle(g).transform); return Math.round(Math.acos(Math.max(-1, Math.min(1, m.m11 / Math.hypot(m.m11, m.m13 || 0)))) * 180 / Math.PI); });
 try {
   const ctx = await b.newContext({viewport: {width: 1280, height: 860}});
+  await ctx.addInitScript(() => { try { localStorage.setItem('fb34-welcomed','1'); } catch {} });
   await ctx.route('**/assets/config.js', DEMO_CONFIG);
   ctx.on('page', p => p.on('pageerror', e => errs.push(p.url() + ' ' + e.message)));
   const a = await ctx.newPage(); await a.goto(BASE + 'admin.html'); await a.fill('#pw', 'Fam20@'); await a.click('#loginBtn'); await a.waitForTimeout(600);
@@ -107,6 +108,7 @@ try {
 
   // phone: the rail is swiped, the piece in the middle faces you
   const m = await b.newContext({viewport: {width: 390, height: 844}, isMobile: true, hasTouch: true});
+  await m.addInitScript(() => { try { localStorage.setItem('fb34-welcomed','1'); } catch {} });
   await m.route('**/assets/config.js', DEMO_CONFIG);
   const ma = await m.newPage(); await ma.goto(BASE + 'admin.html'); await ma.fill('#pw', 'Fam20@'); await ma.tap('#loginBtn'); await ma.waitForTimeout(600); await seed(ma);
   const mp = await m.newPage(); mp.on('pageerror', e => errs.push('phone ' + e.message));

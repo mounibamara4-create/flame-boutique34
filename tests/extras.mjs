@@ -55,20 +55,17 @@ try {
   ok(fr.startsWith('Bonjour Lina') && fr.includes('Khimar georgette') && fr.includes('DA'), 'French-speaking customer gets the message in French');
   await a.screenshot({path: OUT + 'extras-orders.png', fullPage: false});
 
-  // film skipped when coming back in the same visit
-  const s = await ctx.newPage(); await s.goto(BASE); await s.waitForTimeout(900);
-  ok(await s.evaluate(() => scrollY) < 10, 'first visit: starts at the film');
-  await s.evaluate(() => { const f = document.querySelector('#film'); scrollTo({top: f.offsetTop + f.offsetHeight, behavior: 'instant'}); }); await s.waitForTimeout(400);
-  await s.goto(BASE + 'track.html'); await s.waitForTimeout(400); await s.goto(BASE); await s.waitForTimeout(900);
-  const at = await s.evaluate(() => { const f = document.querySelector('#film'); return {y: scrollY, end: f.offsetTop + f.offsetHeight - innerHeight, bar: document.querySelector('#topbar').classList.contains('show')}; });
-  ok(at.y >= at.end && at.bar, 'coming back to the home page: lands on the shop, bars shown ' + JSON.stringify(at));
-  await s.evaluate(() => scrollTo({top: 0, behavior: 'instant'})); await s.waitForTimeout(300);
-  ok(await s.evaluate(() => scrollY) === 0, 'she can still scroll up to watch the film again');
-  await s.goto(BASE + '#shop'); await s.waitForTimeout(600);
-  ok(await s.evaluate(() => scrollY) > 0, 'a link to a section still goes to that section');
-  const fresh = await (await b.newContext({viewport: {width: 1280, height: 900}})).newPage();
-  await fresh.route('**/assets/config.js', DEMO_CONFIG); await fresh.goto(BASE); await fresh.waitForTimeout(800);
-  ok(await fresh.evaluate(() => scrollY) < 10, 'a new visit (new session) starts at the film again');
+  // the welcome splash: shown once per visitor, then never again
+  const s = await ctx.newPage(); await s.goto(BASE); await s.waitForTimeout(700);
+  ok(await s.locator('#splash').isVisible() && (await s.locator('.splash-name').textContent()).includes('FLAME'), 'first visit: the welcome image is shown');
+  await s.waitForTimeout(3400);  // it fades away on its own after ~3s
+  ok(await s.evaluate(() => !document.querySelector('#splash')), 'the welcome image disappears on its own, leaving the store');
+  await s.goto(BASE); await s.waitForTimeout(800);
+  ok(await s.evaluate(() => !document.querySelector('#splash')), 'coming back: the welcome image never shows again');
+  const fresh2 = await b.newContext({viewport: {width: 1280, height: 900}});
+  await fresh2.route('**/assets/config.js', DEMO_CONFIG);
+  const fresh = await fresh2.newPage(); await fresh.goto(BASE); await fresh.waitForTimeout(700);
+  ok(await fresh.locator('#splash').isVisible(), 'a brand-new visitor (clean browser) sees the welcome image once');
 } finally { await b.close(); }
 ok(errs.length === 0, 'no page errors ' + errs.join(' | '));
 console.log(results.join('\n'));

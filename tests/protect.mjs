@@ -10,6 +10,7 @@ const DEMO_CONFIG = r => r.fulfill({contentType: 'text/javascript', body: 'windo
 const b = await chromium.launch();
 try {
   const ctx = await b.newContext({viewport: {width: 1280, height: 900}});
+  await ctx.addInitScript(() => { try { localStorage.setItem('fb34-welcomed','1'); } catch {} });
   await ctx.route('**/assets/config.js', DEMO_CONFIG);
   ctx.on('page', p => p.on('pageerror', e => errs.push(p.url() + ' ' + e.message)));
   const a = await ctx.newPage();
@@ -35,7 +36,7 @@ try {
   // what the customer sees
   const st = await ctx.newPage(); await st.goto(BASE); await st.waitForTimeout(1200);
   const checkout = async phone => {
-    await st.evaluate(() => { const f = document.querySelector('#film'); scrollTo({top: f.offsetTop + f.offsetHeight + 10, behavior: 'instant'}); }); await st.waitForTimeout(500);
+    await st.locator('#shop').scrollIntoViewIfNeeded(); await st.waitForTimeout(300);
     await st.click('.card [data-buy]'); await st.waitForTimeout(600);
     await st.fill('#f_first', 'نسرين'); await st.fill('#f_last', 'بوزيد'); await st.fill('#f_phone', phone);
     await st.fill('#f_wilaya', '34'); await st.waitForTimeout(200); await st.keyboard.press('Enter'); await st.waitForTimeout(500);

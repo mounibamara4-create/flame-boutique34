@@ -14,6 +14,7 @@ const makePhotos = () => ['#C9B194', '#8C7768', '#B3858A', '#25314A'].map((c, i)
 const b = await chromium.launch();
 try {
   const ctx = await b.newContext({viewport: {width: 1280, height: 860}});
+  await ctx.addInitScript(() => { try { localStorage.setItem('fb34-welcomed','1'); } catch {} });
   await ctx.route('**/assets/config.js', DEMO_CONFIG);
   ctx.on('page', p => p.on('pageerror', e => errs.push(e.message)));
   const p = await ctx.newPage();
@@ -86,6 +87,7 @@ try {
 
   // phone: swipe through the gallery
   const m = await b.newContext({viewport: {width: 390, height: 844}, isMobile: true, hasTouch: true});
+  await m.addInitScript(() => { try { localStorage.setItem('fb34-welcomed','1'); } catch {} });
   await m.route('**/assets/config.js', DEMO_CONFIG);
   const mp = await m.newPage(); mp.on('pageerror', e => errs.push('mobile ' + e.message));
   await mp.goto(BASE); await mp.waitForTimeout(800);
