@@ -1597,8 +1597,11 @@ function showMap(){
   const el = $("#splash"); if (!el) return;
   const KEY = "fb34-welcomed";
   let welcomed = false; try { welcomed = localStorage.getItem(KEY) === "1"; } catch {}
-  // a returning visitor, or anyone arriving on a deep link (#cart, #p-<id>), goes straight to the store
-  if (welcomed || location.hash){ el.remove(); return; }
+  // "#welcome" always shows the welcome image (a preview link for the owner); the hash is then cleared so it
+  // does not count as a deep link. Otherwise a returning visitor, or a real deep link (#cart, #p-<id>), skips it.
+  const force = location.hash === "#welcome";
+  if (force){ try { history.replaceState(null, "", location.pathname + location.search); } catch {} }
+  else if (welcomed || location.hash){ el.remove(); return; }
   const calm = matchMedia("(prefers-reduced-motion: reduce)").matches;
   el.hidden = false;
   requestAnimationFrame(()=>el.classList.add("in"));
