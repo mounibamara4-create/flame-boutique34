@@ -32,9 +32,9 @@
 /* ---------- film: the boutique video, moved forward by scrolling ----------
    The section is several screens tall; its video stays pinned on screen while the visitor scrolls through it,
    and the scroll position decides which moment of the video is shown. At its end the store follows. */
-.film{position:relative;display:block;height:520vh;background:#19130D;cursor:pointer}
-/* phones held upright: a longer scroll, so the upright video (200 pictures) passes slowly */
-@media (orientation:portrait){.film{height:800vh}}
+.film{position:relative;display:block;height:340vh;background:#19130D;cursor:pointer}
+/* phones held upright: a slightly longer scroll so the upright video passes smoothly, but short enough to reach the store quickly */
+@media (orientation:portrait){.film{height:430vh}}
 .film-pin{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden}
 .film-pin canvas,.film-pin img{position:absolute;inset:0;width:100%;height:100%;display:block}
 /* portrait screens: behind the whole picture, the same picture enlarged and blurred fills the screen (nothing on top of it) */
@@ -48,6 +48,16 @@
 .social-bar.under-film .soc-map{width:auto;font-size:.9rem}
 .film-pin img{object-fit:cover;object-position:center}
 .film:focus-visible{outline:3px solid var(--ember);outline-offset:-3px}
+/* a clear "skip" hint so a first-time visitor can jump straight to the store */
+.film-skip{position:absolute;left:50%;bottom:max(1.1rem,env(safe-area-inset-bottom));transform:translateX(-50%);z-index:3;
+  display:inline-flex;align-items:center;gap:.4rem;padding:.5rem 1.1rem;border-radius:999px;
+  background:rgba(25,19,13,.5);color:#F4EAD9;border:1px solid rgba(244,234,217,.45);
+  font-family:var(--body);font-size:.9rem;letter-spacing:.02em;white-space:nowrap;
+  -webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);pointer-events:none;
+  animation:skipPulse 2.4s ease-in-out infinite}
+@keyframes skipPulse{0%,100%{opacity:.8;transform:translateX(-50%) translateY(0)}50%{opacity:1;transform:translateX(-50%) translateY(3px)}}
+@media (prefers-reduced-motion:reduce){.film-skip{animation:none}}
+html.calm .film-skip{animation:none}
 /* fewer movements wanted: one still screen instead of the scrolling film */
 html.calm .film{height:100vh;height:100svh}
 /* bars, cart and WhatsApp stay out of the way while the film fills the screen, and slide in on the first scroll */
@@ -436,6 +446,7 @@ summary{cursor:pointer;color:var(--ink)}
       <canvas class="film-bg" id="filmBg" aria-hidden="true"></canvas>
       <picture><source media="(orientation: portrait)" srcset="assets/intro-poster-p.jpg"><img class="film-poster" src="assets/intro-poster.jpg" alt="" aria-hidden="true" fetchpriority="high" width="1280" height="720"></picture>
       <canvas id="filmCanvas" aria-hidden="true"></canvas>
+      <span class="film-skip" data-i18n="skipIntro" aria-hidden="true"></span>
     </div>
   </a>
 
@@ -617,7 +628,7 @@ summary{cursor:pointer;color:var(--ink)}
 <script>
 /* Interface strings. Hero, feature and size-tip texts come from the dashboard (settings.texts). */
 const T = {
- ar:{heroCta:"تصفّحي المجموعة",trackCta:"تتبع طلبي",visitTitle:"زورينا في المحل",addrTitle:"العنوان",hoursTitle:"أوقات العمل",contactTitle:"الهاتف وواتساب",waChat:"راسلينا على واتساب",
+ ar:{skipIntro:"تخطّي المقدّمة ⌄",heroCta:"تصفّحي المجموعة",trackCta:"تتبع طلبي",visitTitle:"زورينا في المحل",addrTitle:"العنوان",hoursTitle:"أوقات العمل",contactTitle:"الهاتف وواتساب",waChat:"راسلينا على واتساب",
   openMap:"افتحي الخريطة",copy:"نسخ",copied:"تم نسخ الرقم",close:"إغلاق",color:"اللون",size:"المقاس",sizeGuide:"دليل المقاسات (بالسنتيمتر)",
   sgBust:"محيط الصدر",sgHeight:"الطول",sgSize:"المقاس",sgFr:"المقاس الفرنسي",sgWaist:"محيط الخصر",sgHips:"محيط الورك",
   sgIntro:"قيسي بشريط القياس فوق ملابس خفيفة: محيط الصدر عند أوسع نقطة، محيط الخصر عند أضيق نقطة، ومحيط الورك عند أوسع نقطة. اختاري المقاس الأقرب لقياساتك.",
@@ -659,7 +670,7 @@ const T = {
   piecesN:n=>n===1?"قطعة واحدة":n===2?"قطعتان":n<=10?`${n} قطع`:`${n} قطعة`,noResult:q=>`لا توجد قطعة تطابق «${q}». جرّبي كلمة أخرى أو اسم اللون أو القسم.`,
   inAll:"البحث في كل الأقسام",
   verified:"مشترية مؤكدة",more:"قد يعجبك أيضاً",policyLink:"الدفع والتوصيل والاستبدال",revOf:"آراء هذه القطعة",revFor:"عن:",outOf:"من 5"},
- fr:{heroCta:"Voir la collection",trackCta:"Suivre ma commande",visitTitle:"Nous rendre visite",addrTitle:"Adresse",hoursTitle:"Horaires",contactTitle:"Téléphone et WhatsApp",waChat:"Écrivez-nous sur WhatsApp",
+ fr:{skipIntro:"Passer l'intro ⌄",heroCta:"Voir la collection",trackCta:"Suivre ma commande",visitTitle:"Nous rendre visite",addrTitle:"Adresse",hoursTitle:"Horaires",contactTitle:"Téléphone et WhatsApp",waChat:"Écrivez-nous sur WhatsApp",
   openMap:"Ouvrir la carte",copy:"Copier",copied:"Numéro copié",close:"Fermer",color:"Couleur",size:"Taille",sizeGuide:"Guide des tailles (en cm)",
   sgBust:"Tour de poitrine",sgHeight:"Hauteur",sgSize:"Taille",sgFr:"Taille FR",sgWaist:"Tour de taille",sgHips:"Tour de hanches",
   sgIntro:"Mesurez avec un mètre ruban sur des vêtements légers : le tour de poitrine au point le plus fort, le tour de taille au point le plus fin, le tour de hanches au point le plus fort. Choisissez la taille la plus proche de vos mesures.",

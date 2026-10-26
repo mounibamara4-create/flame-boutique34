@@ -96,7 +96,8 @@ try {
   const ph = phoneReq.filter(u => u.includes('/assets/film/'));
   ok(s.pinH === 844 && !s.bar && s.ready && ph.length && ph.every(u => u.includes('/film/p/')) && s.set === 'p', `phone held upright: the upright video (${ph.length} pictures so far)`);
   ok(s.canvasW === 585, 'phone: drawing at 1.5x the screen size (the pictures are 720 px wide: sharp, without the cost of 2x or 3x)');
-  ok(s.filmH === 844 * 8, `phone: a longer scroll for the upright film (${(s.filmH / 844).toFixed(1)} screens; computer: 5.2)`);
+  ok(Math.abs(s.filmH / 844 - 4.3) < 0.1, `phone: a short scroll for the upright film, quick to reach the store (${(s.filmH / 844).toFixed(1)} screens; computer: 3.4)`);
+  ok(await p.locator('.film-skip').isVisible() && (await p.locator('.film-skip').textContent()).includes('تخطّي'), 'phone: a visible "skip intro" hint invites the visitor straight to the store');
   // the upright picture covers the whole canvas: every edge pixel is drawn (an empty band would be transparent)
   ok(s.fill && await p.$eval('#filmBg', c => getComputedStyle(c).display === 'none') && await p.$eval('#filmCanvas', c => { const d = c.getContext('2d'); return [[c.width / 2, 1], [c.width / 2, c.height - 2], [1, c.height / 2], [c.width - 2, c.height / 2], [1, 1], [c.width - 2, c.height - 2]].every(([x, y]) => d.getImageData(x, y, 1, 1).data[3] === 255); }),
     'phone: the upright video fills the whole screen, top to bottom (no bands, no blur)');
