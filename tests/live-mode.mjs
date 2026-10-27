@@ -74,7 +74,7 @@ try {
   ok(calls.some(c => c.path === '/rest/v1/communes' && c.query.includes('wilaya_code=eq.34')), 'communes loaded from the database for the chosen wilaya');
   await p.click('#f_commune'); await p.fill('#f_commune', 'Medjana'); await p.keyboard.press('Enter');
   await p.click('#f_delivery label:has(input[value="home"])'); await p.fill('#f_address', 'حي 500 مسكن');
-  ok((await p.innerText('#coTotals')).includes('9 300'), 'delivery price from shipping_rates (8900 + 400)');
+  ok((await p.innerText('#coTotals')).includes('9300'), 'delivery price from shipping_rates (8900 + 400)');
   await p.click('#coNext'); await p.waitForTimeout(300); await p.click('#coConfirm'); await p.waitForTimeout(1500);
   const call = calls.find(c => c.path === '/rest/v1/rpc/place_order');
   ok(call && call.body.p && /^[0-9a-f-]{36}$/.test(call.body.p.idempotency_key) && call.body.p.commune_id === 1187 && call.body.p.items[0].id === 'atlas' && !('price' in call.body.p.items[0]),

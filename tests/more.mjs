@@ -52,7 +52,7 @@ try {
   await st.selectOption('#sort', 'priceUp'); await st.waitForTimeout(200); n = await names();
   ok(n[0] === 'soie' && n[n.length - 1] === 'nassim', 'price low to high (sold-out piece last): ' + n[0] + ' … ' + n[n.length - 1]);
   await st.selectOption('#sort', 'priceDown'); await st.waitForTimeout(200); n = await names();
-  ok(n[0] === 'yaqout', 'price high to low starts with the caftan at 21 000');
+  ok(n[0] === 'yaqout', 'price high to low starts with the caftan at 21000');
   await st.selectOption('#sort', 'new'); await st.waitForTimeout(200); n = await names();
   ok(n[0] === 'soie', 'newest first (last piece added)');
   await st.click('[data-cat="hijab"]'); await st.waitForTimeout(200); await st.fill('#q', 'عباية'); await st.waitForTimeout(200);

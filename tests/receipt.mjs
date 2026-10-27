@@ -31,8 +31,8 @@ try {
   ok(ar.includes('FB-00042') && ar.includes('FLM-ABCD2345'), 'builder: order and tracking numbers appear');
   ok(ar.includes('سارة بوزيد') && ar.includes('0551223344'), 'builder: customer name and phone appear');
   ok(ar.includes('عباية سوداء') && ar.includes('خمار'), 'builder: every line item appears');
-  ok(ar.includes('9 000') && ar.includes('1 200'), 'builder: unit × qty line totals computed (2×4500=9000)');
-  ok(ar.includes('10 600') && ar.includes('المبلغ المطلوب'), 'builder: grand total and its label appear');
+  ok(ar.includes('9000') && ar.includes('1200'), 'builder: unit × qty line totals computed (2×4500=9000)');
+  ok(ar.includes('10600') && ar.includes('المبلغ المطلوب'), 'builder: grand total and its label appear');
   ok(ar.includes('الدفع عند الاستلام'), 'builder: cash-on-delivery note appears');
   ok(ar.includes('<style>') && ar.includes('@media print'), 'builder: self-contained (own style + print rules)');
   const fr = await s.evaluate(o => FB.receiptHTML(o, 'fr'), order);
@@ -69,7 +69,7 @@ try {
   const tReceipt = await tr.evaluate(() => { const el = document.getElementById('fbReceipt'); return {printed: window.__printed, html: el ? el.innerHTML : ''}; });
   ok(tReceipt.printed === 1, 'track: clicking the button opens the print dialog once');
   ok(tReceipt.html.includes('سارة بوزيد'), 'track: receipt carries the customer name (from the extended track_order)');
-  ok(tReceipt.html.includes('عباية كلاسيك') && tReceipt.html.includes('9 000'), 'track: receipt carries item and its line total from unit_price');
+  ok(tReceipt.html.includes('عباية كلاسيك') && tReceipt.html.includes('9000'), 'track: receipt carries item and its line total from unit_price');
 
   // ---- 3) dashboard: the owner prints the customer receipt for the parcel ----
   const ad = await ctx.newPage();
