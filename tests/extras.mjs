@@ -47,7 +47,7 @@ try {
   const links = await row('0551000001').locator('[data-wa]').evaluateAll(els => els.map(e => ({k: e.dataset.wa, href: e.href, target: e.target})));
   ok(links.length === 5 && links.every(l => l.href.startsWith('https://wa.me/213551000001?text=') && l.target === '_blank'), '5 ready messages, each opening her WhatsApp chat');
   const txt = k => decodeURIComponent(links.find(l => l.k === k).href.split('text=')[1]);
-  ok(txt('confirm').includes('سارة') && txt('confirm').includes('خمار جورجيت') && /2.?750 دج/.test(txt('confirm')) && txt('confirm').includes('FB-'),
+  ok(txt('confirm').includes('سارة') && txt('confirm').includes('خمار جورجيت') && /دج 2.?750/.test(txt('confirm')) && txt('confirm').includes('FB-'),
     'confirm message (Arabic): her name, the piece, the total, the order number — ' + JSON.stringify(txt('confirm').slice(0, 120)));
   ok(/\/track\.html#[A-Z0-9-]+$/m.test(txt('sent')), 'on-its-way message carries her tracking link');
   await row('0771000002').locator('summary').click(); await a.waitForTimeout(300);

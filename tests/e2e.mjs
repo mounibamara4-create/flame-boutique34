@@ -119,7 +119,7 @@ await p.click('#cartBtn'); await p.waitForTimeout(600);
 await p.selectOption('.line >> nth=0 >> select[data-k="color"]', '2'); await p.waitForTimeout(200);
 await p.click('.line >> nth=2 >> [data-inc]'); await p.waitForTimeout(200);
 const foot = await p.innerText('#dFoot');
-ok(foot.includes(String(2500 + 1800 + 7500*2)) && foot.includes('500 دج'), 'cart totals with delivery estimate from the saved commune (Medjana 500): ' + foot.replace(/\n/g,' | '));
+ok(foot.includes(String(2500 + 1800 + 7500*2)) && foot.includes('دج 500'), 'cart totals with delivery estimate from the saved commune (Medjana 500): ' + foot.replace(/\n/g,' | '));
 await shot(p, '7-cart');
 await p.reload(); await p.waitForTimeout(2200);
 ok(await p.textContent('#cartCount') === '4', 'cart kept after reload');

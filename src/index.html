@@ -61,12 +61,14 @@
 /* the social links and shop location, moved above the brand name: blend into the light hero, centered */
 .social-bar.in-hero{background:transparent;color:var(--muted);width:100%}
 .social-bar.in-hero .wrap{min-height:0;padding:0;justify-content:center}
-.social-bar.in-hero .soc{color:var(--muted)}
+.social-bar.in-hero .soc{color:var(--ember)}
 .social-bar.in-hero a.soc:hover{background:color-mix(in oklab,var(--ember) 18%,transparent);color:var(--ink)}
 .social-bar.in-hero .soc-map{border-inline-start-color:var(--line)}
 /* dark mode: the hero ground is lighter, so brighten the shop location + social links for clear contrast */
-:root[data-theme="dark"] .social-bar.in-hero,:root[data-theme="dark"] .social-bar.in-hero .soc{color:var(--ink)}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .social-bar.in-hero,:root:not([data-theme="light"]) .social-bar.in-hero .soc{color:var(--ink)}}
+:root[data-theme="dark"] .social-bar.in-hero{color:var(--ink)}
+:root[data-theme="dark"] .social-bar.in-hero .soc{color:var(--mulberry)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .social-bar.in-hero{color:var(--ink)}
+:root:not([data-theme="light"]) .social-bar.in-hero .soc{color:var(--mulberry)}}
 @media (max-width:520px){.brand-name{letter-spacing:.14em;padding-inline-start:.14em;font-size:clamp(1.15rem,6.4vw,1.7rem)}}
 
 /* ---------- the rack: pieces hanging side-on on a brass rail; one turns to face you, and comes forward on a tap ----------
@@ -429,10 +431,6 @@ summary{cursor:pointer;color:var(--ink)}
   <div class="splash" id="splash" aria-hidden="true" hidden>
     <picture><source media="(orientation: portrait)" srcset="assets/intro-poster-p.jpg"><img src="assets/intro-poster.jpg" alt="Flame Boutique 34" fetchpriority="high"></picture>
     <div class="splash-in">
-      <svg class="splash-mark" viewBox="0 0 30 36" aria-hidden="true">
-        <path fill="none" stroke="currentColor" stroke-width="1.3" d="M2 35V14a13 13 0 0 1 26 0v21"/>
-        <path class="splash-flame" d="M15 12c2 3.5 5.5 5.5 5 10a5 5 0 0 1-10 0c-.3-3.3 2.6-4.6 3.2-7 .6 1.5 1.2 2 1.8 2.4.4-1.6.3-3.3 0-5.4Z"/>
-      </svg>
       <span class="splash-hint" data-i18n="welcomeHint"></span>
     </div>
   </div>

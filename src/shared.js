@@ -108,9 +108,9 @@ window.FB = (() => {
   }
   const tint = hex => `background:color-mix(in oklab, ${hex||"#8a7a80"} 16%, var(--frame, var(--surface)))`;
   const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-  // no thousands separator (e.g. "8900 دج"): a separator space splits the number into two runs that the
-  // right-to-left page then reorders, so "8 900" was displaying as "900 8"
-  const money = (n, cur="دج") => String(Math.round(n||0)) + " " + cur;
+  // currency first, no thousands separator (e.g. "دج 8900"): the amount stays a single digit run, so the
+  // right-to-left page keeps it intact (a separator space would split it and show "8 900" as "900 8")
+  const money = (n, cur="دج") => cur + " " + String(Math.round(n||0));
   const wilaya = code => WILAYAS.find(w => w[0]===+code);
   // null = stock not tracked for this size
   const stockOf = (p, size) => (p.stock && p.stock[size] != null) ? +p.stock[size] : null;

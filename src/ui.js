@@ -65,10 +65,6 @@ window.FBUI = (() => {
       <header class="site-header">
         <div class="wrap bar">
           <a class="logo" href="${page === "store" ? "#top" : "./"}" aria-label="Flame Boutique34">
-            <svg class="logo-mark" viewBox="0 0 30 36" aria-hidden="true">
-              <path fill="none" stroke="currentColor" stroke-width="1.3" d="M2 35V14a13 13 0 0 1 26 0v21"/>
-              <path class="logo-flame" d="M15 12c2 3.5 5.5 5.5 5 10a5 5 0 0 1-10 0c-.3-3.3 2.6-4.6 3.2-7 .6 1.5 1.2 2 1.8 2.4.4-1.6.3-3.3 0-5.4Z"/>
-            </svg>
             <span class="logo-word">Flame<small>BOUTIQUE 34</small></span>
           </a>
           <nav class="nav" aria-label="main">${links}</nav>
