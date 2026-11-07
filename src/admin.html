@@ -215,6 +215,7 @@ tr.from-zr td{background:color-mix(in oklab,#2f6b3a 10%,transparent)}
 .zr-delivered{color:#2f6b3a}.zr-returned,.zr-attempt,.zr-cancelled{color:#9a3b2f}
 /* a small colour dot before an ordered item, so the chosen colour is clear at a glance */
 .sw{display:inline-block;width:14px;height:14px;border-radius:50%;vertical-align:-2px;margin-inline-end:.4rem;border:1px solid rgba(0,0,0,.25);box-shadow:inset 0 0 0 1px rgba(255,255,255,.4)}
+.o-thumb{width:36px;height:36px;border-radius:8px;object-fit:cover;vertical-align:middle;margin-inline-end:.5rem;border:1px solid var(--line);background:var(--surface)}
 /* customer history and WhatsApp messages in an order */
 .hist{font-size:.74rem}
 .wa-msgs{display:flex;flex-wrap:wrap;gap:.35rem}
@@ -624,7 +625,13 @@ function renderOrders(){
   $$(".order").forEach(d=>d.addEventListener("toggle",()=>{ d.open?ui.open.add(+d.dataset.id):ui.open.delete(+d.dataset.id); }));
 }
 function orderHTML(o){
-  const items = (o.order_items||[]).map(l=>`<li><span>${l.color?.hex?`<span class="sw" style="background:${esc(l.color.hex)}" title="${esc(l.color?.ar||"")}"></span>`:""}${esc(l.name?.ar||l.product_id)} <span class="muted small">${esc(l.color?.ar||"")}، ${esc(l.size==="TU"?"موحد":l.size)} × ${l.qty} (${money(l.unit_price)} للقطعة)</span></span><span class="num">${money(l.unit_price*l.qty)}</span></li>`).join("");
+  const items = (o.order_items||[]).map(l=>{
+    // the colour's own photo if the owner uploaded one, otherwise a dot in the chosen colour
+    const thumb = l.color?.image
+      ? `<img class="o-thumb" src="${esc(l.color.image)}" alt="" loading="lazy">`
+      : (l.color?.hex ? `<span class="sw" style="background:${esc(l.color.hex)}" title="${esc(l.color?.ar||"")}"></span>` : "");
+    return `<li><span>${thumb}${esc(l.name?.ar||l.product_id)} <span class="muted small">${esc(l.color?.ar||"")}، ${esc(l.size==="TU"?"موحد":l.size)} × ${l.qty} (${money(l.unit_price)} للقطعة)</span></span><span class="num">${money(l.unit_price*l.qty)}</span></li>`;
+  }).join("");
   const hist = [...(o.order_status_history||[])].sort((a,b)=>a.created_at.localeCompare(b.created_at)).reverse()
     .map(h=>`<li><span><span class="pill st-${h.status} st">${stLabel(h.status)}</span>${h.note?` <span class="small">${esc(h.note)}</span>`:""}</span><time class="num small muted">${fmtDate(h.created_at)}</time></li>`).join("");
   const wa = o.whatsapp || o.phone;
