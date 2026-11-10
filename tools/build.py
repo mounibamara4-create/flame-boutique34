@@ -9,13 +9,104 @@ Run from the project folder:  python3 tools/build.py
 (after changing data/, run tools/gen_locations.py first)
 Netlify runs the same command (netlify.toml) and publishes dist/.
 """
-import pathlib, re, shutil
+import pathlib, re, shutil, json, html as _html, urllib.request
 
 root = pathlib.Path(__file__).resolve().parent.parent
 src = root / "src"
 dist = root / "dist"
 # the live site address (used in page meta/Open Graph, robots.txt and the sitemap); change it if you move to your own domain
 SITE = "https://flameboutique34.netlify.app"
+BRAND = "Flame Boutique 34"
+
+# ---- build-time data (so the HTML carries real content for search engines, not an empty shell) ----
+# The products, their prices, sizes and photos are rendered into the pages at build time, then the page's
+# JavaScript refreshes them live from Supabase. If Supabase cannot be reached while building, the pages still
+# build (with the JavaScript-only fallback) so a deploy never fails for a network hiccup.
+_cfg = (root / "assets" / "config.js").read_text(encoding="utf-8")
+SB_URL = (re.search(r'SUPABASE_URL:\s*"([^"]+)"', _cfg) or [None, ""])[1]
+SB_KEY = (re.search(r'SUPABASE_ANON_KEY:\s*"([^"]+)"', _cfg) or [None, ""])[1]
+
+def _sb(path):
+    req = urllib.request.Request(f"{SB_URL}/rest/v1/{path}",
+        headers={"apikey": SB_KEY, "Authorization": f"Bearer {SB_KEY}", "Accept": "application/json"})
+    with urllib.request.urlopen(req, timeout=25) as r:
+        return json.load(r)
+
+PRODUCTS, SETTINGS = [], {}
+try:
+    PRODUCTS = _sb("products?select=*&active=eq.true&order=sort.asc,created_at.asc")
+    _srows = _sb("settings?select=data&limit=1")
+    SETTINGS = (_srows[0].get("data") if _srows else {}) or {}
+    print(f"fetched {len(PRODUCTS)} active product(s) and settings from Supabase")
+except Exception as e:
+    print("WARN: Supabase fetch failed — building with the JavaScript-only fallback:", e)
+
+def esc(s):
+    return _html.escape(str(s if s is not None else ""), quote=True)
+
+def money(n):  # same shape as FB.money in shared.js: currency first, no thousands separator -> "دج 8900"
+    try: return "دج " + str(round(float(n or 0)))
+    except Exception: return "دج 0"
+
+def _loc(v, lang="ar"):
+    if isinstance(v, dict): return v.get(lang) or v.get("ar") or v.get("fr") or ""
+    return v or ""
+
+def _in_stock(p):
+    st = p.get("stock")
+    if not isinstance(st, dict): return True          # stock not tracked -> available
+    return any((st.get(s) or 0) > 0 for s in (p.get("sizes") or []))
+
+def product_cards_html(products, lang="ar"):
+    """Static product cards for #grid; the page's JavaScript replaces them with the live, interactive cards."""
+    out = []
+    for p in products:
+        name = _loc(p.get("name"), lang)
+        img = p.get("image") or (p.get("colors") or [{}])[0].get("image") or ""
+        price = money(p.get("price"))
+        old = p.get("compare_price")
+        old_html = f' <s class="price-old">{money(old)}</s>' if old and old > (p.get("price") or 0) else ""
+        sizes = "، ".join(p.get("sizes") or [])
+        media = (f'<img src="{esc(img)}" alt="{esc(name)}" width="480" height="640" loading="lazy" decoding="async">'
+                 if img else "")
+        href = f'/#p-{esc(p.get("id"))}'
+        out.append(
+            f'<article class="card">'
+            f'<a class="card-media" href="{href}" aria-label="{esc(name)}"><div class="frame">{media}</div></a>'
+            f'<h3 class="card-name"><a href="{href}">{esc(name)}</a></h3>'
+            f'<p class="card-price"><b>{price}</b>{old_html}</p>'
+            + (f'<p class="card-opts">المقاسات: {esc(sizes)}</p>' if sizes else "")
+            + '</article>')
+    return "\n".join(out)
+
+def jsonld(products, settings):
+    soc = (settings.get("socials") or {})
+    same = [soc.get(k) for k in ("instagram", "facebook", "tiktok") if soc.get(k)]
+    store = {
+        "@context": "https://schema.org", "@type": "ClothingStore", "name": BRAND,
+        "url": SITE + "/", "image": SITE + "/assets/intro-poster.jpg",
+        "telephone": "+213549902289",
+        "address": {"@type": "PostalAddress", "addressLocality": "برج بوعريريج", "addressRegion": "برج بوعريريج", "addressCountry": "DZ"},
+        "geo": {"@type": "GeoCoordinates", "latitude": 36.0710359, "longitude": 4.7574911},
+        "areaServed": "DZ",
+    }
+    hours = _loc(settings.get("hours"))
+    if hours: store["openingHours"] = hours
+    if same: store["sameAs"] = same
+    graph = [store]
+    for p in products:
+        imgs = [i for i in ([p.get("image")] + (p.get("images") or [])) if i]
+        offer = {"@type": "Offer", "price": p.get("price") or 0, "priceCurrency": "DZD",
+                 "availability": "https://schema.org/InStock" if _in_stock(p) else "https://schema.org/OutOfStock",
+                 "url": SITE + "/#p-" + str(p.get("id"))}
+        prod = {"@context": "https://schema.org", "@type": "Product", "name": _loc(p.get("name")),
+                "sku": p.get("id"), "brand": {"@type": "Brand", "name": BRAND}, "offers": offer}
+        if imgs: prod["image"] = imgs
+        desc = _loc(p.get("description"))
+        if desc: prod["description"] = desc
+        graph.append(prod)
+    return ('<script type="application/ld+json">\n'
+            + json.dumps(graph, ensure_ascii=False, separators=(",", ":")) + "\n</script>")
 
 def script(match):
     js = (src / f"{match.group(1)}.js").read_text(encoding="utf-8").replace("</script", "<\\/script")
@@ -36,6 +127,12 @@ for page in ("index.html", "track.html", "policy.html", "admin.html", "404.html"
     note = "<!-- Generated from src/" + page + " by tools/build.py. Edit src/, then rebuild. -->"
     html = html.replace("<!doctype html>", "<!doctype html>\n" + note, 1)
     html = html.replace("__SITE__", SITE)
+    if page == "index.html" and PRODUCTS:
+        # real product cards in the HTML (the page's JavaScript replaces them with the live versions on load)
+        html = html.replace('<div class="grid" id="grid"></div>',
+                             '<div class="grid" id="grid">\n' + product_cards_html(PRODUCTS) + '\n</div>', 1)
+        # Schema.org data for the store and each product (CSP already allows inline scripts)
+        html = html.replace("</head>", jsonld(PRODUCTS, SETTINGS) + "\n</head>", 1)
     (dist / page).write_text(html, encoding="utf-8")
     print("built", page, len(html) // 1024, "KB")
 
